@@ -599,10 +599,15 @@ public class CurrentOrderFragment extends Fragment
             Log.d("handleCallTime", "empty:" );
             return;
         }
-        
+
+        Log.d("handleCallTime", "history_line "+history_line );
+        Log.d("handleCallTime", "order_id "+order_id );
         for (CallActivity activity:callActivity) {
             activity.setHistory_line(history_line);
+            Log.d("handleCallTime", activity.getDuration() );
+
         }
+
 
         String token=SharedHelper.getKey(getContext(),LoginActivity.TOKEN);
         CallTimePayload payload=new CallTimePayload(token,order_id,callActivity);

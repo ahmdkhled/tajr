@@ -196,28 +196,38 @@ public class CallsReceiver extends BroadcastReceiver {
 
 
     private void getCallDuration(Context context,String number,String orderPhone){
-        //if (!number.equals(orderPhone))return;
+        if (!number.equals(orderPhone))return;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        Cursor c = context.getContentResolver().query(
+                Cursor c = context.getContentResolver().query(
 
-                android.provider.CallLog.Calls.CONTENT_URI,
+                        CallLog.Calls.CONTENT_URI,
 
-                null, null, null,
+                        null, null, null,
 
-                android.provider.CallLog.Calls.DATE + " DESC "+ " LIMIT 1");
+                        CallLog.Calls.DATE + " DESC "+ " LIMIT 1");
 
-        while (c!=null&&c.moveToNext()){
-            Log.d("CALLLLLLL", "getCallDuration: "
-                    +"  "+c.getString(c.getColumnIndex(CallLog.Calls.NUMBER))
-                    +"   "+c.getString(c.getColumnIndex(CallLog.Calls.DURATION))
-                    +"   "+c.getString(c.getColumnIndex(CallLog.Calls.DATE))
+                while (c!=null&&c.moveToNext()){
+                    Log.d("CALLLLLLLL", "getCallDuration: "
+                            +"  "+c.getString(c.getColumnIndex(CallLog.Calls.NUMBER))
+                            +"   "+c.getString(c.getColumnIndex(CallLog.Calls.DURATION))
+                            +"   "+c.getString(c.getColumnIndex(CallLog.Calls.DATE))
 
-            );
-            String duration=c.getString(c.getColumnIndex(CallLog.Calls.DURATION));
-            String date=c.getString(c.getColumnIndex(CallLog.Calls.DURATION));
-            CallTimeManager.getInstance(context)
-                    .saveCallSession(duration,date);
-        }
+                    );
+                    String duration=c.getString(c.getColumnIndex(CallLog.Calls.DURATION));
+                    String date=c.getString(c.getColumnIndex(CallLog.Calls.DURATION));
+                    CallTimeManager.getInstance(context)
+                            .saveCallSession(duration,date);
+                }
+                if (c!=null)
+                    c.close();
+
+
+            }
+        },200);
+
 
 
 
