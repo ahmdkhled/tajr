@@ -646,14 +646,14 @@ public class BubbleService extends Service
         products_recycler.setLayoutManager(layoutManager);
         products_recycler.setAdapter(productAdapter);
         products_recycler.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
-
+        isLoading=false;
         products_recycler.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager,2) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d("PAGINATIONN", "onLoadMore: "+isLoading);
                 if (isLoading)return;
                 isLoading=true;
                 page++;
-                Log.d("PAGINATIONN", "onLoadMore: "+page);
                 if (!pages.exceedLimit(page)){
                     getProducts(String.valueOf(page));
                     productAdapter.setLoadingView(String.valueOf(page));
