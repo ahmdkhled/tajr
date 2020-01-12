@@ -340,17 +340,22 @@ public class BubbleService extends Service
             , String client_area, String client_address){
 
         if (orderItems.isEmpty()){
-            Toast.makeText(this, "choose product first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.choose_product_first, Toast.LENGTH_SHORT).show();
             return;
         }
 
         String[] params={client_name,client_order_phone1,client_area,client_address,CITY_ID};
         for (String param : params) {
             if (TextUtils.isEmpty(param)) {
-                Toast.makeText(this, "complete all Fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.complete_fields_error, Toast.LENGTH_SHORT).show();
                 return;
             }
 
+        }
+
+        if(client_order_phone1.length()<11){
+            Toast.makeText(this, R.string.invalid_ph_num, Toast.LENGTH_SHORT).show();
+            return;
         }
 
 
