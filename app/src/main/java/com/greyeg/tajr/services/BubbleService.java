@@ -465,7 +465,11 @@ public class BubbleService extends Service
         showBotBlocks(botBlocksResponse.getBlocks().getNormal()
                 ,botBlocksDialog.findViewById(R.id.normal_blocks_recycler));
         botBlocksDialog.findViewById(R.id.root).setOnTouchListener(dialogTouchListener);
-
+        
+        for(BotBlock botBlock:botBlocksResponse.getBlocks().getNormal()){
+            Log.d("BLOOKKK", ": "+botBlock.getName());
+        }
+        
         botBlocksDialog.findViewById(R.id.close)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
