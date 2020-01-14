@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.CallLog;
@@ -176,6 +177,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onStateChange(boolean active) {
                 if (active) {
+                    mKenBurns.pause();
                     Intent intent = new Intent(getApplicationContext(), NewOrderActivity.class);
                     startActivity(intent);
 
@@ -850,6 +852,9 @@ public class MainActivity extends AppCompatActivity
         if (enableButton.isActive()) {
             enableButton.toggleState();
         }
+        new Handler().postDelayed(() -> {
+            mKenBurns.resume();
+        },200);
 
     }
 
