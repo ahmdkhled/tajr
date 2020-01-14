@@ -30,7 +30,8 @@ import com.greyeg.tajr.server.BaseClient;
 import com.greyeg.tajr.view.FloatLabeledEditText;
 import com.greyeg.tajr.view.ProgressWheel;
 import com.greyeg.tajr.view.kbv.KenBurnsView;
-import com.onesignal.OneSignal;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,43 +120,32 @@ public class AdminLoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OneSignal.sendTag("User_ID", email.getText().toString());
                 loginBtn.setVisibility(View.GONE);
                 progressLogin.setVisibility(View.VISIBLE);
                 progressLogin.spin();
-                if (email.getText().equals("") || pass.getText().equals("")) {
+                if (email.getText().toString().equals("") || pass.getText().toString().equals("")) {
                     progressDialog.dismiss();
                     Toast.makeText(AdminLoginActivity.this, "برجاء ادخال البريد وكلمة المرور", Toast.LENGTH_SHORT).show();
                 } else {
                     api.adminLogin(email.getText().toString(), pass.getText().toString()).enqueue(new Callback<UserResponse>() {
                         @Override
-                        public void onResponse(Call<UserResponse> call, final Response<UserResponse> response) {
+                        public void onResponse(@NotNull Call<UserResponse> call, final Response<UserResponse> response) {
 
                             Log.d("rrrrrrrrrrrr", "onResponse: response"+response.body().getCode());
                             if (response.body() != null) {
                                 if (response.body().getCode().equals("1202") || response.body().getCode().equals("1212")) {
                                     Log.d("rrrrrrrrrrrr", "onResponse: response + 1202");
-                                    FirebaseDatabase.getInstance().getReference().child("users")
-                                            .child(OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId())
-                                            .setValue(new User("eslam faisal", OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId()))
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d("rrrrrrrrrrrr", "onResponse: response+1202+fire");
-                                                        loginBtn.setVisibility(View.VISIBLE);
-                                                        progressLogin.setVisibility(View.GONE);
-                                                        SharedHelper.putKey(getApplicationContext(), LOG_IN_FROM, "admin");
-                                                        SharedHelper.putKey(getApplicationContext(), IS_LOGIN, "yes");
-                                                        SharedHelper.putKey(getApplicationContext(), TOKEN, response.body().getToken());
-                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        startActivity(intent);
-                                                        finish();
+                                    Log.d("rrrrrrrrrrrr", "onResponse: response+1202+fire");
+                                    loginBtn.setVisibility(View.VISIBLE);
+                                    progressLogin.setVisibility(View.GONE);
+                                    SharedHelper.putKey(getApplicationContext(), LOG_IN_FROM, "admin");
+                                    SharedHelper.putKey(getApplicationContext(), IS_LOGIN, "yes");
+                                    SharedHelper.putKey(getApplicationContext(), TOKEN, response.body().getToken());
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
 
-                                                    }
-                                                }
-                                            });
 
 
                                     // raniaabdel001@gmail.com

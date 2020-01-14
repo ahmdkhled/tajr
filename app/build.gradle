@@ -1,13 +1,10 @@
 buildscript {
     repositories {
-        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.11.0, 0.99.99]'
     }
 }
 
-apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
@@ -25,10 +22,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        // TODO: Please update the OneSignal ID below to yours!
-        manifestPlaceholders = [onesignal_app_id               : 'c1c60918-4009-4213-b070-36296afc47b7',
-                                // Project number pulled from dashboard, local value is ignored.
-                                onesignal_google_project_number: 'REMOTE']
+
     }
     buildTypes {
         release {
@@ -114,7 +108,6 @@ dependencies {
     implementation 'com.tapadoo.android:alerter:4.0.0'
     implementation 'com.evernote:android-job:1.2.6'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
-    implementation 'com.onesignal:OneSignal:3.10.8'
     implementation 'com.github.rygelouv:android-audio-sensei:0.1.2'
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.2'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'

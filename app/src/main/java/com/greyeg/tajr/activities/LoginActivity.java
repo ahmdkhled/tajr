@@ -34,7 +34,6 @@ import com.greyeg.tajr.server.BaseClient;
 import com.greyeg.tajr.view.FloatLabeledEditText;
 import com.greyeg.tajr.view.ProgressWheel;
 import com.greyeg.tajr.view.kbv.KenBurnsView;
-import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OneSignal.sendTag("User_ID", email.getText().toString());
                 loginBtn.setVisibility(View.GONE);
                 sharedPreferences.edit().putBoolean(REMEMBER_PASS, rememberPass.isChecked()).apply();
                 if (rememberPass.isChecked()) {
@@ -145,45 +143,24 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d(TAG, "onResponse: "+response.body().toString());
                                 if (response.body().getCode().equals("1202") || response.body().getCode().equals("1212")) {
                                     //todo solve onesignal error
-                                    String onsignalid = OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId();
-//                                    while (onsignalid == null) {
-//
-//                                        onsignalid = null;
-//                                    }
-                                    onsignalid=response.body().getData().getLogin_data().getUser_id();
-                                    FirebaseDatabase.getInstance().getReference().child("users")
-                                            .child(onsignalid)
-                                            .setValue(new User(response.body().getData().getLogin_data().getUsername(), OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId()))
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-
-                                                        loginBtn.setVisibility(View.VISIBLE);
-                                                        progressLogin.setVisibility(View.GONE);
-                                                        SharedHelper.putKey(getApplicationContext(), LOG_IN_FROM, "employee");
-                                                        SharedHelper.putKey(getApplicationContext(), PARENT_ID, response.body().getClients().get(0).getId());
-                                                        SharedHelper.putKey(getApplicationContext(), IS_LOGIN, "yes");
-                                                        SharedHelper.putKey(getApplicationContext(), USER_NAME, response.body().getData().getLogin_data().getUsername());
-                                                        SharedHelper.putKey(getApplicationContext(), USER_ID, response.body().getData().getLogin_data().getUser_id());
-                                                        SharedHelper.putKey(getApplicationContext(), USER_TYPE, response.body().getData().getLogin_data().getUser_type());
-                                                        SharedHelper.putKey(getApplicationContext(), PARENT_TAJR_ID, response.body().getData().getLogin_data().getParent_tajr_id());
-                                                        SharedHelper.putKey(getApplicationContext(), IS_TAJR, response.body().getData().getLogin_data().getIs_tajr());
-                                                        SharedHelper.putKey(getApplicationContext(), TOKEN, response.body().getData().getLogin_data().getToken());
-                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                        startActivity(intent);
-                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                        finish();
-
-                                                    }else {
-                                                        Log.d("eeeeeeeeeeeeeeee", "task failed: " );
-
-                                                    }
-                                                }
-                                            });
+                                    loginBtn.setVisibility(View.VISIBLE);
+                                    progressLogin.setVisibility(View.GONE);
+                                    SharedHelper.putKey(getApplicationContext(), LOG_IN_FROM, "employee");
+                                    SharedHelper.putKey(getApplicationContext(), PARENT_ID, response.body().getClients().get(0).getId());
+                                    SharedHelper.putKey(getApplicationContext(), IS_LOGIN, "yes");
+                                    SharedHelper.putKey(getApplicationContext(), USER_NAME, response.body().getData().getLogin_data().getUsername());
+                                    SharedHelper.putKey(getApplicationContext(), USER_ID, response.body().getData().getLogin_data().getUser_id());
+                                    SharedHelper.putKey(getApplicationContext(), USER_TYPE, response.body().getData().getLogin_data().getUser_type());
+                                    SharedHelper.putKey(getApplicationContext(), PARENT_TAJR_ID, response.body().getData().getLogin_data().getParent_tajr_id());
+                                    SharedHelper.putKey(getApplicationContext(), IS_TAJR, response.body().getData().getLogin_data().getIs_tajr());
+                                    SharedHelper.putKey(getApplicationContext(), TOKEN, response.body().getData().getLogin_data().getToken());
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                    finish();
 
                                 } else {
                                     Snackbar.make(v, R.string.wrong_email_pass, Snackbar.LENGTH_SHORT).show();

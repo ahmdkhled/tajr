@@ -68,8 +68,7 @@ import com.greyeg.tajr.records.RecordsActivity;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 import com.greyeg.tajr.view.kbv.KenBurnsView;
-import com.onesignal.OSPermissionSubscriptionState;
-import com.onesignal.OneSignal;
+
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -150,7 +149,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         crashlytics=Crashlytics.getInstance();
-        OneSignal.setSubscription(true);
         mainActivity = this;
         toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -160,7 +158,6 @@ public class MainActivity extends AppCompatActivity
 
         initViews();
 
-        firebaseInit();
 
 
 
@@ -268,8 +265,7 @@ public class MainActivity extends AppCompatActivity
                         con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                         con.setRequestProperty("Authorization", "Basic NTQ1YzI4YzYtZTE4Zi00OWQ3LWE1ZWQtZGRkNWNiMmVkMjI5");
                         con.setRequestMethod("POST");
-                        OSPermissionSubscriptionState status = OneSignal.getPermissionSubscriptionState();
-                        String userId = status.getSubscriptionStatus().getUserId();
+
 
 
                         String strJsonBody = "{"
@@ -343,8 +339,7 @@ public class MainActivity extends AppCompatActivity
                         con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                         con.setRequestProperty("Authorization", "Basic NTQ1YzI4YzYtZTE4Zi00OWQ3LWE1ZWQtZGRkNWNiMmVkMjI5");
                         con.setRequestMethod("POST");
-                        OSPermissionSubscriptionState status = OneSignal.getPermissionSubscriptionState();
-                        String userId = status.getSubscriptionStatus().getUserId();
+
                         String strJsonBody = "{"
                                 + "\"app_id\": \"c1c60918-4009-4213-b070-36296afc47b7\"," +
 
@@ -479,42 +474,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void firebaseInit() {
-        OSPermissionSubscriptionState status = OneSignal.getPermissionSubscriptionState();
-        final String userId = status.getSubscriptionStatus().getUserId();
-        idListString = new StringBuilder("\"" + "f20050de-b06b-4444-80a5-a894e4fef6d0" + "\"");
-        FirebaseDatabase.getInstance().getReference().child("users").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (!dataSnapshot.getKey().equals(OneSignal.getPermissionSubscriptionState().getSubscriptionStatus().getUserId())) {
-                    idListString.append(",");
-                    idListString.append("\"" + dataSnapshot.getKey() + "\"");
-
-                }
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     void checkDauleSim() {
