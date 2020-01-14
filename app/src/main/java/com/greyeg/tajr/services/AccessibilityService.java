@@ -69,7 +69,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             EventBus.getDefault().post(new UserNameEvent(userName));
         }
         }else {
-            Log.d("TIMERCALCCCC",accessibilityEvent!=null
+            Log.d("TTIMERCALCCCC",accessibilityEvent!=null
                     ?"\n"+lastOpenedApp+"\n"
                     +"\n"+accessibilityEvent.getClassName()+"\n"
                     +"\n"+accessibilityEvent.getPackageName()+"\n"
@@ -78,6 +78,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     :"nulllll");
             if (lastOpenedApp.equals("com.facebook.pages.app")
                     &&accessibilityEvent!=null
+                    &&!accessibilityEvent.getPackageName().equals("com.touchtype.swiftkey")
                     &&!(accessibilityEvent.getClassName()!=null&&
                     ( accessibilityEvent.getClassName().equals("android.view.ViewGroup")||
                             accessibilityEvent.getClassName().equals("android.widget.LinearLayout")    )
