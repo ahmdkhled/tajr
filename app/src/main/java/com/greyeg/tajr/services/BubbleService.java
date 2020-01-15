@@ -60,6 +60,7 @@ import com.greyeg.tajr.models.ProductData;
 import com.greyeg.tajr.models.ProductForSpinner;
 import com.greyeg.tajr.models.Subscriber;
 import com.greyeg.tajr.models.SubscriberInfo;
+import com.greyeg.tajr.repository.BotBlocksRepo;
 import com.greyeg.tajr.repository.CitiesRepo;
 import com.greyeg.tajr.repository.OrdersRepo;
 import com.greyeg.tajr.repository.ProductsRepo;
@@ -288,7 +289,8 @@ public class BubbleService extends Service
         setBroadCastLoading(View.VISIBLE);
         String token=SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN);
 
-        BaseClient.getApiService()
+        BotBlocksRepo
+                .getInstance()
                 .getBotBlocks(token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
