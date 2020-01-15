@@ -290,9 +290,16 @@ public class BubbleService extends Service
 
         BaseClient.getApiService()
                 .getBotBlocks(token)
-                .enqueue(new Callback<BotBlocksResponse>() {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<BotBlocksResponse>>() {
                     @Override
-                    public void onResponse(Call<BotBlocksResponse> call, Response<BotBlocksResponse> response) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Response<BotBlocksResponse> response) {
                         BotBlocksResponse botBlocksResponse=response.body();
                         if (response.isSuccessful()&&botBlocksResponse!=null){
                             setupBotBlocksDialog(botBlocksResponse);
@@ -305,19 +312,17 @@ public class BubbleService extends Service
                                     , Toast.LENGTH_SHORT).show();
                         }
                         setBroadCastLoading(View.GONE);
-
                     }
 
                     @Override
-                    public void onFailure(Call<BotBlocksResponse> call, Throwable t) {
-                        Log.d("BOTBLOKSS", "onFailure: "+t.getMessage());
+                    public void onError(Throwable e) {
                         Toast.makeText(BubbleService.this,
-                                "failed to get Blocks \n "+t.getMessage()
+                                "failed to get Blocks"
                                 , Toast.LENGTH_SHORT).show();
                         setBroadCastLoading(View.GONE);
-
                     }
                 });
+
     }
 
 

@@ -439,7 +439,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("send/get_bot_blocks")
-    Call<BotBlocksResponse> getBotBlocks(@Field("token") String token);
+    Single<Response<BotBlocksResponse>> getBotBlocks(@Field("token") String token);
 
     @FormUrlEncoded
     @POST("send/broadcast")
