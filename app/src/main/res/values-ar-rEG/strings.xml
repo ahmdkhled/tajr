@@ -231,7 +231,7 @@
     <string name="products">المنتجات</string>
     <string name="product_added_to_cart" >تم اضافه المنتج بنجاح</string>
     <string name="already_in_cart" >المنتج موجود مسبقا فى السله</string>
-
+    <string name="failed_to_get_bot_blocks">فشل فى الحصول على ال blocks</string>
 
 
 </resources>

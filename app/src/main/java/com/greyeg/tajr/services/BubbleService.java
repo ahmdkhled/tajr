@@ -308,7 +308,7 @@ public class BubbleService extends Service
                             //Log.d("BOTBLOKSS", "onResponse: "+botBlocksResponse.getBlocks().getDefault().get(0).getName());
                         }else{
                             Toast.makeText(BubbleService.this,
-                                    "Error getting Bot Blocks \n response code "+response.code()
+                                    R.string.failed_to_get_bot_blocks
                                     , Toast.LENGTH_SHORT).show();
                         }
                         setBroadCastLoading(View.GONE);
@@ -317,7 +317,7 @@ public class BubbleService extends Service
                     @Override
                     public void onError(Throwable e) {
                         Toast.makeText(BubbleService.this,
-                                "failed to get Blocks"
+                                R.string.failed_to_get_bot_blocks
                                 , Toast.LENGTH_SHORT).show();
                         setBroadCastLoading(View.GONE);
                     }
