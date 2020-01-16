@@ -40,6 +40,7 @@ import com.greyeg.tajr.adapters.ProductAdapter;
 import com.greyeg.tajr.adapters.SubscribersAdapter;
 import com.greyeg.tajr.helper.EndlessRecyclerViewScrollListener;
 import com.greyeg.tajr.helper.ExtraDataHelper;
+import com.greyeg.tajr.helper.NetworkUtil;
 import com.greyeg.tajr.helper.ScreenHelper;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.UserNameEvent;
@@ -238,6 +239,10 @@ public class BubbleService extends Service
 
     private void getUserId(String userName){
         subscribers.clear();
+        if (!NetworkUtil.isConnected(getApplicationContext())){
+            Toast.makeText(this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
         String token= SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN);
         Log.d("SUBSCRIPERR", "token: "+token);
         startFlasher();
@@ -293,6 +298,10 @@ public class BubbleService extends Service
     }
 
     private void getBotBlocks(){
+        if (!NetworkUtil.isConnected(getApplicationContext())){
+            Toast.makeText(this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
         setBroadCastLoading(View.VISIBLE);
         String token=SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN);
 
@@ -372,7 +381,10 @@ public class BubbleService extends Service
             return;
         }
 
-
+        if (!NetworkUtil.isConnected(getApplicationContext())){
+            Toast.makeText(this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
 
@@ -754,6 +766,10 @@ public class BubbleService extends Service
 
     @Override
     public void onBlockSelected(String blockId) {
+        if (!NetworkUtil.isConnected(getApplicationContext())){
+            Toast.makeText(this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
         setBroadCastLoading(View.VISIBLE);
         mWindowManager.removeView(botBlocksDialog);
         String token=SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN);
@@ -1151,6 +1167,10 @@ public class BubbleService extends Service
 
 
     private void getCities2(){
+        if (!NetworkUtil.isConnected(getApplicationContext())){
+            Toast.makeText(this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
         Spinner client_city=newOrderDialog.findViewById(R.id.client_city);
         if (cities != null) {
             cities.clear();
@@ -1257,4 +1277,6 @@ public class BubbleService extends Service
         extraDataRecycler.setAdapter(extraDataAdapter);
         extraDataRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
+
+
 }
