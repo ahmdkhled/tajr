@@ -232,6 +232,8 @@
     <string name="product_added_to_cart" >تم اضافه المنتج بنجاح</string>
     <string name="already_in_cart" >المنتج موجود مسبقا فى السله</string>
     <string name="failed_to_get_bot_blocks">فشل فى الحصول على ال blocks</string>
+    <string name="Error_sending_broadcast">Error sending Broadcast</string>
+    <string name="error_getting_subscribers">Error getting subscribers list</string>
 
 
 </resources>

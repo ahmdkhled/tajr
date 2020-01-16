@@ -1,6 +1,7 @@
 package com.greyeg.tajr.repository;
 
 import com.greyeg.tajr.models.BotBlocksResponse;
+import com.greyeg.tajr.models.Broadcast;
 import com.greyeg.tajr.server.BaseClient;
 
 import io.reactivex.Single;
@@ -19,5 +20,11 @@ public class BotBlocksRepo {
         return BaseClient
                 .getApiService()
                 .getBotBlocks(token);
+    }
+
+    public Single<Response<Broadcast>> sendBroadcast(String token,String subscriber,String page,String block){
+        return BaseClient
+                .getApiService()
+                .sendBroadcast(token,subscriber,page,block);
     }
 }

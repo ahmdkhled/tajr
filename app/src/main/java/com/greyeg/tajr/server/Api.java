@@ -435,7 +435,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("send/get_subscriber_info")
-    Call<SubscriberInfo> getSubscriberInfo(@Field("token") String token,@Field("sender_name") String sender_name);
+    Single<Response<SubscriberInfo>> getSubscriberInfo(@Field("token") String token,@Field("sender_name") String sender_name);
 
     @FormUrlEncoded
     @POST("send/get_bot_blocks")
@@ -443,7 +443,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("send/broadcast")
-    Call<Broadcast> sendBroadcast(@Field("token") String token, @Field("subscriber") String subscriber
+    Single<Response<Broadcast>> sendBroadcast(@Field("token") String token, @Field("subscriber") String subscriber
             , @Field("page") String page, @Field("block") String block);
 
     @FormUrlEncoded

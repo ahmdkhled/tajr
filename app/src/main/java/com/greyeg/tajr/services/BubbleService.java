@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,7 +37,6 @@ import com.greyeg.tajr.adapters.BotBlocksAdapter;
 import com.greyeg.tajr.adapters.CartAdapter;
 import com.greyeg.tajr.adapters.ExtraDataAdapter2;
 import com.greyeg.tajr.adapters.ProductAdapter;
-import com.greyeg.tajr.adapters.ProductSpinnerAdapter;
 import com.greyeg.tajr.adapters.SubscribersAdapter;
 import com.greyeg.tajr.helper.EndlessRecyclerViewScrollListener;
 import com.greyeg.tajr.helper.ExtraDataHelper;
@@ -57,13 +54,13 @@ import com.greyeg.tajr.models.OrderItem;
 import com.greyeg.tajr.models.OrderPayload;
 import com.greyeg.tajr.models.Pages;
 import com.greyeg.tajr.models.ProductData;
-import com.greyeg.tajr.models.ProductForSpinner;
 import com.greyeg.tajr.models.Subscriber;
 import com.greyeg.tajr.models.SubscriberInfo;
 import com.greyeg.tajr.repository.BotBlocksRepo;
 import com.greyeg.tajr.repository.CitiesRepo;
 import com.greyeg.tajr.repository.OrdersRepo;
 import com.greyeg.tajr.repository.ProductsRepo;
+import com.greyeg.tajr.repository.SubscribersRepo;
 import com.greyeg.tajr.server.BaseClient;
 import com.rafakob.drawme.DrawMeButton;
 import com.squareup.picasso.Picasso;
@@ -71,7 +68,6 @@ import com.squareup.picasso.Picasso;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +78,6 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -246,11 +241,19 @@ public class BubbleService extends Service
         String token= SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN);
         Log.d("SUBSCRIPERR", "token: "+token);
         startFlasher();
-        BaseClient.getApiService()
+        SubscribersRepo
+                .getInstance()
                 .getSubscriberInfo(token,userName)
-                .enqueue(new Callback<SubscriberInfo>() {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<SubscriberInfo>>() {
                     @Override
-                    public void onResponse(Call<SubscriberInfo> call, Response<SubscriberInfo> response) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Response<SubscriberInfo> response) {
                         stopFlasher();
                         SubscriberInfo subscriberInfo=response.body();
                         if (response.isSuccessful()&&subscriberInfo!=null){
@@ -278,11 +281,15 @@ public class BubbleService extends Service
                     }
 
                     @Override
-                    public void onFailure(Call<SubscriberInfo> call, Throwable t) {
+                    public void onError(Throwable e) {
+                        Toast.makeText(BubbleService.this,
+                                R.string.error_getting_subscribers, Toast.LENGTH_SHORT).show();
                         stopFlasher();
-                        Log.d("SUBSCRIPERR", "onFailure: "+t.getMessage());
                     }
                 });
+
+
+
     }
 
     private void getBotBlocks(){
@@ -750,29 +757,35 @@ public class BubbleService extends Service
         setBroadCastLoading(View.VISIBLE);
         mWindowManager.removeView(botBlocksDialog);
         String token=SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN);
-        BaseClient.getApiService()
+        BotBlocksRepo
+                .getInstance()
                 .sendBroadcast(token, psid,page,blockId)
-                .enqueue(new Callback<Broadcast>() {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<Broadcast>>() {
                     @Override
-                    public void onResponse(Call<Broadcast> call, Response<Broadcast> response) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Response<Broadcast> response) {
                         Broadcast broadcast=response.body();
-                        if (broadcast!=null){
+                        if (response.isSuccessful()&&broadcast!=null){
                             Toast.makeText(BubbleService.this, broadcast.getData(), Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(BubbleService.this, "Error sending Broadcast ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BubbleService.this, R.string.Error_sending_broadcast, Toast.LENGTH_SHORT).show();
                         }
                         setBroadCastLoading(View.GONE);
-
                     }
 
                     @Override
-                    public void onFailure(Call<Broadcast> call, Throwable t) {
-                        Log.d("BROADCASTTT", "onFailure: "+t.getMessage());
-                        Toast.makeText(BubbleService.this, "Error sending Broadcast", Toast.LENGTH_SHORT).show();
+                    public void onError(Throwable e) {
+                        Toast.makeText(BubbleService.this, R.string.Error_sending_broadcast, Toast.LENGTH_SHORT).show();
                         setBroadCastLoading(View.GONE);
-
                     }
                 });
+
     }
 
     @Override

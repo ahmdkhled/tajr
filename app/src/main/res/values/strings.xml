@@ -284,6 +284,8 @@
     <string name="already_in_cart" >product is already in cart</string>
     <string name="choose_product_first">choose product first</string>
     <string name="failed_to_get_bot_blocks">failed to get Bot Blocks</string>
+    <string name="Error_sending_broadcast">Error sending Broadcast</string>
+    <string name="error_getting_subscribers">Error getting subscribers list</string>
     <string-array name="calc_dialog_errors">
         <item>Division by zero</item>
         <item>Out of bounds</item>
