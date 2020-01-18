@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -44,11 +45,16 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
 import com.greyeg.tajr.activities.BalanceActivity;
 import com.greyeg.tajr.activities.CartsActivity;
 import com.greyeg.tajr.activities.ChatActivity;
@@ -142,6 +148,7 @@ public class MainActivity extends AppCompatActivity
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -153,7 +160,7 @@ public class MainActivity extends AppCompatActivity
         mainActivity = this;
         toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        checkAppVersion();
         initDrawer();
         requestPermissions();
 
@@ -406,6 +413,39 @@ public class MainActivity extends AppCompatActivity
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    private void checkAppVersion(){
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
+        mFirebaseRemoteConfig
+                .fetchAndActivate()
+                .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        if (task.isSuccessful()){
+                            String latestAppVersion=mFirebaseRemoteConfig.getString("latest_app_version");
+                            try {
+                                latestAppVersion=latestAppVersion.replace(".","");
+                                int latestVersion=Integer.valueOf(latestAppVersion);
+                                int currentVersion=Integer.valueOf(BuildConfig.VERSION_NAME.replace(".",""));
+
+                                if (currentVersion<latestVersion){
+                                    Toast.makeText(MainActivity.this, "hey old version", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }catch (Exception e){
+                                Log.d("REMOTEECONFIGG","exception "+ e.getMessage());
+                            }
+
+                        }
+
+                    }
+                });
+
+    }
 
 
     private void initViews() {
