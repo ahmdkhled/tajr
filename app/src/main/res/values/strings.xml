@@ -286,6 +286,8 @@
     <string name="failed_to_get_bot_blocks">failed to get Bot Blocks</string>
     <string name="Error_sending_broadcast">Error sending Broadcast</string>
     <string name="error_getting_subscribers">Error getting subscribers list</string>
+    <string name="app_update_warning">there is a new version available , please update your version</string>
+    <string name="later">later</string>
     <string-array name="calc_dialog_errors">
         <item>Division by zero</item>
         <item>Out of bounds</item>

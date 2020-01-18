@@ -74,6 +74,7 @@ import com.greyeg.tajr.over.MissedCallOrderService;
 import com.greyeg.tajr.records.RecordsActivity;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
+import com.greyeg.tajr.view.dialogs.UpdateVersionDialog;
 import com.greyeg.tajr.view.kbv.KenBurnsView;
 
 
@@ -433,7 +434,8 @@ public class MainActivity extends AppCompatActivity
                                 int currentVersion=Integer.valueOf(BuildConfig.VERSION_NAME.replace(".",""));
 
                                 if (currentVersion<latestVersion){
-                                    Toast.makeText(MainActivity.this, "hey old version", Toast.LENGTH_SHORT).show();
+                                    UpdateVersionDialog updateVersionDialog=new UpdateVersionDialog();
+                                    updateVersionDialog.show(getSupportFragmentManager(),"");
                                 }
 
                             }catch (Exception e){
