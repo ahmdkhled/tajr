@@ -7,11 +7,9 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -42,19 +40,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.crashlytics.android.Crashlytics;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
 import com.greyeg.tajr.activities.BalanceActivity;
 import com.greyeg.tajr.activities.CartsActivity;
 import com.greyeg.tajr.activities.ChatActivity;
@@ -65,18 +68,14 @@ import com.greyeg.tajr.adapters.DrawerAdapter;
 import com.greyeg.tajr.helper.AccessibilityManager;
 import com.greyeg.tajr.helper.ScreenHelper;
 import com.greyeg.tajr.helper.SharedHelper;
-
 import com.greyeg.tajr.helper.font.RobotoTextView;
-import com.greyeg.tajr.order.CurrentOrderData;
 import com.greyeg.tajr.order.NewOrderActivity;
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
-import com.greyeg.tajr.over.MissedCallOrderService;
 import com.greyeg.tajr.records.RecordsActivity;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 import com.greyeg.tajr.view.dialogs.UpdateVersionDialog;
 import com.greyeg.tajr.view.kbv.KenBurnsView;
-
+import com.greyeg.tajr.viewmodels.MainActivityVm;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -88,21 +87,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.greyeg.tajr.activities.LoginActivity.idListString;
@@ -149,7 +135,7 @@ public class MainActivity extends AppCompatActivity
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    MainActivityVm mainActivityVm;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -158,6 +144,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         crashlytics=Crashlytics.getInstance();
+        mainActivityVm= ViewModelProviders.of(this).get(MainActivityVm.class);
         mainActivity = this;
         toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -415,35 +402,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void checkAppVersion(){
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
-                .build();
-        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
-        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
-        mFirebaseRemoteConfig
-                .fetchAndActivate()
-                .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
+
+        mainActivityVm.getIsLatestVersion()
+                .observe(this, new Observer<Boolean>() {
                     @Override
-                    public void onComplete(@NonNull Task<Boolean> task) {
-                        if (task.isSuccessful()){
-                            String latestAppVersion=mFirebaseRemoteConfig.getString("latest_app_version");
-                            try {
-                                latestAppVersion=latestAppVersion.replace(".","");
-                                int latestVersion=Integer.valueOf(latestAppVersion);
-                                int currentVersion=Integer.valueOf(BuildConfig.VERSION_NAME.replace(".",""));
-
-                                if (currentVersion<latestVersion){
-                                    UpdateVersionDialog updateVersionDialog=new UpdateVersionDialog();
-                                    updateVersionDialog.show(getSupportFragmentManager(),"");
-                                }
-
-                            }catch (Exception e){
-                                Log.d("REMOTEECONFIGG","exception "+ e.getMessage());
+                    public void onChanged(Boolean aBoolean) {
+                        if (aBoolean!=null&&!aBoolean){
+                            if (getSupportFragmentManager().findFragmentByTag("Update_version_dialog")==null){
+                                UpdateVersionDialog updateVersionDialog=new UpdateVersionDialog();
+                                updateVersionDialog.show(getSupportFragmentManager(),"Update_version_dialog");
                             }
-
                         }
-
                     }
                 });
 
