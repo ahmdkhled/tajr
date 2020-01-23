@@ -1030,11 +1030,12 @@ public class CurrentOrderFragment extends Fragment
     }
 
     private void calculateOrderTotal(){
-        int discountValue;
+        double discountValue;
         try {
-             discountValue=Integer.valueOf(discount.getText().toString());
+             discountValue=Double.valueOf(discount.getText().toString());
         }catch (Exception e){
             discountValue=0;
+            Log.d("TOTALLLLLLL", "calculateOrderTotal: "+e.getMessage());
         }
 
         int shipping=Integer.valueOf(shipping_cost.getText().toString());
@@ -1058,7 +1059,7 @@ public class CurrentOrderFragment extends Fragment
             orderTotal-=discountValue;
             order_total_cost.setText(String.valueOf(orderTotal));
 
-
+        Log.d("TOTALLLLLLL",""+orderTotal);
 
 
 
