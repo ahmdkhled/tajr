@@ -28,6 +28,7 @@ import com.greyeg.tajr.order.models.CurrentOrderResponse;
 import com.greyeg.tajr.over.MissedCallNoOrderService;
 import com.greyeg.tajr.over.MissedCallOrderService;
 import com.greyeg.tajr.repository.CallTimeRepo;
+import com.greyeg.tajr.repository.PhoneRepo;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 
@@ -86,27 +87,57 @@ public class CallsReceiver extends BroadcastReceiver {
                  String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
                  Log.d("CALLLLLLL","incoming number "+incomingNumber);
                  if (incomingNumber==null)return;
-                         Toast.makeText(context, "incoming call  " + incomingNumber, Toast.LENGTH_SHORT).show();
-                 Api api = BaseClient.getBaseClient().create(Api.class);
-                 api.getPhoneData2(
-                         SharedHelper.getKey(context, LoginActivity.TOKEN),
-                         SharedHelper.getKey(context, LoginActivity.USER_ID),
-                         incomingNumber
-                 ).enqueue(new Callback<CurrentOrderResponse>() {
-                     @Override
-                     public void onResponse(Call<CurrentOrderResponse> call, Response<CurrentOrderResponse> response) {
-                         if (response.body()!=null&&response.body().getCode().equals("1200")) {
-                             CurrentOrderData.getInstance().setMissedCallOrderResponse(response.body());
-                             MissedCallOrderService.showFloatingMenu(context);
-                         }
+                         //Toast.makeText(context, "incoming call  " + incomingNumber, Toast.LENGTH_SHORT).show();
+//                 Api api = BaseClient.getBaseClient().create(Api.class);
+//                 api.getPhoneData2(
+//                         SharedHelper.getKey(context, LoginActivity.TOKEN),
+//                         SharedHelper.getKey(context, LoginActivity.USER_ID),
+//                         incomingNumber
+//                 ).enqueue(new Callback<CurrentOrderResponse>() {
+//                     @Override
+//                     public void onResponse(Call<CurrentOrderResponse> call, Response<CurrentOrderResponse> response) {
+//                         if (response.body()!=null&&response.body().getCode().equals("1200")) {
+//                             CurrentOrderData.getInstance().setMissedCallOrderResponse(response.body());
+//                             MissedCallOrderService.showFloatingMenu(context);
+//                         }
+//
+//                     }
+//
+//                     @Override
+//                     public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
+//                         Log.d("eslamfaisalmissedcall", t.getMessage());
+//                     }
+//                 });
 
-                     }
+                 PhoneRepo.getInstance()
+                         .getPhoneData(SharedHelper.getKey(context, LoginActivity.TOKEN),
+                                 SharedHelper.getKey(context, LoginActivity.USER_ID),
+                                 incomingNumber)
+                         .subscribeOn(Schedulers.io())
+                         .observeOn(AndroidSchedulers.mainThread())
+                         .subscribe(new SingleObserver<Response<CurrentOrderResponse>>() {
+                             @Override
+                             public void onSubscribe(Disposable d) {
 
-                     @Override
-                     public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
-                         Log.d("eslamfaisalmissedcall", t.getMessage());
-                     }
-                 });
+                             }
+
+                             @Override
+                             public void onSuccess(Response<CurrentOrderResponse> response) {
+                                 CurrentOrderResponse currentOrderResponse=response.body();
+                                 if (response.isSuccessful()&&currentOrderResponse!=null
+                                 &&currentOrderResponse.getCode().equals("1200")){
+                                     CurrentOrderData.getInstance().setMissedCallOrderResponse(response.body());
+                                     MissedCallOrderService.showFloatingMenu(context);
+                                 }
+                             }
+
+                             @Override
+                             public void onError(Throwable e) {
+                                //todo handle error
+                             }
+                         });
+
+
              }
 
         }
