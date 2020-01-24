@@ -60,38 +60,62 @@ public class CallsReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+        Log.d("CALLLLLLL", "onReceive: ");
         String state=intent.getStringExtra(TelephonyManager.EXTRA_STATE);
         String number=intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+        String action=intent.getAction();
 
         String orderPhone=null;
         if (CurrentOrderData.getInstance().getCurrentOrderResponse()!=null)
              orderPhone =CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getPhone1();
 
-        //Log.d("CALLLLLLL", "number : "+number );
         Log.d("CALLLLLLL", "state : "+state );
         Log.d("CALLLLLLL", "action : "+intent.getAction() );
-        if (number==null){
-            if (intent.getAction()!=null&&intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL))
-                outgoing=1;
-            Log.d("CALLLLLLL", "inside outgoing : "+outgoing);
+        Log.d("CALLLLLLL", "number : "+intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER) );
 
-            return;
+         if (action!=null&&action.equals(Intent.ACTION_NEW_OUTGOING_CALL)){
+            Log.d("CALLLLLLL", "outgoing call ya man: ");
+             getCallDuration(context,number,orderPhone);
+
+
+        }else {
+             Log.d("CALLLLLLL", "incoming call ya man call ya man: ");
+             if (state!=null&&state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+
+
+                 String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+                 Log.d("CALLLLLLL","incoming number "+incomingNumber);
+                 if (incomingNumber==null)return;
+                         Toast.makeText(context, "incoming call  " + incomingNumber, Toast.LENGTH_SHORT).show();
+                 Api api = BaseClient.getBaseClient().create(Api.class);
+                 api.getPhoneData2(
+                         SharedHelper.getKey(context, LoginActivity.TOKEN),
+                         SharedHelper.getKey(context, LoginActivity.USER_ID),
+                         incomingNumber
+                 ).enqueue(new Callback<CurrentOrderResponse>() {
+                     @Override
+                     public void onResponse(Call<CurrentOrderResponse> call, Response<CurrentOrderResponse> response) {
+                         if (response.body()!=null&&response.body().getCode().equals("1200")) {
+                             CurrentOrderData.getInstance().setMissedCallOrderResponse(response.body());
+                             MissedCallOrderService.showFloatingMenu(context);
+                         }
+
+                     }
+
+                     @Override
+                     public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
+                         Log.d("eslamfaisalmissedcall", t.getMessage());
+                     }
+                 });
+             }
+
         }
 
-        Log.d("CALLLLLLL", "outgoing : "+outgoing);
-        Log.d("CALLLLLLL", "------------------------ : ");
-
-
-        if (state!=null&& state.equals(TelephonyManager.EXTRA_STATE_IDLE)&&outgoing==1){
-            getCallDuration(context,number,orderPhone);
-        }
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 //        Toast.makeText(context, "تم بدء مكالمة", Toast.LENGTH_SHORT).show();
         boolean switchCheckOn = pref.getBoolean("switchOn", true);
         if (switchCheckOn) try {
-
-
             if (intent.getAction()!=null&&intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
                 savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
                 final Intent intent2 = new Intent(context, EmptyCallActivity.class);
@@ -103,95 +127,15 @@ public class CallsReceiver extends BroadcastReceiver {
                     }
                 }, 2000);
 
-            } else {
             }
-
             System.out.println("Receiver Start");
-
-            Bundle extras = intent.getExtras();
-
-
-
-            if (state!=null&&state.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
-
-                String incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-                Toast.makeText(context, "incoming call  " + incomingNumber, Toast.LENGTH_SHORT).show();
-                Api api = BaseClient.getBaseClient().create(Api.class);
-                api.getPhoneData2(
-                        SharedHelper.getKey(context, LoginActivity.TOKEN),
-                        SharedHelper.getKey(context, LoginActivity.USER_ID),
-                        incomingNumber
-                ).enqueue(new Callback<CurrentOrderResponse>() {
-                    @Override
-                    public void onResponse(Call<CurrentOrderResponse> call, Response<CurrentOrderResponse> response) {
-                        Log.d("eslamfaisalmissedcall", response.body().getCode()+" onResponse: "+response.toString());
-//                        if (response.body().getCode().equals("1401")) {
-//                            Intent startHoverIntent = new Intent(context, MissedCallNoOrderService.class);
-//                            context.startService(startHoverIntent);
-//                        } else
-//
-                        if (response.body().getCode().equals("1200")) {
-                            CurrentOrderData.getInstance().setMissedCallOrderResponse(response.body());
-                            MissedCallOrderService.showFloatingMenu(context);
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
-
-                    }
-                });
-
-                /*int j=pref.getInt("numOfCalls",0);
-                pref.edit().putInt("numOfCalls",++j).apply();
-                Log.d(TAG, "onReceive: num of calls "+ pref.getInt("numOfCalls",0));*/
-            } else if (state!=null&&state.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)/*&& pref.getInt("numOfCalls",1)==1*/) {
-
-                int j = pref.getInt("numOfCalls", 0);
-                pref.edit().putInt("numOfCalls", ++j).apply();
-
-                if (CurrentOrderData.getInstance().getCurrentOrderResponse()!=null)
-                phoneNumber = CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getPhone1();
-
-                if (pref.getInt("numOfCalls", 1) == 1) {
-                    Intent reivToServ = new Intent(context, RecorderService.class);
-                    reivToServ.putExtra("number", phoneNumber);
-                    context.startService(reivToServ);
-                    inCall = true;
-                    //name=new CommonMethods().getContactName(phoneNumber,context);
-                }
-
-            } else if (state!=null&&state.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
-
-                int k = pref.getInt("numOfCalls", 1);
-                pref.edit().putInt("numOfCalls", --k).apply();
-                int l = pref.getInt("numOfCalls", 0);
-                recordStarted = pref.getBoolean("recordStarted", false);
-                context.stopService(new Intent(context, RecorderService.class));
-                inCall = false;
-
-                pref.edit().putBoolean("recordStarted", false).apply();
-                int serialNumber = pref.getInt("serialNumData", 1);
-
-                //recordStarted=true;
-                pref.edit().putInt("serialNumData", ++serialNumber).apply();
-                pref.edit().putBoolean("recordStarted", true).apply();
-
-
-                if (currentCallListener != null) {
-                    currentCallListener.callEnded(serialNumber, phoneNumber);
-                }
-
-
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
             //todo cache call
             Log.d("CALLLLLLL", e.getMessage());
-
         }
+        Log.d("CALLLLLLL", "________________________________________________: ");
     }
 
 
