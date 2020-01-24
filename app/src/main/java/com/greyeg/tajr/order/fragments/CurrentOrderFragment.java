@@ -1114,7 +1114,7 @@ public class CurrentOrderFragment extends Fragment
 
     // animation for show and hide fields labels
     private void runAnimation(int id1, int id2) {
-
+        if (!(mainView.findViewById(id1) instanceof TextView))return;
         TextView tv = mainView.findViewById(id1);
         FrameLayout bg = mainView.findViewById(id2);
 
