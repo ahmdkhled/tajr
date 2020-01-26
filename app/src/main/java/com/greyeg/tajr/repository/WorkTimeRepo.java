@@ -2,6 +2,7 @@ package com.greyeg.tajr.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.crashlytics.android.Crashlytics;
 import com.greyeg.tajr.models.MainResponse;
 import com.greyeg.tajr.models.UserTimePayload;
 import com.greyeg.tajr.models.UserWorkTimeResponse;
@@ -52,6 +53,8 @@ public class WorkTimeRepo {
                     public void onFailure(Call<UserWorkTimeResponse> call, Throwable t) {
                         isWorkTimeSending.setValue(false);
                         workTimeSendingError.setValue(t.getMessage());
+                        Crashlytics.logException(t);
+
 
                     }
                 });
