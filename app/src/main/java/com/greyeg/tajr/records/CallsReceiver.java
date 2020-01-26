@@ -171,7 +171,7 @@ public class CallsReceiver extends BroadcastReceiver {
 
 
     private void getCallDuration(Context context,String number,String orderPhone){
-        if (!number.equals(orderPhone))return;
+        if (number==null||!number.equals(orderPhone))return;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
