@@ -54,11 +54,11 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     if (toast.getView()==null||!toast.getView().isShown()){
                         toast.show();
                     }
-                    //TimeCalculator.getInstance(getApplicationContext()).stopTimer();
+                    TimeCalculator.getInstance(getApplicationContext()).stopTimer();
                     return;
                 }
                 Log.d("TIMERCALCC", "timer start ");
-                //TimeCalculator.getInstance(getApplicationContext()).startTimer();
+                TimeCalculator.getInstance(getApplicationContext()).startTimer();
                 Log.d(TAG, "ttttttttttt: "+SharedHelper.getBooleanValue(getApplicationContext(), SettingsActivity.BUBBLE_SETTING));
 
                 if (!SharedHelper.getBooleanValue(getApplicationContext(), SettingsActivity.BUBBLE_SETTING))return;
@@ -87,9 +87,9 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 Log.d("TIMERCALCCCC", "timer stop ");
                 //Toast.makeText(this, "timer stop", Toast.LENGTH_SHORT).show();
 
-                //TimeCalculator.getInstance(getApplicationContext()).stopTimer();
+                TimeCalculator.getInstance(getApplicationContext()).stopTimer();
                 if (NetworkUtil.getConnectivityStatus(getApplicationContext())!=NetworkUtil.TYPE_NOT_CONNECTED){
-                    //sendWorkTime(TimeCalculator.getInstance(getApplicationContext()).getWorkTime());
+                    sendWorkTime(TimeCalculator.getInstance(getApplicationContext()).getWorkTime());
                 }
 
             }
