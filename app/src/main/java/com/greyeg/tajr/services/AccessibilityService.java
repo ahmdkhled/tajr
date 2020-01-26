@@ -178,12 +178,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
             AccessibilityNodeInfo curent = root
                     .getChild(1);
             for (int i = 0; i < curent.getChildCount(); i++) {
-                Log.d(TAG, curent.getChild(i).getClassName()
-                        + " " + curent.getText() + "  "
-                        + " " + curent.getChildCount());
 
-
-                Log.d(TAG, "child : "+curent.getChild(0).getText());
                 AccessibilityNodeInfo username=curent.getChild(0);
                 if (username.getText()!=null)
                     return username.getText().toString();
