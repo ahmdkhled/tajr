@@ -368,7 +368,9 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     }
 
     private void saveWorkTime() {
-        long currentWorkTime = getNotSavedWrokTime() + Integer.valueOf(timerTv.getTag().toString());
+        long currentWorkTime = Long.valueOf(timerTv.getTag().toString());
+        Log.d("userWorkTime", "time before end: " + currentWorkTime);
+
         BaseClient.getBaseClient().create(Api.class).userWorkTime(SharedHelper.getKey(this, LoginActivity.TOKEN),
                 String.valueOf(currentWorkTime),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),"APP")
