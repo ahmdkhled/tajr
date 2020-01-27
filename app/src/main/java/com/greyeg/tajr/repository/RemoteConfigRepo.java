@@ -1,5 +1,6 @@
 package com.greyeg.tajr.repository;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -26,10 +27,9 @@ public class RemoteConfigRepo {
     }
 
     private RemoteConfigRepo() {
-
     }
 
-    public MutableLiveData<Boolean> getRemoteConfigValue() {
+    public MutableLiveData<Boolean> getRemoteConfigValue(Context context) {
         isLatestVersion=new MutableLiveData<>();
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -56,7 +56,7 @@ public class RemoteConfigRepo {
                                 }
 
                             }catch (Exception e){
-                                error.setValue(Resources.getSystem().getString(R.string.server_error));
+                                error.setValue(context.getString(R.string.server_error));
 
                                 Log.d("REMOTEECONFIGG","exception "+ e.getMessage());
                                 Crashlytics.logException(e);
@@ -64,7 +64,7 @@ public class RemoteConfigRepo {
                             }
                         }else {
                             Crashlytics.logException(new Exception("Remoteconfig task was not successfull"));
-                            error.setValue(Resources.getSystem().getString(R.string.server_error));
+                            error.setValue(context.getString(R.string.server_error));
                         }
 
                     }
