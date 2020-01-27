@@ -4,6 +4,7 @@ import android.content.res.Resources;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.crashlytics.android.Crashlytics;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.models.MainResponse;
 import com.greyeg.tajr.models.UserTimePayload;
@@ -38,10 +39,15 @@ public class NewOrderActivityVM {
                     @Override
                     public void onSuccess(Response<MainResponse> response) {
                         MainResponse mainResponse=response.body();
-                        if (response.isSuccessful()&&mainResponse!=null)
+                        if (response.isSuccessful()&&mainResponse!=null){
                             sendUserTime.setValue(mainResponse);
-                        else
+
+                        }
+                        else{
                             userTimeSendingError.setValue(Resources.getSystem().getString(R.string.server_error));
+                            Crashlytics.logException(new Throwable("Error parsing Work Time Response"));
+
+                        }
                         isUserTimeSending.setValue(false);
 
                     }
@@ -50,6 +56,8 @@ public class NewOrderActivityVM {
                     public void onError(Throwable e) {
                         userTimeSendingError.setValue(Resources.getSystem().getString(R.string.server_error));
                         isUserTimeSending.setValue(false);
+                        Crashlytics.logException(e);
+
                     }
                 });
         return sendUserTime;
