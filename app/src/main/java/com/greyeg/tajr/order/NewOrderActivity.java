@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
@@ -30,9 +31,12 @@ import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.calc.CalcDialog;
 import com.greyeg.tajr.helper.CurrentCallListener;
 import com.greyeg.tajr.helper.SharedHelper;
+import com.greyeg.tajr.models.Activity;
 import com.greyeg.tajr.models.LastCallDetails;
+import com.greyeg.tajr.models.MainResponse;
 import com.greyeg.tajr.models.UploadPhoneResponse;
 import com.greyeg.tajr.models.UploadVoiceResponse;
+import com.greyeg.tajr.models.UserTimePayload;
 import com.greyeg.tajr.models.UserWorkTimeResponse;
 import com.greyeg.tajr.order.fragments.CurrentOrderFragment;
 import com.greyeg.tajr.order.fragments.MissedCallFragment;
@@ -40,12 +44,15 @@ import com.greyeg.tajr.records.CallDetails;
 import com.greyeg.tajr.records.CallsReceiver;
 import com.greyeg.tajr.records.CommonMethods;
 import com.greyeg.tajr.records.DatabaseManager;
+import com.greyeg.tajr.repository.WorkTimeRepo;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
+import com.greyeg.tajr.viewmodels.NewOrderActivityVM;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -58,9 +65,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -85,6 +98,8 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     CurrentOrderFragment currentOrderFragment;
     private Menu callControllerMenu;
     private MenuItem micMode;
+    private NewOrderActivityVM newOrderActivityVM;
+    private static long startTime;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -126,6 +141,7 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
         ButterKnife.bind(this);
         CallsReceiver.setCurrentCallListener(this);
         databaseManager = new DatabaseManager(this);
+        newOrderActivityVM= ViewModelProviders.of(this).get(NewOrderActivityVM.class);
         openRecords();
         initToolBar();
         initCallController();
@@ -135,8 +151,9 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
 
         showFragment(currentOrderFragment,false);
 
+        startTime=newOrderActivityVM.getStartTime();
 
-        Log.d("WORKTIMEEEEEE", "onCreate: ");
+        Log.d("WORKTIMEEEEEE", "onCreate: "+startTime);
 
 
     }
@@ -370,39 +387,59 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     private void saveWorkTime() {
         long currentWorkTime = Long.valueOf(timerTv.getTag().toString());
         Log.d("userWorkTime", "time before end: " + currentWorkTime);
+        String token=SharedHelper.getKey(this, LoginActivity.TOKEN);
 
-        BaseClient.getBaseClient().create(Api.class).userWorkTime(SharedHelper.getKey(this, LoginActivity.TOKEN),
-                String.valueOf(currentWorkTime),
-                CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),"APP")
-                .enqueue(new Callback<UserWorkTimeResponse>() {
+        Activity activity=new Activity(currentWorkTime,startTime,"APP");
+        ArrayList<Activity> activityList=new ArrayList<>();
+        activityList.add(activity);
+        UserTimePayload userTimePayload=new UserTimePayload(token,activityList);
+
+
+        WorkTimeRepo.getInstance()
+                .setUserTime(userTimePayload)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<MainResponse>>() {
                     @Override
-                    public void onResponse(Call<UserWorkTimeResponse> call, Response<UserWorkTimeResponse> response) {
-                        if (response.body() != null) {
+                    public void onSubscribe(Disposable d) {
 
-                            Log.d("userWorkTime", "onResponse: " + response.body().getData());
+                    }
+
+                    @Override
+                    public void onSuccess(Response<MainResponse> response) {
+                        MainResponse mainResponse=response.body();
+                        if (response.isSuccessful()&&mainResponse!=null){
                             Log.d("userWorkTime", "time after end: " + currentWorkTime);
                             setPldTimeWorkZero();
+
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<UserWorkTimeResponse> call, Throwable t) {
+                    public void onError(Throwable e) {
 
-                        Log.d("userWorkTime", "onResponse: " + t.getMessage());
                     }
                 });
+
+
+
+
+
+
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        saveWorkTime();
+
         Log.d("WORKTIMEEEEEE", "onDestroy: ");
         try {
             cancelNotification();
             closeRecords();
-            saveWorkTime();
         } catch (Exception e) {
-            Log.d(TAG, "onDestroy: ");
+            Log.d("userWorkTime", "onDestroy: "+e.getMessage());
         }
 
     }

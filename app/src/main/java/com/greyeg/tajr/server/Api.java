@@ -101,9 +101,10 @@ public interface Api {
                                                        @Field("action") String action);
 
 
-    @FormUrlEncoded
     @POST("send/set_user_time")
-    Single<Response<MainResponse>> set_user_time(UserTimePayload userTimePayload);
+    Single<Response<MainResponse>> set_user_time(@Body UserTimePayload userTimePayload);
+
+
 
     @Multipart
     @POST("send/upload_voice_notes")

@@ -6,6 +6,11 @@ public class Activity {
     private long stamp;
     private String type;
 
+    public Activity(long value, long stamp, String type) {
+        this.value = value;
+        this.stamp = stamp;
+        this.type = type;
+    }
 
     public long getValue() {
         return value;

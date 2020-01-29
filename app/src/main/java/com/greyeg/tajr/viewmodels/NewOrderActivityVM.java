@@ -1,7 +1,11 @@
 package com.greyeg.tajr.viewmodels;
 
+import android.app.Application;
 import android.content.res.Resources;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.greyeg.tajr.R;
@@ -10,19 +14,27 @@ import com.greyeg.tajr.models.UserTimePayload;
 import com.greyeg.tajr.models.UserWorkTimeResponse;
 import com.greyeg.tajr.repository.WorkTimeRepo;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-public class NewOrderActivityVM {
+public class NewOrderActivityVM extends AndroidViewModel {
 
-    private MutableLiveData<MainResponse> sendUserTime;
-    private MutableLiveData<Boolean> isUserTimeSending;
-    private MutableLiveData<String> userTimeSendingError;
+    private MutableLiveData<MainResponse> sendUserTime=new MutableLiveData<>();
+    private MutableLiveData<Boolean> isUserTimeSending=new MutableLiveData<>();
+    private MutableLiveData<String> userTimeSendingError=new MutableLiveData<>();
+    private long startTime=-1;
+
+    public NewOrderActivityVM(@NonNull Application application) {
+        super(application);
+    }
 
     public MutableLiveData<MainResponse> SendUserTime(UserTimePayload userTimePayload) {
+
         sendUserTime=new MutableLiveData<>();
         isUserTimeSending.setValue(true);
         WorkTimeRepo.getInstance()
@@ -32,22 +44,32 @@ public class NewOrderActivityVM {
                 .subscribe(new SingleObserver<Response<MainResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        Log.d("userWorkTime", "onSubscribe: ");
                     }
 
                     @Override
                     public void onSuccess(Response<MainResponse> response) {
+                        Log.d("userWorkTime", "onSuccess: ");
+
                         MainResponse mainResponse=response.body();
-                        if (response.isSuccessful()&&mainResponse!=null)
+                        if (response.isSuccessful()&&mainResponse!=null){
+                            Log.d("userWorkTime", "setvalue: ");
+
                             sendUserTime.setValue(mainResponse);
-                        else
+                        }
+
+                        else{
                             userTimeSendingError.setValue(Resources.getSystem().getString(R.string.server_error));
+                            Log.d("userWorkTime", "errorrr: ");
+
+                        }
                         isUserTimeSending.setValue(false);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d("userWorkTime",e.getMessage());
                         userTimeSendingError.setValue(Resources.getSystem().getString(R.string.server_error));
                         isUserTimeSending.setValue(false);
                     }
@@ -61,5 +83,13 @@ public class NewOrderActivityVM {
 
     public MutableLiveData<String> getWorkTimeSendingError() {
         return WorkTimeRepo.getInstance().getWorkTimeSendingError();
+    }
+
+    public long getStartTime() {
+        return startTime==-1? startTime=TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()):startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 }
