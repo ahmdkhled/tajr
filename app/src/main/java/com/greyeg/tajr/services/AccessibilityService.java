@@ -20,11 +20,17 @@ import com.greyeg.tajr.helper.NetworkUtil;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.TimeCalculator;
 import com.greyeg.tajr.helper.UserNameEvent;
+import com.greyeg.tajr.models.Activity;
+import com.greyeg.tajr.models.MainResponse;
+import com.greyeg.tajr.models.UserTimePayload;
 import com.greyeg.tajr.models.UserWorkTimeResponse;
 import com.greyeg.tajr.repository.WorkTimeRepo;
 import com.greyeg.tajr.viewmodels.NewOrderActivityVM;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,10 +42,13 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     public static final String TAG="ACCESSIBLILTYYY";
     private static String lastOpenedApp="";
+    private static long startTime=-1;
     Toast toast;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+
+        if (!SharedHelper.getBooleanValue(getApplicationContext(), SettingsActivity.BUBBLE_SETTING))return;
 
         if (accessibilityEvent!=null&&
                 accessibilityEvent.getPackageName()!=null&&
@@ -57,11 +66,12 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     TimeCalculator.getInstance(getApplicationContext()).stopTimer();
                     return;
                 }
-                Log.d("TIMERCALCC", "timer start ");
                 TimeCalculator.getInstance(getApplicationContext()).startTimer();
-                Log.d(TAG, "ttttttttttt: "+SharedHelper.getBooleanValue(getApplicationContext(), SettingsActivity.BUBBLE_SETTING));
+                if (startTime==-1)
+                startTime= TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                Log.d("TIMERCALCCCCx", "timer start "+startTime);
 
-                if (!SharedHelper.getBooleanValue(getApplicationContext(), SettingsActivity.BUBBLE_SETTING))return;
+
 
             checkOverlayPermission();
             String userName=getUserName();
@@ -84,7 +94,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                             accessibilityEvent.getClassName().equals("android.widget.LinearLayout")    )
                     &&accessibilityEvent.getPackageName().equals("com.greyeg.tajr"))  ){
 
-                Log.d("TIMERCALCCCC", "timer stop ");
+                Log.d("TIMERCALCCCCx", "timer stop ");
                 //Toast.makeText(this, "timer stop", Toast.LENGTH_SHORT).show();
 
                 TimeCalculator.getInstance(getApplicationContext()).stopTimer();
@@ -106,27 +116,39 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         Log.d("TIMERCALCCCC",">>>>>>>>> "+lastOpenedApp);
         }
 
-    void sendWorkTime(long activity){
+    void sendWorkTime(long value){
 
         String token= SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN);
+
+
+        Activity activity=new Activity(value,startTime,"PM");
+        ArrayList<Activity> activityList=new ArrayList<>();
+        activityList.add(activity);
+        UserTimePayload userTimePayload=new UserTimePayload(token,activityList);
+
         WorkTimeRepo.getInstance()
-                .sendWorkTime2(token,String.valueOf(activity),null,"PM")
+                .setUserTime(userTimePayload)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Response<UserWorkTimeResponse>>() {
+                .subscribe(new SingleObserver<Response<MainResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d("WORKKTIMMEE", "onSubscribe: ");
+
                     }
 
                     @Override
-                    public void onSuccess(Response<UserWorkTimeResponse> userWorkTimeResponse) {
-                        Log.d("WORKKTIMMEE", "onSuccess: "+userWorkTimeResponse.body().getData());
+                    public void onSuccess(Response<MainResponse> response) {
+                        MainResponse mainResponse=response.body();
+                        if (response.isSuccessful()&&mainResponse!=null){
+                            Log.d("userWorkTime", "time after end: " + value +" time stamp");
+                            TimeCalculator.getInstance(getApplicationContext()).clearWorkTime();
+                            startTime=-1;
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("WORKKTIMMEE", "onError: "+e.getMessage());
+
                     }
                 });
 

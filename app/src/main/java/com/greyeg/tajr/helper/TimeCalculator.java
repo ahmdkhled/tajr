@@ -68,5 +68,8 @@ public class TimeCalculator {
     public long getWorkTime(){
         return SharedHelper.getLongValue(context,TIME_KEY);
     }
+    public void clearWorkTime(){
+         SharedHelper.putKey(context,TIME_KEY,0);
+    }
 
 }
