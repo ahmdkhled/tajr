@@ -66,10 +66,11 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     TimeCalculator.getInstance(getApplicationContext()).stopTimer();
                     return;
                 }
-                TimeCalculator.getInstance(getApplicationContext()).startTimer();
-                if (startTime==-1)
-                startTime= TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-                Log.d("TIMERCALCCCCx", "timer start "+startTime);
+                if (startTime==-1) {
+                    startTime= TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+                }
+                TimeCalculator.getInstance(getApplicationContext()).startTimer(new Activity(-1,startTime,"PM"));
+                Log.d("TIMERCALCCzz", "timer start "+startTime);
 
 
 
@@ -99,7 +100,11 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
                 TimeCalculator.getInstance(getApplicationContext()).stopTimer();
                 if (NetworkUtil.getConnectivityStatus(getApplicationContext())!=NetworkUtil.TYPE_NOT_CONNECTED){
-                    sendWorkTime(TimeCalculator.getInstance(getApplicationContext()).getWorkTime());
+                    for (Activity activity:TimeCalculator.getInstance(getApplicationContext()).getWorkTimeActivity()){
+                        Log.d("TIMERCALCCzz", "send activity : "+activity);
+                    }
+                    TimeCalculator.getInstance(getApplicationContext()).clear();
+                    //sendWorkTime(TimeCalculator.getInstance().getPmWorkTime());
                 }
 
             }
@@ -141,7 +146,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                         MainResponse mainResponse=response.body();
                         if (response.isSuccessful()&&mainResponse!=null){
                             Log.d("userWorkTime", "time after end: " + value +" time stamp");
-                            TimeCalculator.getInstance(getApplicationContext()).clearWorkTime();
+                            TimeCalculator.getInstance(getApplicationContext()).clearPmWorkTime();
                             startTime=-1;
                         }
                     }
