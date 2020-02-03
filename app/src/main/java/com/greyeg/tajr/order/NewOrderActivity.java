@@ -30,7 +30,9 @@ import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.calc.CalcDialog;
 import com.greyeg.tajr.helper.CurrentCallListener;
+import com.greyeg.tajr.helper.NetworkUtil;
 import com.greyeg.tajr.helper.SharedHelper;
+import com.greyeg.tajr.helper.TimeCalculator;
 import com.greyeg.tajr.models.Activity;
 import com.greyeg.tajr.models.LastCallDetails;
 import com.greyeg.tajr.models.MainResponse;
@@ -217,6 +219,9 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
                     timerTv.setText(getDurationBreakdown(count * 1000));
                 });
                 timerTv.setTag(count);
+                Log.d("taskkkkk", "run: "+count);
+                TimeCalculator.getInstance(getApplicationContext()).updateActivity(new Activity(count,startTime,"APP"));
+
                 saveWorkedTime();
             }
         }, 0, 1000);
@@ -251,7 +256,7 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     }
 
     public static void finishWork(){
-
+        finishWork();
     }
 
 
@@ -366,11 +371,13 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     }
 
     private void saveWorkedTime() {
-        SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(this);
-        long oldWork = pref1.getLong("timeWork", 0);
-        long newWorkedTime = oldWork + 1;
-        Log.d("saveWorkedTime", "saveWorkedTime: " + newWorkedTime);
-        pref1.edit().putLong("timeWork", newWorkedTime).apply();
+
+//        SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(this);
+//        long oldWork = pref1.getLong("timeWork", 0);
+//        long newWorkedTime = oldWork + 1;
+//        Log.d("saveWorkedTime", "saveWorkedTime: " + newWorkedTime);
+//        pref1.edit().putLong("timeWork", newWorkedTime).apply();
+
     }
 
     private long getNotSavedWrokTime() {
@@ -387,13 +394,22 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     private void saveWorkTime() {
         long currentWorkTime = Long.valueOf(timerTv.getTag().toString());
         Log.d("userWorkTime", "time before end: " + currentWorkTime);
+
+        if (!NetworkUtil.isConnected(this)){
+            TimeCalculator.getInstance(this).setStatus(TimeCalculator.APP,TimeCalculator.FAILED_TO_UPLOAD);
+            return;
+
+        }
+
+        TimeCalculator.getInstance(this).setStatus(TimeCalculator.APP,TimeCalculator.UPLOADING);
         String token=SharedHelper.getKey(this, LoginActivity.TOKEN);
-
-        Activity activity=new Activity(currentWorkTime,startTime,"APP");
-        ArrayList<Activity> activityList=new ArrayList<>();
-        activityList.add(activity);
+        ArrayList<Activity>activityList=TimeCalculator.getInstance(this).getIdleWorkTime();
         UserTimePayload userTimePayload=new UserTimePayload(token,activityList);
+        Log.d("TIMERCALCCzz", "before activity : "+activityList.size());
 
+        for (Activity activity:activityList){
+            Log.d("TIMERCALCCzz", "before activity : "+activity.toString());
+        }
 
         WorkTimeRepo.getInstance()
                 .setUserTime(userTimePayload)
@@ -410,13 +426,22 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
                         MainResponse mainResponse=response.body();
                         if (response.isSuccessful()&&mainResponse!=null){
                             Log.d("userWorkTime", "time after end: " + currentWorkTime);
-                            setPldTimeWorkZero();
+                            TimeCalculator.getInstance(getApplicationContext())
+                                    .clear(activityList);
+                            for (Activity activity:TimeCalculator.getInstance(getApplicationContext()).getWorkTimeActivity()){
+                                Log.d("TIMERCALCCzz", "send activity : "+activity);
+                            }
 
+                        }else{
+                            Log.d("TIMERCALCCzz","error parsing");
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        TimeCalculator.getInstance(getApplicationContext())
+                                .setStatus(TimeCalculator.APP,TimeCalculator.FAILED_TO_UPLOAD);
+                        Log.d("TIMERCALCCzz", "onError: "+e.getMessage());
 
                     }
                 });

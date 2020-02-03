@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -68,7 +67,9 @@ import com.greyeg.tajr.adapters.DrawerAdapter;
 import com.greyeg.tajr.helper.AccessibilityManager;
 import com.greyeg.tajr.helper.ScreenHelper;
 import com.greyeg.tajr.helper.SharedHelper;
+import com.greyeg.tajr.helper.TimeCalculator;
 import com.greyeg.tajr.helper.font.RobotoTextView;
+import com.greyeg.tajr.models.Activity;
 import com.greyeg.tajr.order.NewOrderActivity;
 import com.greyeg.tajr.records.RecordsActivity;
 import com.greyeg.tajr.server.Api;
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity
     public static int calls_count = 0;
     public static Timer timer = new Timer();
     public static long startTime = 0;
-    public static Activity mainActivity;
+    public static android.app.Activity mainActivity;
     @BindView(R.id.ken_burns_images)
     KenBurnsView mKenBurns;
     @BindView(R.id.logo)
@@ -151,16 +152,6 @@ public class MainActivity extends AppCompatActivity
         checkAppVersion();
         initDrawer();
         requestPermissions();
-
-        initViews();
-
-
-
-
-
-
-
-
 
 
 
@@ -238,149 +229,149 @@ public class MainActivity extends AppCompatActivity
 
     public static void sendNotification(final String message) {
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                if (SDK_INT > 8) {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                            .permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    String send_email;
-
-                    send_email = "user2@gmail.com";
-
-                    try {
-                        String jsonResponse;
-
-                        URL url = new URL("https://onesignal.com/api/v1/notifications");
-                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                        con.setUseCaches(false);
-                        con.setDoOutput(true);
-                        con.setDoInput(true);
-
-                        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                        con.setRequestProperty("Authorization", "Basic NTQ1YzI4YzYtZTE4Zi00OWQ3LWE1ZWQtZGRkNWNiMmVkMjI5");
-                        con.setRequestMethod("POST");
-
-
-
-                        String strJsonBody = "{"
-                                + "\"app_id\": \"c1c60918-4009-4213-b070-36296afc47b7\"," +
-
-                                //  "'include_player_ids': ['" + userId + "'], "
-
-                                // "'include_player_ids': ["+idListString.toString()+"], "
-
-                                "\"include_player_ids\": [" + idListString.toString() + "],"
-                                // + "\"excluded_segments\": [\"" + userId + "\"],"
-                                + "\"data\": {\"foo\": \"bar\"},"
-                                + "\"contents\": {\"en\": \"" + message + "\"}," +
-                                "\"headings\": {\"en\": \"" + SharedHelper.getKey(mainActivity, LoginActivity.USER_NAME) + "\"}"
-                                + "}";
-
-                        System.out.println("strJsonBody:\n" + strJsonBody);
-
-                        byte[] sendBytes = strJsonBody.getBytes(StandardCharsets.UTF_8);
-                        con.setFixedLengthStreamingMode(sendBytes.length);
-
-                        OutputStream outputStream = con.getOutputStream();
-                        outputStream.write(sendBytes);
-
-                        int httpResponse = con.getResponseCode();
-                        System.out.println("httpResponse: " + httpResponse);
-
-                        if (httpResponse >= HttpURLConnection.HTTP_OK
-                                && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
-                            Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
-                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
-                            scanner.close();
-                        } else {
-                            Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
-                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
-                            scanner.close();
-                        }
-                        System.out.println("jsonResponse:\n" + jsonResponse);
-
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
-                }
-            }
-        });
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                int SDK_INT = android.os.Build.VERSION.SDK_INT;
+//                if (SDK_INT > 8) {
+//                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                            .permitAll().build();
+//                    StrictMode.setThreadPolicy(policy);
+//                    String send_email;
+//
+//                    send_email = "user2@gmail.com";
+//
+//                    try {
+//                        String jsonResponse;
+//
+//                        URL url = new URL("https://onesignal.com/api/v1/notifications");
+//                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//                        con.setUseCaches(false);
+//                        con.setDoOutput(true);
+//                        con.setDoInput(true);
+//
+//                        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+//                        con.setRequestProperty("Authorization", "Basic NTQ1YzI4YzYtZTE4Zi00OWQ3LWE1ZWQtZGRkNWNiMmVkMjI5");
+//                        con.setRequestMethod("POST");
+//
+//
+//
+//                        String strJsonBody = "{"
+//                                + "\"app_id\": \"c1c60918-4009-4213-b070-36296afc47b7\"," +
+//
+//                                //  "'include_player_ids': ['" + userId + "'], "
+//
+//                                // "'include_player_ids': ["+idListString.toString()+"], "
+//
+//                                "\"include_player_ids\": [" + idListString.toString() + "],"
+//                                // + "\"excluded_segments\": [\"" + userId + "\"],"
+//                                + "\"data\": {\"foo\": \"bar\"},"
+//                                + "\"contents\": {\"en\": \"" + message + "\"}," +
+//                                "\"headings\": {\"en\": \"" + SharedHelper.getKey(mainActivity, LoginActivity.USER_NAME) + "\"}"
+//                                + "}";
+//
+//                        System.out.println("strJsonBody:\n" + strJsonBody);
+//
+//                        byte[] sendBytes = strJsonBody.getBytes(StandardCharsets.UTF_8);
+//                        con.setFixedLengthStreamingMode(sendBytes.length);
+//
+//                        OutputStream outputStream = con.getOutputStream();
+//                        outputStream.write(sendBytes);
+//
+//                        int httpResponse = con.getResponseCode();
+//                        System.out.println("httpResponse: " + httpResponse);
+//
+//                        if (httpResponse >= HttpURLConnection.HTTP_OK
+//                                && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+//                            Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+//                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+//                            scanner.close();
+//                        } else {
+//                            Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+//                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+//                            scanner.close();
+//                        }
+//                        System.out.println("jsonResponse:\n" + jsonResponse);
+//
+//                    } catch (Throwable t) {
+//                        t.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
     }
 
     public static void sendNotificationImage() {
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                if (SDK_INT > 8) {
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                            .permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-                    String send_email;
-
-                    send_email = "user2@gmail.com";
-
-                    try {
-                        String jsonResponse;
-
-                        URL url = new URL("https://onesignal.com/api/v1/notifications");
-                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                        con.setUseCaches(false);
-                        con.setDoOutput(true);
-                        con.setDoInput(true);
-
-                        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                        con.setRequestProperty("Authorization", "Basic NTQ1YzI4YzYtZTE4Zi00OWQ3LWE1ZWQtZGRkNWNiMmVkMjI5");
-                        con.setRequestMethod("POST");
-
-                        String strJsonBody = "{"
-                                + "\"app_id\": \"c1c60918-4009-4213-b070-36296afc47b7\"," +
-
-                                //  "'include_player_ids': ['" + userId + "'], "
-
-                                // "'include_player_ids': ["+idListString.toString()+"], "
-
-                                "\"include_player_ids\": [" + idListString.toString() + "],"
-                                // + "\"excluded_segments\": [\"" + userId + "\"],"
-                                + "\"data\": {\"foo\": \"bar\"},"
-                                + "\"contents\": {\"en\": \"" + "صورة" + "\"}," +
-                                "\"headings\": {\"en\": \"" + SharedHelper.getKey(mainActivity, LoginActivity.USER_NAME) + "\"}"
-                                + "}";
-
-
-                        System.out.println("strJsonBody:\n" + strJsonBody);
-
-                        byte[] sendBytes = strJsonBody.getBytes(StandardCharsets.UTF_8);
-                        con.setFixedLengthStreamingMode(sendBytes.length);
-
-                        OutputStream outputStream = con.getOutputStream();
-                        outputStream.write(sendBytes);
-
-                        int httpResponse = con.getResponseCode();
-                        System.out.println("httpResponse: " + httpResponse);
-
-                        if (httpResponse >= HttpURLConnection.HTTP_OK
-                                && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
-                            Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
-                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
-                            scanner.close();
-                        } else {
-                            Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
-                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
-                            scanner.close();
-                        }
-                        System.out.println("jsonResponse:\n" + jsonResponse);
-
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
-                }
-            }
-        });
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                int SDK_INT = android.os.Build.VERSION.SDK_INT;
+//                if (SDK_INT > 8) {
+//                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                            .permitAll().build();
+//                    StrictMode.setThreadPolicy(policy);
+//                    String send_email;
+//
+//                    send_email = "user2@gmail.com";
+//
+//                    try {
+//                        String jsonResponse;
+//
+//                        URL url = new URL("https://onesignal.com/api/v1/notifications");
+//                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//                        con.setUseCaches(false);
+//                        con.setDoOutput(true);
+//                        con.setDoInput(true);
+//
+//                        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+//                        con.setRequestProperty("Authorization", "Basic NTQ1YzI4YzYtZTE4Zi00OWQ3LWE1ZWQtZGRkNWNiMmVkMjI5");
+//                        con.setRequestMethod("POST");
+//
+//                        String strJsonBody = "{"
+//                                + "\"app_id\": \"c1c60918-4009-4213-b070-36296afc47b7\"," +
+//
+//                                //  "'include_player_ids': ['" + userId + "'], "
+//
+//                                // "'include_player_ids': ["+idListString.toString()+"], "
+//
+//                                "\"include_player_ids\": [" + idListString.toString() + "],"
+//                                // + "\"excluded_segments\": [\"" + userId + "\"],"
+//                                + "\"data\": {\"foo\": \"bar\"},"
+//                                + "\"contents\": {\"en\": \"" + "صورة" + "\"}," +
+//                                "\"headings\": {\"en\": \"" + SharedHelper.getKey(mainActivity, LoginActivity.USER_NAME) + "\"}"
+//                                + "}";
+//
+//
+//                        System.out.println("strJsonBody:\n" + strJsonBody);
+//
+//                        byte[] sendBytes = strJsonBody.getBytes(StandardCharsets.UTF_8);
+//                        con.setFixedLengthStreamingMode(sendBytes.length);
+//
+//                        OutputStream outputStream = con.getOutputStream();
+//                        outputStream.write(sendBytes);
+//
+//                        int httpResponse = con.getResponseCode();
+//                        System.out.println("httpResponse: " + httpResponse);
+//
+//                        if (httpResponse >= HttpURLConnection.HTTP_OK
+//                                && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+//                            Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+//                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+//                            scanner.close();
+//                        } else {
+//                            Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+//                            jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+//                            scanner.close();
+//                        }
+//                        System.out.println("jsonResponse:\n" + jsonResponse);
+//
+//                    } catch (Throwable t) {
+//                        t.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
     }
 
     public static int getSimIdColumn(final Cursor c) {

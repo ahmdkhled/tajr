@@ -3,16 +3,27 @@ package com.greyeg.tajr.models;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.annotations.Expose;
+
 public class Activity {
 
     private long value;
     private long stamp;
     private String type;
+    @Expose(deserialize = false)
+    private String status="calculating";
 
     public Activity(long value, long stamp, String type) {
         this.value = value;
         this.stamp = stamp;
         this.type = type;
+    }
+
+    public Activity(long value, long stamp, String type, String status) {
+        this.value = value;
+        this.stamp = stamp;
+        this.type = type;
+        this.status = status;
     }
 
     public long getValue() {
@@ -39,10 +50,18 @@ public class Activity {
         this.type = type;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return "stamp "+stamp+ " >>> "+value+" >>> "+type ;
+        return "stamp "+stamp+ " >>> "+value+" >>> "+type+" -- status "+status ;
     }
 
     @Override

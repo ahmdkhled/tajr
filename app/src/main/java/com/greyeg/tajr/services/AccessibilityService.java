@@ -99,13 +99,8 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                 //Toast.makeText(this, "timer stop", Toast.LENGTH_SHORT).show();
 
                 TimeCalculator.getInstance(getApplicationContext()).stopTimer();
-                if (NetworkUtil.getConnectivityStatus(getApplicationContext())!=NetworkUtil.TYPE_NOT_CONNECTED){
-                    for (Activity activity:TimeCalculator.getInstance(getApplicationContext()).getWorkTimeActivity()){
-                        Log.d("TIMERCALCCzz", "send activity : "+activity);
-                    }
-                    TimeCalculator.getInstance(getApplicationContext()).clear();
-                    //sendWorkTime(TimeCalculator.getInstance().getPmWorkTime());
-                }
+                sendWorkTime();
+
 
             }
 
@@ -121,15 +116,19 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         Log.d("TIMERCALCCCC",">>>>>>>>> "+lastOpenedApp);
         }
 
-    void sendWorkTime(long value){
+    void sendWorkTime(){
 
+        if (!NetworkUtil.isConnected(this)){
+            TimeCalculator.getInstance(this).setStatus(TimeCalculator.PM,TimeCalculator.FAILED_TO_UPLOAD);
+            return;
+
+        }
+
+        TimeCalculator.getInstance(this).setStatus(TimeCalculator.PM,TimeCalculator.UPLOADING);
         String token= SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN);
-
-
-        Activity activity=new Activity(value,startTime,"PM");
-        ArrayList<Activity> activityList=new ArrayList<>();
-        activityList.add(activity);
-        UserTimePayload userTimePayload=new UserTimePayload(token,activityList);
+        ArrayList<Activity> activityList=TimeCalculator.getInstance(getApplicationContext()).getIdleWorkTime();
+        UserTimePayload userTimePayload=
+                new UserTimePayload(token,activityList);
 
         WorkTimeRepo.getInstance()
                 .setUserTime(userTimePayload)
@@ -145,14 +144,18 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     public void onSuccess(Response<MainResponse> response) {
                         MainResponse mainResponse=response.body();
                         if (response.isSuccessful()&&mainResponse!=null){
-                            Log.d("userWorkTime", "time after end: " + value +" time stamp");
-                            TimeCalculator.getInstance(getApplicationContext()).clearPmWorkTime();
+                            TimeCalculator.getInstance(getApplicationContext()).clear(activityList);
+                            //Log.d("userWorkTime", "time after end: " + value +" time stamp");
+                            for (Activity activity:TimeCalculator.getInstance(getApplicationContext()).getWorkTimeActivity()){
+                                Log.d("TIMERCALCCzz", "send activity : "+activity);
+                            }
                             startTime=-1;
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        TimeCalculator.getInstance(getApplicationContext()).setStatus(TimeCalculator.PM,TimeCalculator.FAILED_TO_UPLOAD);
 
                     }
                 });
