@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.crashlytics.android.Crashlytics;
 import com.greyeg.tajr.models.AllProducts;
 import com.greyeg.tajr.models.Cities;
 import com.greyeg.tajr.models.NewOrderResponse;
@@ -57,7 +58,12 @@ public class NewOrderFragVM extends ViewModel {
 
                     @Override
                     public void onSuccess(Response<AllProducts> allProductsResponse) {
-                        products.setValue(allProductsResponse);
+                        AllProducts allProducts=allProductsResponse.body();
+                        if (allProductsResponse.isSuccessful()&&allProducts!=null){
+                            products.setValue(allProductsResponse);
+                        }else{
+                            Crashlytics.logException(new Throwable("Error parsing Products Response"));
+                        }
                         isProductsLoading.setValue(false);
                     }
 
@@ -65,7 +71,7 @@ public class NewOrderFragVM extends ViewModel {
                     public void onError(Throwable e) {
                         isProductsLoading.setValue(false);
                         productsLoadingError.setValue(e.getMessage());
-
+                        Crashlytics.logException(e);
                     }
                 });
 
@@ -100,8 +106,15 @@ public class NewOrderFragVM extends ViewModel {
                     }
 
                     @Override
-                    public void onSuccess(Response<Cities> citiesResponse) {
-                        cities.setValue(citiesResponse);
+                    public void onSuccess(Response<Cities> response) {
+                        Cities citiesResponse=response.body();
+                        if (response.isSuccessful()&&citiesResponse!=null){
+                            cities.setValue(response);
+
+                        }else {
+                            Crashlytics.logException(new Throwable("Error parsing Cities Response"));
+
+                        }
                         isCitiesLoading.setValue(false);
                     }
 
@@ -109,6 +122,7 @@ public class NewOrderFragVM extends ViewModel {
                     public void onError(Throwable e) {
                         citiesLoadingError.setValue(e.getMessage());
                         isCitiesLoading.setValue(false);
+                        Crashlytics.logException(e);
                     }
                 });
 
@@ -140,9 +154,14 @@ public class NewOrderFragVM extends ViewModel {
 
                     @Override
                     public void onSuccess(Response<NewOrderResponse> response) {
+                        NewOrderResponse newOrderResponse=response.body();
+                        if (response.isSuccessful()&&newOrderResponse!=null) {
+                            makeNewOrder.setValue(response.body());
+                        }else {
+                            Crashlytics.logException(new Throwable("Error parsing makeNewOrder Response"));
+
+                        }
                         isOrderPlacing.setValue(false);
-                        makeNewOrder.setValue(response.body());
-                        Log.d("PLACCEEORDERR", "onSuccess: "+(response.body().getData()));
 
                     }
 
@@ -150,6 +169,8 @@ public class NewOrderFragVM extends ViewModel {
                     public void onError(Throwable e) {
                         isOrderPlacing.setValue(false);
                         orderPlacingError.setValue(e.getMessage());
+                        Crashlytics.logException(e);
+
                         Log.d("PLACCEEORDERR", "onError: "+e.getMessage());
                     }
                 });

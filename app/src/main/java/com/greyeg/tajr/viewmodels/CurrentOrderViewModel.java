@@ -3,6 +3,8 @@ package com.greyeg.tajr.viewmodels;
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.crashlytics.android.Crashlytics;
 import com.greyeg.tajr.models.AddReasonResponse;
 import com.greyeg.tajr.models.CallTimePayload;
 import com.greyeg.tajr.models.CallTimeResponse;
@@ -125,12 +127,14 @@ public class CurrentOrderViewModel extends ViewModel {
                         CallTimeResponse callTimeResponse=response.body();
                         if (response.isSuccessful()&&callTimeResponse!=null){
                             callTime.setValue(callTimeResponse);
+                        }else {
+                            Crashlytics.logException(new Throwable("Error parsing Call Time Response"));
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Crashlytics.logException(e);
                     }
                 });
         return callTime;
