@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:id="@+id/lyt_parent"
@@ -17,7 +18,7 @@
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,6 +148,7 @@
         android:padding="@dimen/_100sdp"
         android:background="@color/white"
         android:id="@+id/progress_bar"
+        fresco:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

@@ -219,6 +219,7 @@ public class CurrentOrderFragment extends Fragment
         ButterKnife.bind(this, mainView);
 
 
+
         onProductAdded= this;
         initLabels();
         setListeners();
