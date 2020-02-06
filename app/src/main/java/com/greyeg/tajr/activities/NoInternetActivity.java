@@ -8,8 +8,8 @@ import android.net.ConnectivityManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.greyeg.tajr.R;
-import com.greyeg.tajr.view.kbv.KenBurnsView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

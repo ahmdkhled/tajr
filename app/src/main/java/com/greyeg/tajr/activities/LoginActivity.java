@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
@@ -33,7 +35,6 @@ import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 import com.greyeg.tajr.view.FloatLabeledEditText;
 import com.greyeg.tajr.view.ProgressWheel;
-import com.greyeg.tajr.view.kbv.KenBurnsView;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -55,6 +55,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.crashlytics.android.Crashlytics;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.greyeg.tajr.activities.BalanceActivity;
@@ -75,7 +76,6 @@ import com.greyeg.tajr.records.RecordsActivity;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 import com.greyeg.tajr.view.dialogs.UpdateVersionDialog;
-import com.greyeg.tajr.view.kbv.KenBurnsView;
 import com.greyeg.tajr.viewmodels.MainActivityVm;
 
 import java.io.OutputStream;
