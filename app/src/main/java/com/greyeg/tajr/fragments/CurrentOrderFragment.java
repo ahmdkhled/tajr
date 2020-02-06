@@ -945,6 +945,7 @@ public class CurrentOrderFragment extends Fragment
                 ,orderResponse.getOrder().getProducts(),this);
         productsRecycler.setAdapter(orderProductsAdapter);
         productsRecycler.setLayoutManager(new GridLayoutManager(getContext(),3));
+        productsRecycler.startLayoutAnimation();
 
         calculateOrderTotal();
         updateOrderTotal();
