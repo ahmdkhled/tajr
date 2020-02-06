@@ -1,7 +1,6 @@
 package com.greyeg.tajr.repository;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -11,7 +10,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.greyeg.tajr.App;
 import com.greyeg.tajr.BuildConfig;
 import com.greyeg.tajr.R;
 

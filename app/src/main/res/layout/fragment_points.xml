@@ -6,7 +6,7 @@
     android:background="@color/main_color_grey_200"
     android:orientation="vertical" >
 
-   <com.greyeg.tajr.view.AnimatedExpandableListView
+   <com.greyeg.tajr.view.utils.AnimatedExpandableListView
        android:id="@+id/expandable_lv_social_list_view"
        android:layout_width="match_parent"
        android:layout_height="match_parent" />

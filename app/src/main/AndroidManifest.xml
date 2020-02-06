@@ -23,7 +23,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:name=".App"
+        android:name=".helper.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
@@ -34,24 +34,24 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".order.NewOrderActivity"
+            android:name=".activities.NewOrderActivity"
             android:exported="true"
             android:label=""
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.AdminRecordsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.AdminLoginActivity"
             android:parentActivityName=".activities.LoginActivity" />
         <activity android:name=".activities.BalanceCalculationActivity" />
         <activity
             android:name=".activities.CartsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -72,20 +72,20 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.SettingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.WorkHistoryActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.NewsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.NoInternetActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity
             android:name=".activities.BalanceActivity"
             android:label="@string/Balance"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
         <activity android:name=".activities.CalcActivity" />
         <activity
             android:name=".activities.TestActivity"
@@ -99,7 +99,7 @@
             android:theme="@style/UCrop" />
         <activity
             android:name=".records.RecordsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
 
         <meta-data
             android:name="com.onesignal.NotificationOpened.DEFAULT"
@@ -134,11 +134,11 @@
             </intent-filter>
         </service>
         <service
-            android:name=".over.FloatLayout"
+            android:name=".view.over.FloatLayout"
             android:enabled="true"
             android:exported="false" />
-        <service android:name=".over.MissedCallNoOrderService" />
-        <service android:name=".over.MissedCallOrderService" />
+        <service android:name=".view.over.MissedCallNoOrderService" />
+        <service android:name=".view.over.MissedCallOrderService" />
         <service
             android:name=".services.AccessibilityService"
             android:enabled="true"

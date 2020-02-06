@@ -6,12 +6,12 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.crashlytics.android.Crashlytics;
-import com.greyeg.tajr.App;
+import com.greyeg.tajr.helper.App;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.models.NewOrderResponse;
 import com.greyeg.tajr.models.OrderPayload;
 import com.greyeg.tajr.models.UpdateOrderNewResponse;
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
+import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.server.BaseClient;
 
 import io.reactivex.Single;

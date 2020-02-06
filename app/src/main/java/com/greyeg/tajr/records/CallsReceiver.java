@@ -5,39 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.CallLog;
-import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.greyeg.tajr.activities.EmptyCallActivity;
 import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.helper.CallTimeManager;
 import com.greyeg.tajr.helper.CurrentCallListener;
 import com.greyeg.tajr.helper.SharedHelper;
-import com.greyeg.tajr.models.CallTimePayload;
-import com.greyeg.tajr.models.CallTimeResponse;
-import com.greyeg.tajr.models.SimpleOrderResponse;
-import com.greyeg.tajr.order.CurrentOrderData;
-import com.greyeg.tajr.order.NewOrderActivity;
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
-import com.greyeg.tajr.over.MissedCallNoOrderService;
-import com.greyeg.tajr.over.MissedCallOrderService;
-import com.greyeg.tajr.repository.CallTimeRepo;
+import com.greyeg.tajr.models.CurrentOrderData;
+import com.greyeg.tajr.models.CurrentOrderResponse;
+import com.greyeg.tajr.view.over.MissedCallOrderService;
 import com.greyeg.tajr.repository.PhoneRepo;
-import com.greyeg.tajr.server.Api;
-import com.greyeg.tajr.server.BaseClient;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 /**

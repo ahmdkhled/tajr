@@ -30,7 +30,7 @@ import com.greyeg.tajr.models.CardsResponse;
 import com.greyeg.tajr.models.CartResponse;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
-import com.greyeg.tajr.view.ProgressWheel;
+import com.greyeg.tajr.view.utils.ProgressWheel;
 
 import java.util.ArrayList;
 import java.util.List;

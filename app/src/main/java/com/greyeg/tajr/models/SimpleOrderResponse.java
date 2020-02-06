@@ -236,16 +236,16 @@ public class SimpleOrderResponse {
 
         @SerializedName("multi_orders")
         @Expose
-        private List<ProDuct> multi_orders;
+        private List<Product> multi_orders;
 
         public Order() {
         }
 
-        public List<ProDuct> getMulti_orders() {
+        public List<Product> getMulti_orders() {
             return multi_orders;
         }
 
-        public void setMulti_orders(List<ProDuct> multi_orders) {
+        public void setMulti_orders(List<Product> multi_orders) {
             this.multi_orders = multi_orders;
         }
 

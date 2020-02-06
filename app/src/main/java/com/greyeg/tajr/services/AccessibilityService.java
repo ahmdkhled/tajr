@@ -1,8 +1,6 @@
 package com.greyeg.tajr.services;
 
 import android.content.Intent;
-import android.net.Network;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
@@ -11,8 +9,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.Observer;
-import com.greyeg.tajr.MainActivity;
+
+import com.greyeg.tajr.activities.MainActivity;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.activities.SettingsActivity;
@@ -23,9 +21,7 @@ import com.greyeg.tajr.helper.UserNameEvent;
 import com.greyeg.tajr.models.Activity;
 import com.greyeg.tajr.models.MainResponse;
 import com.greyeg.tajr.models.UserTimePayload;
-import com.greyeg.tajr.models.UserWorkTimeResponse;
 import com.greyeg.tajr.repository.WorkTimeRepo;
-import com.greyeg.tajr.viewmodels.NewOrderActivityVM;
 
 import org.greenrobot.eventbus.EventBus;
 

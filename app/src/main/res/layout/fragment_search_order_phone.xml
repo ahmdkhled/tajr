@@ -54,7 +54,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/search_view">
 
-        <com.greyeg.tajr.view.ProgressWheel
+        <com.greyeg.tajr.view.utils.ProgressWheel
             android:id="@+id/progress_search"
             style="@style/ProgressBarStyle.Reverse"
             android:layout_centerInParent="true"

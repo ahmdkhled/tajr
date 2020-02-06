@@ -3,46 +3,51 @@ package com.greyeg.tajr.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class City {
+import java.io.Serializable;
+
+public class City implements Serializable
+{
 
     @SerializedName("city_id")
     @Expose
-    private String c_id;
-
+    private String cityId;
     @SerializedName("city_name")
     @Expose
-    private String c_name;
-
+    private String cityName;
     @SerializedName("shipping_cost")
     @Expose
-    private String shipping_cost;
+    private String shippingCost;
 
-    public City() {
+    public String getCityId() {
+        return cityId;
     }
 
-    public String getShipping_cost() {
-        return shipping_cost;
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 
-    public void setShipping_cost(String shipping_cost) {
-        this.shipping_cost = shipping_cost;
+    public String getCityName() {
+        return cityName;
     }
 
-    public String getC_id() {
-        return c_id;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
-    public void setC_id(String c_id) {
-        this.c_id = c_id;
+    public String getShippingCost() {
+        return shippingCost;
     }
 
-    public String getC_name() {
-        return c_name;
+    public void setShippingCost(String shippingCost) {
+        this.shippingCost = shippingCost;
     }
 
-    public void setC_name(String c_name) {
-        this.c_name = c_name;
+    @Override
+    public String toString() {
+        return "City{" +
+                "cityId='" + cityId + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", shippingCost='" + shippingCost + '\'' +
+                '}';
     }
-
-
 }

@@ -74,7 +74,7 @@
                     android:layout_marginTop="54dp"
                     android:orientation="vertical">
 
-                    <com.greyeg.tajr.view.MaterialRippleLayout
+                    <com.greyeg.tajr.view.utils.MaterialRippleLayout
                         style="@style/RippleStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -91,9 +91,9 @@
                             android:minWidth="112dp"
                             android:text="@string/request"
                             android:textColor="#fff" />
-                    </com.greyeg.tajr.view.MaterialRippleLayout>
+                    </com.greyeg.tajr.view.utils.MaterialRippleLayout>
 
-                    <com.greyeg.tajr.view.ProgressWheel
+                    <com.greyeg.tajr.view.utils.ProgressWheel
                         android:id="@+id/progress_bar"
                         style="@style/ProgressBarStyle.Reverse"
                         android:layout_gravity="center"
@@ -129,7 +129,7 @@
                     android:layout_marginTop="54dp"
                     android:orientation="vertical">
 
-                    <com.greyeg.tajr.view.MaterialRippleLayout
+                    <com.greyeg.tajr.view.utils.MaterialRippleLayout
                         style="@style/RippleStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                             android:minWidth="112dp"
                             android:text="@string/copy"
                             android:textColor="#fff" />
-                    </com.greyeg.tajr.view.MaterialRippleLayout>
+                    </com.greyeg.tajr.view.utils.MaterialRippleLayout>
 
                 </LinearLayout>
 

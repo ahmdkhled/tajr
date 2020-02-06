@@ -34,8 +34,8 @@ import com.greyeg.tajr.models.UserOrders;
 import com.greyeg.tajr.models.UserResponse;
 import com.greyeg.tajr.models.UserTimePayload;
 import com.greyeg.tajr.models.UserWorkTimeResponse;
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
-import com.greyeg.tajr.order.models.SingleOrderProductsResponse;
+import com.greyeg.tajr.models.CurrentOrderResponse;
+import com.greyeg.tajr.models.SingleOrderProductsResponse;
 
 import io.reactivex.Single;
 import okhttp3.MultipartBody;

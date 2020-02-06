@@ -32,7 +32,7 @@ import com.greyeg.tajr.models.OrderItem;
 import com.greyeg.tajr.models.OrderPayload;
 import com.greyeg.tajr.models.ProductData;
 import com.greyeg.tajr.models.ProductForSpinner;
-import com.greyeg.tajr.order.CurrentOrderData;
+import com.greyeg.tajr.models.CurrentOrderData;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 import com.greyeg.tajr.viewmodels.NewOrderFragVM;
@@ -46,8 +46,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 

@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
 
-                    <com.greyeg.tajr.view.FloatLabeledEditText
+                    <com.greyeg.tajr.view.utils.FloatLabeledEditText
                         android:id="@+id/money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                     android:gravity="center_vertical">
 
 
-                    <com.greyeg.tajr.view.FloatLabeledEditText
+                    <com.greyeg.tajr.view.utils.FloatLabeledEditText
                         android:id="@+id/phone"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                     android:gravity="center_vertical">
 
 
-                    <com.greyeg.tajr.view.FloatLabeledEditText
+                    <com.greyeg.tajr.view.utils.FloatLabeledEditText
                         android:id="@+id/notes"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:layout_marginTop="54dp"
                 android:orientation="vertical">
 
-                <com.greyeg.tajr.view.MaterialRippleLayout
+                <com.greyeg.tajr.view.utils.MaterialRippleLayout
                     style="@style/RippleStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,9 +127,9 @@
                         android:minWidth="112dp"
                         android:text="@string/request"
                         android:textColor="#fff" />
-                </com.greyeg.tajr.view.MaterialRippleLayout>
+                </com.greyeg.tajr.view.utils.MaterialRippleLayout>
 
-                <com.greyeg.tajr.view.ProgressWheel
+                <com.greyeg.tajr.view.utils.ProgressWheel
                     android:id="@+id/progress_log_in"
                     style="@style/ProgressBarStyle.Reverse"
                     android:layout_gravity="center"

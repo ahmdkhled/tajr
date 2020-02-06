@@ -42,14 +42,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.greyeg.tajr.MainActivity;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.adapters.MentionAdapter;
 import com.greyeg.tajr.adapters.MessageAdapter;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.Message;
 import com.greyeg.tajr.models.User;
-import com.greyeg.tajr.view.AudioRecordView;
+import com.greyeg.tajr.view.utils.AudioRecordView;
 import com.jpardogo.android.googleprogressbar.library.ChromeFloatingCirclesDrawable;
 import com.rygelouv.audiosensei.player.AudioSenseiListObserver;
 

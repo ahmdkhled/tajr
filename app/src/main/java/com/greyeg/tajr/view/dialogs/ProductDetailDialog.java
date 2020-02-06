@@ -2,7 +2,6 @@ package com.greyeg.tajr.view.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,29 +22,24 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.crashlytics.android.Crashlytics;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
-import com.greyeg.tajr.adapters.ExtraDataAdapter;
 import com.greyeg.tajr.adapters.ExtraDataAdapter2;
 import com.greyeg.tajr.adapters.ProductAdapter;
 import com.greyeg.tajr.helper.EndlessRecyclerViewScrollListener;
 import com.greyeg.tajr.helper.ProductUtil;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.AllProducts;
-import com.greyeg.tajr.models.ExtraData;
 import com.greyeg.tajr.models.OrderProduct;
 import com.greyeg.tajr.models.Pages;
 import com.greyeg.tajr.models.ProductData;
 import com.greyeg.tajr.models.ProductExtra;
-import com.greyeg.tajr.order.models.Product;
 import com.greyeg.tajr.repository.ProductsRepo;
 import com.greyeg.tajr.viewmodels.ProductDetailDialogVM;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

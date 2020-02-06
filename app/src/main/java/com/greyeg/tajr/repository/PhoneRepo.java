@@ -1,6 +1,6 @@
 package com.greyeg.tajr.repository;
 
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
+import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.server.BaseClient;
 
 import io.reactivex.Single;

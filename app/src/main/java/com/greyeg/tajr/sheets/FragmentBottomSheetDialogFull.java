@@ -21,8 +21,8 @@ import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.AllProducts;
 import com.greyeg.tajr.models.ProductData;
-import com.greyeg.tajr.order.CurrentOrderData;
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
+import com.greyeg.tajr.models.CurrentOrderData;
+import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 

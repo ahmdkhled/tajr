@@ -23,7 +23,7 @@ import com.greyeg.tajr.models.SimpleOrderResponse;
 import com.greyeg.tajr.models.UpdateOrderNewResponse;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
-import com.greyeg.tajr.view.ProgressWheel;
+import com.greyeg.tajr.view.utils.ProgressWheel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

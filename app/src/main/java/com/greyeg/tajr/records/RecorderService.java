@@ -6,7 +6,7 @@ import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.greyeg.tajr.order.CurrentOrderData;
+import com.greyeg.tajr.models.CurrentOrderData;
 
 import java.io.IOException;
 

@@ -30,8 +30,8 @@ import com.greyeg.tajr.models.MoneyRequestResponse;
 import com.greyeg.tajr.models.ToalAvailableBalance;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
-import com.greyeg.tajr.view.FloatLabeledEditText;
-import com.greyeg.tajr.view.ProgressWheel;
+import com.greyeg.tajr.view.utils.FloatLabeledEditText;
+import com.greyeg.tajr.view.utils.ProgressWheel;
 
 import java.util.ArrayList;
 

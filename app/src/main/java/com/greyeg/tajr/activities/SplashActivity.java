@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.greyeg.tajr.MainActivity;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.jobs.ReminderUtilities;
@@ -16,8 +15,6 @@ import com.greyeg.tajr.jobs.ReminderUtilities;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import io.mattcarroll.hover.overlay.OverlayPermission;
 
 public class SplashActivity extends AppCompatActivity {
 

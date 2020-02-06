@@ -24,7 +24,7 @@ import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.MoneyHistory;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
-import com.greyeg.tajr.view.AnimatedExpandableListView;
+import com.greyeg.tajr.view.utils.AnimatedExpandableListView;
 
 import java.util.ArrayList;
 import java.util.List;

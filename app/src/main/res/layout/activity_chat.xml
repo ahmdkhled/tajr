@@ -64,7 +64,7 @@
 
     </RelativeLayout>
 
-    <com.greyeg.tajr.view.AudioRecordView
+    <com.greyeg.tajr.view.utils.AudioRecordView
         android:id="@+id/recordingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

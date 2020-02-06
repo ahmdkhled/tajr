@@ -21,7 +21,7 @@ import com.greyeg.tajr.models.UpdateOrderNewResponse;
 import com.greyeg.tajr.models.UploadPhoneResponse;
 import com.greyeg.tajr.models.UploadVoiceResponse;
 import com.greyeg.tajr.models.UserWorkTimeResponse;
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
+import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
 

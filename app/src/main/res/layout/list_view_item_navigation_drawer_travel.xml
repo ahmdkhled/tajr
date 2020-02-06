@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.greyeg.tajr.view.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.greyeg.tajr.view.utils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/RippleStyle"
     android:layout_width="match_parent"
@@ -63,4 +63,4 @@
             android:background="@color/material_light_yellow_600" />
     </LinearLayout>
 
-</com.greyeg.tajr.view.MaterialRippleLayout>
+</com.greyeg.tajr.view.utils.MaterialRippleLayout>

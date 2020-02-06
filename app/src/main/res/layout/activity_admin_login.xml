@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.greyeg.tajr.view.kbv.KenBurnsView
+    <com.flaviofaria.kenburnsview.KenBurnsView
         android:id="@+id/ken_burns_images"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -22,13 +22,13 @@
             android:gravity="right"
             android:orientation="vertical">
 
-            <com.greyeg.tajr.view.MaterialRippleLayout
+            <com.greyeg.tajr.view.utils.MaterialRippleLayout
                 style="@style/RippleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:rippleColor="@color/main_color_grey_400">
 
-            </com.greyeg.tajr.view.MaterialRippleLayout>
+            </com.greyeg.tajr.view.utils.MaterialRippleLayout>
         </LinearLayout>
 
         <ImageView
@@ -64,7 +64,7 @@
                     android:textSize="16dp"
                     tools:ignore="SpUsage" />
 
-                <com.greyeg.tajr.view.FloatLabeledEditText
+                <com.greyeg.tajr.view.utils.FloatLabeledEditText
                     android:id="@+id/email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                     android:textSize="16dp"
                     tools:ignore="SpUsage" />
 
-                <com.greyeg.tajr.view.FloatLabeledEditText
+                <com.greyeg.tajr.view.utils.FloatLabeledEditText
                     android:id="@+id/password"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             android:layout_marginTop="54dp"
             android:orientation="vertical">
 
-            <com.greyeg.tajr.view.MaterialRippleLayout
+            <com.greyeg.tajr.view.utils.MaterialRippleLayout
                 style="@style/RippleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,9 +132,9 @@
                     android:minWidth="112dp"
                     android:text="@string/login"
                     android:textColor="#fff" />
-            </com.greyeg.tajr.view.MaterialRippleLayout>
+            </com.greyeg.tajr.view.utils.MaterialRippleLayout>
 
-            <com.greyeg.tajr.view.ProgressWheel
+            <com.greyeg.tajr.view.utils.ProgressWheel
                 android:id="@+id/progress_log_in"
                 style="@style/ProgressBarStyle.Reverse"
                 android:layout_gravity="center"

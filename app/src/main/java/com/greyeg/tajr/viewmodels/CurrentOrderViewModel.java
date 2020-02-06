@@ -11,7 +11,7 @@ import com.greyeg.tajr.models.CallTimeResponse;
 import com.greyeg.tajr.models.CancellationReasonsResponse;
 import com.greyeg.tajr.models.MainResponse;
 import com.greyeg.tajr.models.UpdateOrderNewResponse;
-import com.greyeg.tajr.order.models.CurrentOrderResponse;
+import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.repository.CallTimeRepo;
 import com.greyeg.tajr.repository.CancellationReasonsRepository;
 import com.greyeg.tajr.repository.OrdersRepo;

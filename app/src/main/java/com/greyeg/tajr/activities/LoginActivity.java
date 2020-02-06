@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.google.android.material.snackbar.Snackbar;
@@ -22,10 +21,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.FirebaseDatabase;
-import com.greyeg.tajr.MainActivity;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.font.RobotoTextView;
@@ -33,8 +28,8 @@ import com.greyeg.tajr.models.User;
 import com.greyeg.tajr.models.UserResponse;
 import com.greyeg.tajr.server.Api;
 import com.greyeg.tajr.server.BaseClient;
-import com.greyeg.tajr.view.FloatLabeledEditText;
-import com.greyeg.tajr.view.ProgressWheel;
+import com.greyeg.tajr.view.utils.FloatLabeledEditText;
+import com.greyeg.tajr.view.utils.ProgressWheel;
 
 import java.util.ArrayList;
 import java.util.List;
