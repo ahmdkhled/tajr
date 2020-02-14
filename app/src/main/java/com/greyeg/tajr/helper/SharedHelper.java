@@ -9,7 +9,6 @@ public class SharedHelper {
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
 
-    @SuppressLint("CommitPrefEdits")
     private static void init(Context context){
         sharedPreferences = context.getSharedPreferences("Cache", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();

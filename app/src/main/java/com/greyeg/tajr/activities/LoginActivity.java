@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.greyeg.tajr.R;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.font.RobotoTextView;
 import com.greyeg.tajr.models.User;
@@ -50,19 +51,16 @@ public class LoginActivity extends AppCompatActivity {
     public static final String SPLASH_SCREEN_OPTION_1 = "Fade in + Ken Burns";
     public static final String SPLASH_SCREEN_OPTION_2 = "Down + Ken Burns";
     public static final String SPLASH_SCREEN_OPTION_3 = "Down + fade in + Ken Burns";
-    public static final String LOG_IN_FROM = "log_in_from";
-    public static final String USER_NAME = "username";
-    public static final String USER_TYPE = "user_type";
-    public static final String USER_ID = "user_id";
-    public static final String IS_TAJR = "is_tajr";
-    public static final String PARENT_TAJR_ID = "parent_tajr_id";
-    public static final String TOKEN = "token";
+    public static final String REMEMBER_PASS = "REMEMBER_PASS";
+    public static StringBuilder idListString;
+    public static String TOKEN="token";
     public static final String IS_LOGIN = "is_login";
     public static final String PARENT_ID = "PARENT_ID";
-    public static final String REMEMBER_PASS = "REMEMBER_PASS";
-    public static final String REMEMBERED_PASS = "REMEMBERED_PASS";
-    public static final String REMEMBERED_EMAIL = "REMEMBERED_EMAIL";
-    public static StringBuilder idListString;
+    public static final String USER_ID = "user_id";
+    public static final String USER_NAME = "username";
+    public static final String LOG_IN_FROM = "log_in_from";
+
+
 
     final List<String> ids = new ArrayList<>();
     @BindView(R.id.loginbtn)
@@ -83,7 +81,8 @@ public class LoginActivity extends AppCompatActivity {
     Api api;
     List<User> users = new ArrayList<>();
     SharedPreferences sharedPreferences;
-    private String TAG = "LoginActivity";
+    private String TAG = "LoginActivityyy";
+    SessionManager sessionManager;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -98,15 +97,16 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("sssssssssssssss", "onCreate: ");
 
         Log.d("OVERLAYYY", "login activity: ");
-
+        sessionManager=SessionManager.getInstance(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.wati_to_log_in));
         api = BaseClient.getBaseClient().create(Api.class);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean rem = sharedPreferences.getBoolean(REMEMBER_PASS, false);
+        boolean rem = sessionManager.isRemembered();
+        Log.d(TAG, "onCreate: "+sessionManager.getEmail());
         if (rem) {
-            email.setText(SharedHelper.getKey(this, REMEMBERED_EMAIL));
-            pass.setText(SharedHelper.getKey(this, REMEMBERED_PASS));
+            email.setText(sessionManager.getEmail());
+            pass.setText(sessionManager.getPass());
             rememberPass.setChecked(true);
         }
         setAnimation(SPLASH_SCREEN_OPTION_3);
@@ -114,42 +114,37 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginBtn.setVisibility(View.GONE);
-                sharedPreferences.edit().putBoolean(REMEMBER_PASS, rememberPass.isChecked()).apply();
-                if (rememberPass.isChecked()) {
-                    SharedHelper.putKey(getApplicationContext(), REMEMBERED_PASS, pass.getText().toString());
-                    SharedHelper.putKey(getApplicationContext(), REMEMBERED_EMAIL, email.getText().toString());
-                } else {
-                    SharedHelper.putKey(getApplicationContext(), REMEMBERED_PASS, "");
-                    SharedHelper.putKey(getApplicationContext(), REMEMBERED_EMAIL, "");
-                }
-
-                progressLogin.setVisibility(View.VISIBLE);
-                progressLogin.spin();
-                if (email.getText().equals("") || pass.getText().equals("")) {
+                if (email.getText().toString().equals("") || pass.getText().toString().equals("")) {
                     progressDialog.dismiss();
                     Toast.makeText(LoginActivity.this, "برجاء ادخال البريد وكلمة المرور", Toast.LENGTH_SHORT).show();
-                } else {
-                    api.login(email.getText().toString(), pass.getText().toString()).enqueue(new Callback<UserResponse>() {
+                    return;
+                }
+
+                loginBtn.setVisibility(View.GONE);
+                progressLogin.setVisibility(View.VISIBLE);
+                progressLogin.spin();
+                api.login(email.getText().toString(), pass.getText().toString()).enqueue(new Callback<UserResponse>() {
                         @Override
                         public void onResponse(Call<UserResponse> call, final Response<UserResponse> response) {
 
-
-                            if (response.body() != null) {
+                            UserResponse userResponse=response.body();
+                            if (userResponse != null) {
                                 Log.d(TAG, "onResponse: "+response.body().toString());
-                                if (response.body().getCode().equals("1202") || response.body().getCode().equals("1212")) {
+                                if (userResponse.getCode().equals("1202") || userResponse.getCode().equals("1212")) {
                                     //todo solve onesignal error
                                     loginBtn.setVisibility(View.VISIBLE);
                                     progressLogin.setVisibility(View.GONE);
-                                    SharedHelper.putKey(getApplicationContext(), LOG_IN_FROM, "employee");
-                                    SharedHelper.putKey(getApplicationContext(), PARENT_ID, response.body().getClients().get(0).getId());
-                                    SharedHelper.putKey(getApplicationContext(), IS_LOGIN, "yes");
-                                    SharedHelper.putKey(getApplicationContext(), USER_NAME, response.body().getData().getLogin_data().getUsername());
-                                    SharedHelper.putKey(getApplicationContext(), USER_ID, response.body().getData().getLogin_data().getUser_id());
-                                    SharedHelper.putKey(getApplicationContext(), USER_TYPE, response.body().getData().getLogin_data().getUser_type());
-                                    SharedHelper.putKey(getApplicationContext(), PARENT_TAJR_ID, response.body().getData().getLogin_data().getParent_tajr_id());
-                                    SharedHelper.putKey(getApplicationContext(), IS_TAJR, response.body().getData().getLogin_data().getIs_tajr());
-                                    SharedHelper.putKey(getApplicationContext(), TOKEN, response.body().getData().getLogin_data().getToken());
+                                    SessionManager.getInstance(getApplicationContext())
+                                            .saveSession(userResponse,"true",SessionManager.EMPLOYEE);
+                                    sessionManager.setIsRemembered(rememberPass.isChecked());
+                                    if (rememberPass.isChecked()) {
+                                        sessionManager
+                                                .SaveEmailAndPassword(email.getText().toString(),pass.getText().toString());
+                                    } else {
+                                        sessionManager
+                                                .SaveEmailAndPassword("","");
+
+                                    }
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -157,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                     finish();
+
 
                                 } else {
                                     Snackbar.make(v, R.string.wrong_email_pass, Snackbar.LENGTH_SHORT).show();
@@ -172,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("eeeeeeeeeeeeeeee", "onFailure: " + t.getMessage());
                         }
                     });
-                }
+
             }
         });
 
