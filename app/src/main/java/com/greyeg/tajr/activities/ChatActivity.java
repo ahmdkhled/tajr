@@ -45,6 +45,7 @@ import com.google.firebase.storage.UploadTask;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.adapters.MentionAdapter;
 import com.greyeg.tajr.adapters.MessageAdapter;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.Message;
 import com.greyeg.tajr.models.User;
@@ -76,6 +77,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     private MediaPlayer mPlayer = null;
     boolean mStartRecording = true;
     boolean mStartPlaying = true;
+    SessionManager sessionManager;
 //
 //    @BindView(R.id.float_send)
 //    DrawMeImageButton drawMeButton;
@@ -126,12 +128,14 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
         context = this;
+        sessionManager=SessionManager.getInstance(getApplicationContext());
         AudioSenseiListObserver.getInstance().registerLifecycle(getLifecycle());
         Speech.init(this, getPackageName());
         getMessages();
         initViews();
         mentionView = findViewById(R.id.mentionView);
         audioRecordView = findViewById(R.id.recordingView);
+
 
         audioRecordView.setRecordingListener(this);
 
@@ -430,8 +434,8 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
         MainActivity.sendNotification(message);
         //sendNotification(message);
         Long time = System.currentTimeMillis();
-        String userNeme = SharedHelper.getKey(this, LoginActivity.USER_NAME);
-        String usetId = SharedHelper.getKey(this, LoginActivity.USER_ID);
+        String userNeme = sessionManager.getUserName();
+        String usetId = sessionManager.getUserId();
         final String messageKey = FirebaseDatabase.getInstance().getReference().push().getKey();
         String imageUri = "";
         String recordUri = "";
@@ -573,7 +577,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     private void sendRecordMessage() {
 
         final StorageReference thumbFilePathRef = FirebaseStorage.getInstance().getReference().
-                child(SharedHelper.getKey(this, LoginActivity.USER_ID))
+                child(sessionManager.getUserId())
                 .child("recorders").child(mFileName);
 
         thumbFilePathRef.putFile(Uri.fromFile(new File(mFileName).getAbsoluteFile()))
@@ -586,8 +590,8 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
 
                                 String message = audioRecordView.getMessageView().getText().toString();
                                 Long time = System.currentTimeMillis();
-                                String userNeme = SharedHelper.getKey(ChatActivity.this, LoginActivity.USER_NAME);
-                                String usetId = SharedHelper.getKey(ChatActivity.this, LoginActivity.USER_ID);
+                                String userNeme = sessionManager.getUserName();
+                                String usetId = sessionManager.getUserId();
                                 final String messageKey = FirebaseDatabase.getInstance().getReference().push().getKey();
                                 String imageUri = "";
                                 String recordUri = String.valueOf(thumbUri);
@@ -602,8 +606,8 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     FirebaseDatabase.getInstance().getReference().child("messages").child(messageKey).
-                                                            child("seen").child(SharedHelper.getKey(getApplicationContext(), LoginActivity.USER_ID))
-                                                            .setValue(SharedHelper.getKey(getApplicationContext(), LoginActivity.USER_ID))
+                                                            child("seen").child(sessionManager.getUserId())
+                                                            .setValue(sessionManager.getUserId())
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -719,7 +723,7 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     //upload thumb image
     private void uploadThumbImage(byte[] thumbByte) {
         final StorageReference thumbFilePathRef = FirebaseStorage.getInstance().getReference().
-                child(SharedHelper.getKey(this, LoginActivity.USER_ID))
+                child(sessionManager.getUserId())
                 .child("chat_images").child(System.currentTimeMillis() + ".jpg");
         thumbFilePathRef.putBytes(thumbByte).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -740,8 +744,8 @@ public class ChatActivity extends AppCompatActivity implements AudioRecordView.R
     private void sendMessage(String s) {
         String message = audioRecordView.getMessageView().getText().toString();
         Long time = System.currentTimeMillis();
-        String userNeme = SharedHelper.getKey(this, LoginActivity.USER_NAME);
-        String usetId = SharedHelper.getKey(this, LoginActivity.USER_ID);
+        String userNeme = sessionManager.getUserName();
+        String usetId = sessionManager.getUserId();
         final String messageKey = FirebaseDatabase.getInstance().getReference().push().getKey();
         String imageUri = s;
         String recordUri = "";

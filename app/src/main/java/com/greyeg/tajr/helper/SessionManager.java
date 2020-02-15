@@ -55,6 +55,14 @@ public class SessionManager  {
         editor.commit();
     }
 
+    public void saveSession(String token,String is_login,String login_from){
+        editor.putString(TOKEN,token);
+        editor.putString(IS_LOGIN,is_login);
+        editor.putString(LOG_IN_FROM,login_from);
+        editor.commit();
+
+    }
+
     public void SaveEmailAndPassword(String email,String pass){
         editor.putString(REMEMBERED_EMAIL,email);
         editor.putString(REMEMBERED_PASS,pass);
@@ -71,11 +79,67 @@ public class SessionManager  {
 
     public void setIsRemembered(boolean isRemembered){
         editor.putBoolean(REMEMBER_PASS,isRemembered);
+        editor.commit();
     }
     public boolean isRemembered(){
         return sharedPreferences.getBoolean(REMEMBER_PASS,false);
     }
 
+    public String getToken(){
+        return sharedPreferences.getString(TOKEN,null);
+    }
 
 
+    public  String getLogInFrom() {
+        return sharedPreferences.getString(LOG_IN_FROM,null);
+    }
+
+    public  String getUserName() {
+        return sharedPreferences.getString(USER_NAME,null);
+    }
+
+    public  String getUserType() {
+        return sharedPreferences.getString(USER_TYPE,null);
+    }
+
+    public  String getUserId() {
+        return sharedPreferences.getString(USER_ID,null);
+    }
+
+    public  String getIsTajr() {
+        return sharedPreferences.getString(IS_TAJR,null);
+    }
+
+    public  String getParentTajrId() {
+        return sharedPreferences.getString(PARENT_TAJR_ID,null);
+    }
+
+
+    public  String getIsLogin() {
+        return sharedPreferences.getString(IS_LOGIN,null);
+    }
+    public  void setIsLogin(String is_login) {
+        editor.putString(IS_LOGIN,is_login);
+        editor.commit();
+    }
+
+    public  String getParentId() {
+        return sharedPreferences.getString(PARENT_ID,null);
+    }
+
+    public  String getRememberPass() {
+        return sharedPreferences.getString(REMEMBER_PASS,null);
+    }
+
+    public  String getRememberedPass() {
+        return sharedPreferences.getString(REMEMBERED_PASS,null);
+    }
+
+    public  String getRememberedEmail() {
+        return sharedPreferences.getString(REMEMBERED_EMAIL,null );
+    }
+
+    public  String getEMPLOYEE() {
+        return sharedPreferences.getString(EMPLOYEE,null);
+    }
 }

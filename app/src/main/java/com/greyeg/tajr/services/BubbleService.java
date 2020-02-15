@@ -42,7 +42,7 @@ import com.greyeg.tajr.helper.EndlessRecyclerViewScrollListener;
 import com.greyeg.tajr.helper.ExtraDataHelper;
 import com.greyeg.tajr.helper.NetworkUtil;
 import com.greyeg.tajr.helper.ScreenHelper;
-import com.greyeg.tajr.helper.SharedHelper;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.UserNameEvent;
 import com.greyeg.tajr.models.AllProducts;
 import com.greyeg.tajr.models.BotBlock;
@@ -101,6 +101,7 @@ public class BubbleService extends Service
     WindowManager.LayoutParams dialogParams;
     WindowManager.LayoutParams subscribersDialogParams;
     WindowManager.LayoutParams newOrderDialogParams;
+    private String token=SessionManager.getInstance(this).getToken();
     public  String  userName=null;
     public  String psid =null;
     public  String page=null;
@@ -243,8 +244,6 @@ public class BubbleService extends Service
             Toast.makeText(this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
             return;
         }
-        String token= SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN);
-        Log.d("SUBSCRIPERR", "token: "+token);
         startFlasher();
         SubscribersRepo
                 .getInstance()
@@ -303,7 +302,6 @@ public class BubbleService extends Service
             return;
         }
         setBroadCastLoading(View.VISIBLE);
-        String token=SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN);
 
         BotBlocksRepo
                 .getInstance()
@@ -388,7 +386,7 @@ public class BubbleService extends Service
 
 
 
-        Log.d("ORDERRRR", "token : "+SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN));
+        Log.d("ORDERRRR", "token : "+token);
         Log.d("ORDERRRR", "client_name: "+client_name);
         Log.d("ORDERRRR", "client_order_phone1: "+client_order_phone1);
         Log.d("ORDERRRR", "client_area: "+client_area);
@@ -396,7 +394,6 @@ public class BubbleService extends Service
         Log.d("ORDERRRR", "CITY ID: "+CITY_ID);
         Log.d("ORDERRRR", "product id: "+orderItems.get(0).getProduct_id());
 
-        String token=SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN);
 
 
 //        HashMap<String,Object> extras=new HashMap<>();
@@ -772,7 +769,6 @@ public class BubbleService extends Service
         }
         setBroadCastLoading(View.VISIBLE);
         mWindowManager.removeView(botBlocksDialog);
-        String token=SharedHelper.getKey(getApplicationContext(),LoginActivity.TOKEN);
         BotBlocksRepo
                 .getInstance()
                 .sendBroadcast(token, psid,page,blockId)
@@ -1135,7 +1131,6 @@ public class BubbleService extends Service
 
 
     private void getProducts(String page){
-        String token=SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN);
         ProductsRepo.getInstance()
                 .getProducts(token,null,page,"10")
                 .subscribeOn(Schedulers.io())
@@ -1178,8 +1173,7 @@ public class BubbleService extends Service
         }
         CitiesRepo
                 .getInstance()
-                .getCities(SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN),
-                        SharedHelper.getKey(getApplicationContext(), LoginActivity.PARENT_ID))
+                .getCities(token, SessionManager.getInstance(getApplicationContext()).getParentId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<Cities>>() {

@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.greyeg.tajr.R;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.jobs.ReminderUtilities;
 
@@ -44,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
 //        }
 
 
-        if (SharedHelper.getKey(this,LoginActivity.IS_LOGIN).equals("yes")){
+        if (SessionManager.getInstance(getApplicationContext()).getIsLogin().equals("yes")){
            goTo(MainActivity.class);
         }else {
             goTo(LoginActivity.class);

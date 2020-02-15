@@ -15,6 +15,7 @@ import com.greyeg.tajr.activities.EmptyCallActivity;
 import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.helper.CallTimeManager;
 import com.greyeg.tajr.helper.CurrentCallListener;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.CurrentOrderData;
 import com.greyeg.tajr.models.CurrentOrderResponse;
@@ -97,8 +98,8 @@ public class CallsReceiver extends BroadcastReceiver {
 //                 });
 
                  PhoneRepo.getInstance()
-                         .getPhoneData(SharedHelper.getKey(context, LoginActivity.TOKEN),
-                                 SharedHelper.getKey(context, LoginActivity.USER_ID),
+                         .getPhoneData(SessionManager.getInstance(context).getToken(),
+                                 SessionManager.getInstance(context).getUserId(),
                                  incomingNumber)
                          .subscribeOn(Schedulers.io())
                          .observeOn(AndroidSchedulers.mainThread())

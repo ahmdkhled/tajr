@@ -40,6 +40,7 @@ import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.adapters.OrderProductsAdapter;
 import com.greyeg.tajr.helper.CallTimeManager;
 import com.greyeg.tajr.helper.NetworkUtil;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.ViewAnimation;
 import com.greyeg.tajr.models.CallActivity;
@@ -196,6 +197,7 @@ public class CurrentOrderFragment extends Fragment
     private OrderProductsAdapter orderProductsAdapter;
     private AddProductDialog.OnProductAdded onProductAdded;
     private AddProductDialog addProductDialog;
+    private String token= SessionManager.getInstance(getContext()).getToken();
 
     public CurrentOrderFragment() {
         // Required empty public constructor
@@ -378,11 +380,8 @@ public class CurrentOrderFragment extends Fragment
     private void updateShippingOrder(String action) {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.fetching_th_order));
         Api api = BaseClient.getBaseClient().create(Api.class);
-        api.updateShippingOrders(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
-                CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
-                action,
-                CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId()
+        api.updateShippingOrders(token, CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
+                action, CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId()
         ).enqueue(new Callback<UpdateOrderNewResponse>() {
             @Override
             public void onResponse(@NotNull Call<UpdateOrderNewResponse> call, @NotNull Response<UpdateOrderNewResponse> response) {
@@ -413,7 +412,7 @@ public class CurrentOrderFragment extends Fragment
     public void updateClientData() {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.fetching_th_order));
         BaseClient.getBaseClient().create(Api.class).updateClientData(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 client_name.getText().toString(),
@@ -442,8 +441,7 @@ public class CurrentOrderFragment extends Fragment
 
     public void updateSingleOrderData(ProgressDialog progressDialog) {
         BaseClient.getBaseClient().create(Api.class).updateSingleOrderData(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
-                CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
+                token,CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 orderProductsAdapter.getProducts().get(0).getId(),
                 client_city.getTag().toString(),
@@ -478,8 +476,7 @@ public class CurrentOrderFragment extends Fragment
 
     public void updateOrderMultiOrderData(ProgressDialog progressDialog) {
         BaseClient.getBaseClient().create(Api.class).updateOrderMultiOrderData(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
-                CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
+                token,CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 client_city.getTag().toString(),
                 discount.getText().toString().trim()
@@ -504,7 +501,6 @@ public class CurrentOrderFragment extends Fragment
     }
 
     private void normalUpdateOrder(String status) {
-        String token=SharedHelper.getKey(getActivity(), LoginActivity.TOKEN);
         currentOrderViewModel
                 .updateOrder(token,
                         CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
@@ -528,7 +524,7 @@ public class CurrentOrderFragment extends Fragment
 
 //
 //        BaseClient.getBaseClient().create(Api.class).updateOrders(
-//                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+//                token,
 //                CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
 //                CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
 //                status
@@ -600,7 +596,6 @@ public class CurrentOrderFragment extends Fragment
         }
 
 
-        String token=SharedHelper.getKey(getContext(),LoginActivity.TOKEN);
         CallTimePayload payload=new CallTimePayload(token,order_id,callActivity);
 
         currentOrderViewModel
@@ -633,7 +628,7 @@ public class CurrentOrderFragment extends Fragment
 
                     Api api = BaseClient.getBaseClient().create(Api.class);
                     api.updateDelayedOrders(
-                            SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                            token,
                             CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                             dateString,
                             CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
@@ -699,7 +694,7 @@ public class CurrentOrderFragment extends Fragment
     private void addProductToMultiOrder(int number, int index) {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.add_product));
         BaseClient.getBaseClient().create(Api.class).addProduct(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 CurrentOrderData.getInstance().getSingleOrderProductsResponse().getProducts().get(index).getProductId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
@@ -954,7 +949,7 @@ public class CurrentOrderFragment extends Fragment
 
     private void getSingleOrderProducts() {
         BaseClient.getBaseClient().create(Api.class)
-                .getSingleOrderProducts(SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                .getSingleOrderProducts(token,
                 //.getSingleOrderProducts("YIXRKEsDUv4VpAP5BaroqlJb",
                         //null
                         CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId()
@@ -1167,7 +1162,7 @@ public class CurrentOrderFragment extends Fragment
 
     private void updateProgress() {
         BaseClient.getBaseClient().create(Api.class)
-                .getRemainingOrders(SharedHelper.getKey(getActivity(), LoginActivity.TOKEN))
+                .getRemainingOrders(token)
                 .enqueue(new Callback<RemainingOrdersResponse>() {
                     @Override
                     public void onResponse(Call<RemainingOrdersResponse> call, Response<RemainingOrdersResponse> response) {
@@ -1255,7 +1250,6 @@ public class CurrentOrderFragment extends Fragment
     public void onReasonSubmitted(int reason) {
 
         normalUpdateOrder(OrderUpdateStatusEnums.client_cancel.name());
-        String token=SharedHelper.getKey(getContext(),LoginActivity.TOKEN);
         currentOrderViewModel
                 .addReasonToOrder(token,String.valueOf(orderId),String.valueOf(reason));
         observeAddingReasonToOrder();

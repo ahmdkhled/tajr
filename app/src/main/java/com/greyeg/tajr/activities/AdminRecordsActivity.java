@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.adapters.AdminRecordsAdapter;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.AdminRecordsResponse;
 import com.greyeg.tajr.server.Api;
@@ -28,6 +29,7 @@ public class AdminRecordsActivity extends AppCompatActivity {
     List<AdminRecordsResponse.Record> records;
     LinearLayoutManager linearLayoutManager;
     AdminRecordsAdapter adapter;
+    private String token= SessionManager.getInstance(this).getToken();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class AdminRecordsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.all_ecords);
         linearLayoutManager = new LinearLayoutManager(this);
         recordsRecyclerView.setLayoutManager(linearLayoutManager);
-        BaseClient.getBaseClient().create(Api.class).getRecords(SharedHelper.getKey(this,LoginActivity.TOKEN))
+        BaseClient.getBaseClient().create(Api.class).getRecords(token)
                 .enqueue(new Callback<AdminRecordsResponse>() {
                     @Override
                     public void onResponse(Call<AdminRecordsResponse> call, Response<AdminRecordsResponse> response) {

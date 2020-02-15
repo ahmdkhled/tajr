@@ -65,6 +65,7 @@ import com.greyeg.tajr.activities.WorkHistoryActivity;
 import com.greyeg.tajr.adapters.DrawerAdapter;
 import com.greyeg.tajr.helper.AccessibilityManager;
 import com.greyeg.tajr.helper.ScreenHelper;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.font.RobotoTextView;
 import com.greyeg.tajr.activities.NewOrderActivity;
@@ -764,7 +765,7 @@ public class MainActivity extends AppCompatActivity
         View headerView = getLayoutInflater().inflate(
                 R.layout.header_navigation_drawer_travel, mDrawerList, false);
         TextView userName = headerView.findViewById(R.id.user_name);
-        userName.setText(SharedHelper.getKey(getApplicationContext(), LoginActivity.USER_NAME));
+        userName.setText(SessionManager.USER_NAME);
 
         mDrawerList.addHeaderView(headerView);// Add header before adapter (for
         // pre-KitKat)
@@ -974,7 +975,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
             if (position == 7) {
-                SharedHelper.putKey(getApplicationContext(), LoginActivity.IS_LOGIN, "no");
+                SessionManager.getInstance(getApplicationContext()).setIsLogin("no");
                 intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

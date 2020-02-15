@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.font.RobotoTextView;
 import com.greyeg.tajr.models.CurrentOrderData;
@@ -166,7 +167,7 @@ public class MissedCallScreenNewOrderContent implements Content {
 
     private void getSingleOrderProducts() {
         BaseClient.getBaseClient().create(Api.class)
-                .getSingleOrderProducts(SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                .getSingleOrderProducts(SessionManager.getInstance(mContext).getToken(),
                         CurrentOrderData.getInstance().getMissedCallOrderResponse().getUserId()
                 ).enqueue(new Callback<SingleOrderProductsResponse>() {
             @Override

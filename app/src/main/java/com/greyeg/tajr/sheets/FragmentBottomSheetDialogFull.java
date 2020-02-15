@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.AllProducts;
 import com.greyeg.tajr.models.ProductData;
@@ -97,7 +98,7 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment {
     }
 
     public void getProducts() {
-        BaseClient.getBaseClient().create(Api.class).getProducts(SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+        BaseClient.getBaseClient().create(Api.class).getProducts(SessionManager.getInstance(getContext()).getToken(),
                 orderResponse.getUserId())
                 .enqueue(new Callback<AllProducts>() {
                     @Override

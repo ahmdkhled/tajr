@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.DeleteAddProductResponse;
 import com.greyeg.tajr.models.CurrentOrderData;
@@ -91,7 +92,7 @@ public class MultiOrderProductsAdapter extends RecyclerView.Adapter<MultiOrderPr
         Api api = BaseClient.getBaseClient().create(Api.class);
 
         api.deleteProduct(
-                SharedHelper.getKey(context, LoginActivity.TOKEN),
+                SessionManager.getInstance(context).getToken(),
                 orderId,
                 extra_product_key,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),

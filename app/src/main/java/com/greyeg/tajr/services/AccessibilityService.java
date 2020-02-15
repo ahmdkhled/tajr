@@ -15,6 +15,7 @@ import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.activities.SettingsActivity;
 import com.greyeg.tajr.helper.NetworkUtil;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.TimeCalculator;
 import com.greyeg.tajr.helper.UserNameEvent;
@@ -121,7 +122,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         }
 
         TimeCalculator.getInstance(this).setStatus(TimeCalculator.PM,TimeCalculator.UPLOADING);
-        String token= SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN);
+        String token= SessionManager.getInstance(getApplicationContext()).getToken();
         ArrayList<Activity> activityList=TimeCalculator.getInstance(getApplicationContext()).getIdleWorkTime();
         UserTimePayload userTimePayload=
                 new UserTimePayload(token,activityList);

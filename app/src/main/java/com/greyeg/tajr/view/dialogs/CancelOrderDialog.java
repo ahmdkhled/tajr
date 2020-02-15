@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.adapters.CancellationReasonsAdapter;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.AddReasonResponse;
 import com.greyeg.tajr.models.CancellationReason;
@@ -49,6 +50,8 @@ public class CancelOrderDialog extends DialogFragment implements CancellationRea
     ImageView submitNewReason;
     @BindView(R.id.newReason)
     EditText newReason;
+    String token= SessionManager.getInstance(getContext()).getToken();
+
     private OnReasonSubmitted onReasonSubmitted;
 
     public CancelOrderDialog(OnReasonSubmitted onReasonSubmitted) {
@@ -61,7 +64,7 @@ public class CancelOrderDialog extends DialogFragment implements CancellationRea
         View v=inflater.inflate(R.layout.cancel_order_dialog,container,false);
         ButterKnife.bind(this,v);
         currentOrderViewModel= ViewModelProviders.of(this).get(CurrentOrderViewModel.class);
-        String token= SharedHelper.getKey(getContext(), LoginActivity.TOKEN);
+        String token= SessionManager.getInstance(getContext()).getToken();
 
         //getLifecycle().addObserver(currentOrderViewModel);
 
@@ -80,7 +83,7 @@ public class CancelOrderDialog extends DialogFragment implements CancellationRea
                 }
                 newReason.setText("");
                currentOrderViewModel
-                       .addReason(SharedHelper.getKey(getContext(), LoginActivity.TOKEN),reason)
+                       .addReason(token,reason)
                        .observe(getActivity(), new Observer<AddReasonResponse>() {
                            @Override
                            public void onChanged(AddReasonResponse addReasonResponse) {

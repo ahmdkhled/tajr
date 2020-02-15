@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.Message;
 import com.rygelouv.audiosensei.player.AudioSenseiPlayerView;
@@ -44,7 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         String id = message.getUserId();
 
-        if (!id.equals(SharedHelper.getKey(context, LoginActivity.USER_ID))) {
+        if (!id.equals(SessionManager.getInstance(context).getUserId())) {
             return VIEW_TYPE_ITEM_TO_ME;
         } else {
             return VIEW_TYPE_ITEM_FROM_ME;

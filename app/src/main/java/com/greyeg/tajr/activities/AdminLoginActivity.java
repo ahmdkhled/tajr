@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.greyeg.tajr.R;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.font.RobotoTextView;
 import com.greyeg.tajr.models.User;
@@ -126,17 +127,16 @@ public class AdminLoginActivity extends AppCompatActivity {
                     api.adminLogin(email.getText().toString(), pass.getText().toString()).enqueue(new Callback<UserResponse>() {
                         @Override
                         public void onResponse(@NotNull Call<UserResponse> call, final Response<UserResponse> response) {
-
+                            UserResponse userResponse=response.body();
                             Log.d("rrrrrrrrrrrr", "onResponse: response"+response.body().getCode());
-                            if (response.body() != null) {
+                            if (userResponse != null) {
                                 if (response.body().getCode().equals("1202") || response.body().getCode().equals("1212")) {
                                     Log.d("rrrrrrrrrrrr", "onResponse: response + 1202");
                                     Log.d("rrrrrrrrrrrr", "onResponse: response+1202+fire");
                                     loginBtn.setVisibility(View.VISIBLE);
                                     progressLogin.setVisibility(View.GONE);
-                                    SharedHelper.putKey(getApplicationContext(), LOG_IN_FROM, "admin");
-                                    SharedHelper.putKey(getApplicationContext(), IS_LOGIN, "yes");
-                                    SharedHelper.putKey(getApplicationContext(), TOKEN, response.body().getToken());
+                                    SessionManager.getInstance(getApplicationContext())
+                                            .saveSession(userResponse.getToken(),"yes","admin");
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);

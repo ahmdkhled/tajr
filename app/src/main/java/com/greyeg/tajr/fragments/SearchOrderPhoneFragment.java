@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.SimpleOrderResponse;
 import com.greyeg.tajr.models.UpdateOrderNewResponse;
@@ -111,6 +112,7 @@ public class SearchOrderPhoneFragment extends Fragment {
     private String order_ud;
     private String phone;
     ProgressDialog progressDialog;
+    private SessionManager sessionManager;
 
     public SearchOrderPhoneFragment() {
         // Required empty public constructor
@@ -120,6 +122,7 @@ public class SearchOrderPhoneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        sessionManager=SessionManager.getInstance(getContext());
         return inflater.inflate(R.layout.fragment_search_order_phone, container, false);
     }
 
@@ -163,9 +166,7 @@ public class SearchOrderPhoneFragment extends Fragment {
         progressSearch.setVisibility(View.VISIBLE);
         noOrder.setVisibility(View.GONE);
         api.getPhoneData(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
-                SharedHelper.getKey(getActivity(), LoginActivity.USER_ID),
-                phoneInput.getText().toString()
+                sessionManager.getToken(),sessionManager.getUserId(), phoneInput.getText().toString()
 
         ).enqueue(new Callback<SimpleOrderResponse>() {
             @Override
@@ -194,9 +195,9 @@ public class SearchOrderPhoneFragment extends Fragment {
     void updateOrder(String value) {
         Api api = BaseClient.getBaseClient().create(Api.class);
         api.updateOrders(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                sessionManager.getToken(),
                 order_ud,
-                SharedHelper.getKey(getActivity(), LoginActivity.USER_ID),
+                sessionManager.getUserId(),
                 value
         ).enqueue(new Callback<UpdateOrderNewResponse>() {
             @Override

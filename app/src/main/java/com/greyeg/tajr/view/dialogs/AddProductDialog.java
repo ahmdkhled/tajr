@@ -27,6 +27,7 @@ import com.greyeg.tajr.adapters.ProductAdapter;
 import com.greyeg.tajr.helper.EndlessRecyclerViewScrollListener;
 import com.greyeg.tajr.helper.ExtraDataHelper;
 import com.greyeg.tajr.helper.ProductUtil;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.font.RobotoTextView;
 import com.greyeg.tajr.models.AllProducts;
@@ -142,7 +143,7 @@ public class AddProductDialog extends DialogFragment implements ProductAdapter.O
             productAdapter.setLoadingView(page);
 
         Log.d("PAGINATIONN","getProducts "+page);
-        String token= SharedHelper.getKey(getContext(), LoginActivity.TOKEN);
+        String token= SessionManager.getInstance(getContext()).getToken();
         ProductsRepo
                 .getInstance()
                 .getProducts(token,null,page,"10")

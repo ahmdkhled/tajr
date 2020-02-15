@@ -29,6 +29,7 @@ import com.greyeg.tajr.R;
 import com.greyeg.tajr.calc.CalcDialog;
 import com.greyeg.tajr.helper.CurrentCallListener;
 import com.greyeg.tajr.helper.NetworkUtil;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.TimeCalculator;
 import com.greyeg.tajr.models.Activity;
@@ -99,6 +100,7 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     private MenuItem micMode;
     private NewOrderActivityVM newOrderActivityVM;
     private static long startTime;
+    private String token= SessionManager.getInstance(this).getToken();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -399,7 +401,6 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
         }
 
         TimeCalculator.getInstance(this).setStatus(TimeCalculator.APP,TimeCalculator.UPLOADING);
-        String token=SharedHelper.getKey(this, LoginActivity.TOKEN);
         ArrayList<Activity>activityList=TimeCalculator.getInstance(this).getIdleWorkTime();
         UserTimePayload userTimePayload=new UserTimePayload(token,activityList);
         Log.d("TIMERCALCCzz", "before activity : "+activityList.size());
@@ -553,7 +554,7 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
                             if (callDetails.getType().equals("MISSED") || callDetails.getType().equals("REJECTED")) {
                                 if (callDetails.getActiveId().equals(SharedHelper.getKey(getApplicationContext(),
                                         "activated_sub_id"))) {
-                                    BaseClient.getBaseClient().create(Api.class).missedCall(SharedHelper.getKey(getApplicationContext(), LoginActivity.TOKEN), callDetails.getPhone())
+                                    BaseClient.getBaseClient().create(Api.class).missedCall(token, callDetails.getPhone())
                                             .enqueue(new Callback<UploadPhoneResponse>() {
                                                 @Override
                                                 public void onResponse(Call<UploadPhoneResponse> call, Response<UploadPhoneResponse> response) {
@@ -637,9 +638,9 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
                 MultipartBody.Part image = MultipartBody.Part.createFormData("voice_note", file.getName(), surveyBody);
                 RequestBody title1 = RequestBody.create(MediaType.parse("text/plain"), CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId());
                 RequestBody duration = RequestBody.create(MediaType.parse("text/plain"), call.getDuration());
-                RequestBody token = RequestBody.create(MediaType.parse("text/plain"), SharedHelper.getKey(this, LoginActivity.TOKEN));
+                RequestBody tokenBody = RequestBody.create(MediaType.parse("text/plain"), token);
 
-                BaseClient.getBaseClient().create(Api.class).uploadVoice(token, title1, duration, image).enqueue(new Callback<UploadVoiceResponse>() {
+                BaseClient.getBaseClient().create(Api.class).uploadVoice(tokenBody, title1, duration, image).enqueue(new Callback<UploadVoiceResponse>() {
                     @Override
                     public void onResponse(Call<UploadVoiceResponse> call2, Response<UploadVoiceResponse> response) {
                         databaseManager.updateCallDetails(call);

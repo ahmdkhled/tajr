@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.helper.ViewAnimation;
 import com.greyeg.tajr.models.DeleteAddProductResponse;
@@ -169,6 +170,8 @@ public class SearchOrderFragment extends Fragment {
     private boolean rotate = false;
     private boolean rotateshipper = false;
     private boolean productExbandable = false;
+
+    String token= SessionManager.getInstance(getContext()).getToken();
 
     public SearchOrderFragment() {
         // Required empty public constructor
@@ -321,7 +324,7 @@ public class SearchOrderFragment extends Fragment {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.fetching_th_order));
         Api api = BaseClient.getBaseClient().create(Api.class);
         api.updateShippingOrders(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 action,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId()
@@ -346,7 +349,7 @@ public class SearchOrderFragment extends Fragment {
     public void updateClientData() {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.fetching_th_order));
         BaseClient.getBaseClient().create(Api.class).updateClientData(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 client_name.getText().toString(),
@@ -374,7 +377,7 @@ public class SearchOrderFragment extends Fragment {
 
     public void updateSingleOrderData(ProgressDialog progressDialog) {
         BaseClient.getBaseClient().create(Api.class).updateSingleOrderData(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 single_order_product_spinner.getTag().toString(),
@@ -407,7 +410,7 @@ public class SearchOrderFragment extends Fragment {
 
     public void updateOrderMultiOrderData(ProgressDialog progressDialog) {
         BaseClient.getBaseClient().create(Api.class).updateOrderMultiOrderData(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 client_city.getTag().toString(),
@@ -434,7 +437,7 @@ public class SearchOrderFragment extends Fragment {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.fetching_th_order));
 
         BaseClient.getBaseClient().create(Api.class).updateOrders(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                 status
@@ -472,7 +475,7 @@ public class SearchOrderFragment extends Fragment {
 
                     Api api = BaseClient.getBaseClient().create(Api.class);
                     api.updateDelayedOrders(
-                            SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                            token,
                             CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                             dateString,
                             CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
@@ -564,7 +567,7 @@ public class SearchOrderFragment extends Fragment {
     private void addProductToMultiOrder(int number, int index) {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.add_product));
         BaseClient.getBaseClient().create(Api.class).addProduct(
-                SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                token,
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                 CurrentOrderData.getInstance().getSingleOrderProductsResponse().getProducts().get(index).getProductId(),
                 CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
@@ -627,7 +630,7 @@ public class SearchOrderFragment extends Fragment {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.fetching_th_order));
         BaseClient.getBaseClient().create(Api.class).
                 getPhoneData2(
-                        SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                        token,
                         SharedHelper.getKey(getActivity(), LoginActivity.USER_ID),
                         phoneInput.getText().toString()
 
@@ -773,7 +776,7 @@ public class SearchOrderFragment extends Fragment {
 
     private void getSingleOrderProducts() {
         BaseClient.getBaseClient().create(Api.class)
-                .getSingleOrderProducts(SharedHelper.getKey(getActivity(), LoginActivity.TOKEN),
+                .getSingleOrderProducts(token,
                         CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId()
                 ).enqueue(new Callback<SingleOrderProductsResponse>() {
             @Override

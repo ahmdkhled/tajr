@@ -15,6 +15,7 @@ import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
 import com.greyeg.tajr.models.SimpleOrderResponse;
 import com.greyeg.tajr.activities.NewOrderActivity;
@@ -37,7 +38,7 @@ public class OrderReminderJobService extends JobService {
     public boolean onStartJob(final JobParameters jobParameters) {
 
         Api api = BaseClient.getBaseClient().create(Api.class);
-        api.getFuckenOrders(SharedHelper.getKey(this, LoginActivity.TOKEN)).enqueue(new Callback<SimpleOrderResponse>() {
+        api.getFuckenOrders(SessionManager.getInstance(getApplicationContext()).getToken()).enqueue(new Callback<SimpleOrderResponse>() {
             @Override
             public void onResponse(Call<SimpleOrderResponse> call, Response<SimpleOrderResponse> response) {
                 Log.d("OrderReminderJobService", "onResponse: " + response.message());
