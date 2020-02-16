@@ -39,7 +39,8 @@ public class SessionManager  {
     }
 
     public void saveSession(UserResponse userResponse,String is_login,String login_from){
-        editor.putString(TOKEN,userResponse.getToken());
+        editor.putString(TOKEN,userResponse.getData().getLogin_data().getToken());
+        Log.d("TOEEKKEK", "saveSession: "+userResponse.getToken());
         editor.putString(LOG_IN_FROM,login_from);
         if (userResponse.getClients()!=null&&!userResponse.getClients().isEmpty())
             editor.putString(PARENT_ID,userResponse.getClients().get(0).getId());

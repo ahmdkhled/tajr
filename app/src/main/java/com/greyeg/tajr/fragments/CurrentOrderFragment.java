@@ -796,10 +796,10 @@ public class CurrentOrderFragment extends Fragment
                     .show();
             return;
         }
-        Log.d("CONFIRMMMM", " getting CurrentOrder");
+        Log.d("CONFIRMMMM", " getting CurrentOrder "+token);
 
         currentOrderViewModel
-                .getCurrentOrder(SharedHelper.getKey(getContext(),LoginActivity.TOKEN))
+                .getCurrentOrder(token)
                 .observe(getActivity(), new Observer<CurrentOrderResponse>() {
                     @Override
                     public void onChanged(CurrentOrderResponse currentOrderResponse) {

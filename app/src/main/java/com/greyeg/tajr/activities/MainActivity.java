@@ -765,7 +765,7 @@ public class MainActivity extends AppCompatActivity
         View headerView = getLayoutInflater().inflate(
                 R.layout.header_navigation_drawer_travel, mDrawerList, false);
         TextView userName = headerView.findViewById(R.id.user_name);
-        userName.setText(SessionManager.USER_NAME);
+        userName.setText(SessionManager.getInstance(this).getUserName());
 
         mDrawerList.addHeaderView(headerView);// Add header before adapter (for
         // pre-KitKat)
