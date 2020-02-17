@@ -27,6 +27,7 @@ import com.android.internal.telephony.ITelephony;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.calc.CalcDialog;
+import com.greyeg.tajr.fragments.CurrentOrderFrag;
 import com.greyeg.tajr.helper.CurrentCallListener;
 import com.greyeg.tajr.helper.NetworkUtil;
 import com.greyeg.tajr.helper.SessionManager;
@@ -95,7 +96,7 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     // work time
     @BindView(R.id.timer)
     TextView timerTv;
-    CurrentOrderFragment currentOrderFragment;
+    CurrentOrderFrag currentOrderFragment;
     private Menu callControllerMenu;
     private MenuItem micMode;
     private NewOrderActivityVM newOrderActivityVM;
@@ -146,7 +147,7 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
         openRecords();
         initToolBar();
         initCallController();
-        currentOrderFragment = new CurrentOrderFragment();
+        currentOrderFragment = new CurrentOrderFrag();
         missedCallFragment = new MissedCallFragment();
         checkFromWhat();
 

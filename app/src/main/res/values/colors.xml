@@ -50,6 +50,7 @@
     <color name="status_bg">#F1EEF7</color>
     <color name="view_bg">#D8D7D8</color>
     <color name="gray">#E4E4E4</color>
+    <color name="gray2">#ECECEC</color>
 
     <color name="colorGreen">#80B52B</color>
     <color name="colorGreenDark">#162303</color>
