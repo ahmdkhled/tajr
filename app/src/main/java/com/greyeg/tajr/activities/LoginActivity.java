@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                                     loginBtn.setVisibility(View.VISIBLE);
                                     progressLogin.setVisibility(View.GONE);
                                     SessionManager.getInstance(getApplicationContext())
-                                            .saveSession(userResponse,"true",SessionManager.EMPLOYEE);
+                                            .saveSession(userResponse,"yes",SessionManager.EMPLOYEE);
                                     sessionManager.setIsRemembered(rememberPass.isChecked());
                                     if (rememberPass.isChecked()) {
                                         sessionManager
