@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         checkAppVersion();
         initDrawer();
+        initViews();
         requestPermissions();
 
 

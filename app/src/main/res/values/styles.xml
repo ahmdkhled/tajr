@@ -158,6 +158,7 @@
         <item name="android:paddingStart">1dp</item>
         <item name="android:padding">10dp</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/main_color_grey_600</item>
         <item name="android:background">@drawable/order_item_bg</item>
     </style>
 

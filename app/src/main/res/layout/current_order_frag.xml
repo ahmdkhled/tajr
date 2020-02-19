@@ -203,12 +203,12 @@
 
         <Spinner
             android:id="@+id/client_city"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginEnd="26dp"
-            android:background="@color/red"
             android:gravity="center"
+            android:background="@color/gray"
             android:tag="client_name_label" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -282,7 +282,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/real_shipping_return_cost"
                 android:inputType="text"
-                android:hint="@string/order_total_cost"
+                android:hint="@string/real_shipping_return_cost"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout

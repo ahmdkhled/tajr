@@ -38,7 +38,8 @@
             android:exported="true"
             android:label=""
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.AdminRecordsActivity"
             android:parentActivityName=".activities.MainActivity" />

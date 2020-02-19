@@ -931,7 +931,7 @@ public class CurrentOrderFragment extends Fragment
         shipping_cost.setText(order.getShippingCost());
 
         Log.d(TAG, "fillFieldsWithOrderData: "+orderResponse.getOrder().getClientCity() +" >> "+order.getShippingCost() +"  --  "+order.getTotalOrderCost());
-        //order_total_cost.setText(order.getTotalOrderCost());
+        order_total_cost.setText(order.getTotalOrderCost());
 
         initCities(orderResponse);
         getSingleOrderProducts();
