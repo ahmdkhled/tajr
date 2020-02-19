@@ -97,6 +97,7 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
     @BindView(R.id.timer)
     TextView timerTv;
     CurrentOrderFrag currentOrderFragment;
+    CurrentOrderFragment fragmentCurrentOrder;
     private Menu callControllerMenu;
     private MenuItem micMode;
     private NewOrderActivityVM newOrderActivityVM;
@@ -148,10 +149,11 @@ public class NewOrderActivity extends AppCompatActivity implements CurrentCallLi
         initToolBar();
         initCallController();
         currentOrderFragment = new CurrentOrderFrag();
+        fragmentCurrentOrder=new CurrentOrderFragment();
         missedCallFragment = new MissedCallFragment();
         checkFromWhat();
 
-        showFragment(currentOrderFragment,false);
+        showFragment(fragmentCurrentOrder,false);
 
         startTime=newOrderActivityVM.getStartTime();
 

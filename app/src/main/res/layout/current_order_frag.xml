@@ -254,9 +254,47 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/order_type"
+                android:inputType="number"
+                android:hint="@string/order_type"
+                style="@style/oder_item_edit_text_style_editable2" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/ntes"
                 android:inputType="text"
                 android:hint="@string/order_total_cost"
+                style="@style/oder_item_edit_text_style_editable2" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/real_shipping_return_cost"
+                android:inputType="text"
+                android:hint="@string/order_total_cost"
+                style="@style/oder_item_edit_text_style_editable2" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/client_feedback"
+                android:inputType="text"
+                android:hint="@string/client_feedback"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -266,21 +304,186 @@
 
 
     </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/normalUpdateButtonShipping"
+        <View
+            android:id="@+id/back_drop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#4D000000"
+            android:clickable="true"
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/normal_update_actions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_16sdp"
-            android:clickable="true"
-            android:tint="@android:color/white"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="normal"
-            app:rippleColor="@android:color/white"
-            app:srcCompat="@drawable/fab_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/normal_order_data_confirmed"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="Confirm Order Data" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/normal_client_phone_error"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="@string/client_phone_error" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/normal_no_answer"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="@string/client_noanswer" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/normal_delay"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="@string/delay_order" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/normal_client_cancel"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="Cancel Order" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/normal_busy"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="@string/client_busy" />
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/normalUpdateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:clickable="true"
+                android:tint="@android:color/white"
+                app:backgroundTint="@color/colorPrimary"
+                app:fabSize="normal"
+                app:rippleColor="@android:color/white"
+                app:srcCompat="@drawable/fab_add" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/shipper_update_actions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/deliver"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="@string/deliver" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/return_order"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="@string/Return" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/shipping_no_answer"
+                style="@style/fab_buttons_CardView_Style"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="2dp"
+                app:contentPadding="@dimen/spacing_medium">
+
+                <TextView
+                    style="@style/fab_buttons_TextView_Style"
+                    android:text="@string/client_noanswer" />
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/normalUpdateButtonShipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_16sdp"
+                android:clickable="true"
+                android:tint="@android:color/white"
+                app:backgroundTint="@color/colorPrimary"
+                app:fabSize="normal"
+                app:rippleColor="@android:color/white"
+                app:srcCompat="@drawable/fab_add" />
+        </LinearLayout>
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

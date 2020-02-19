@@ -207,8 +207,9 @@ public class CurrentOrderFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mainView = inflater.inflate(R.layout.fragment_current_order, container, false);
+        mainView = inflater.inflate(R.layout.current_order_frag, container, false);
         ButterKnife.bind(this, mainView);
+
 
 
 
@@ -1083,20 +1084,20 @@ public class CurrentOrderFragment extends Fragment
 
     // init hide and show labels
     private void initLabels() {
-        LinearLayout linearLayout = mainView.findViewById(R.id.order_fields);
-
-        for (int i = 0; i < linearLayout.getChildCount(); i++) {
-            if (!(linearLayout.getChildAt(i) instanceof LinearLayout)) return;
-
-            LinearLayout chiledLinearLayout = linearLayout.findViewById(linearLayout.getChildAt(i).getId());
-            if (chiledLinearLayout != null)
-                chiledLinearLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        runAnimation(chiledLinearLayout.getChildAt(0).getId(), chiledLinearLayout.getChildAt(1).getId());
-                    }
-                });
-        }
+//        LinearLayout linearLayout = mainView.findViewById(R.id.order_fields);
+//
+//        for (int i = 0; i < linearLayout.getChildCount(); i++) {
+//            if (!(linearLayout.getChildAt(i) instanceof LinearLayout)) return;
+//
+//            LinearLayout chiledLinearLayout = linearLayout.findViewById(linearLayout.getChildAt(i).getId());
+//            if (chiledLinearLayout != null)
+//                chiledLinearLayout.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        runAnimation(chiledLinearLayout.getChildAt(0).getId(), chiledLinearLayout.getChildAt(1).getId());
+//                    }
+//                });
+//        }
     }
 
     // animation for show and hide fields labels
