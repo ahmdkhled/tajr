@@ -80,6 +80,7 @@
                 android:id="@+id/order_id"
                 android:inputType="number"
                 android:hint="@string/order_id"
+                android:enabled="false"
                 style="@style/oder_item_edit_text_style_editable2" />
 
 
@@ -97,6 +98,7 @@
                 android:id="@+id/client_name"
                 android:inputType="text"
                 android:hint="@string/client_name"
+                android:enabled="false"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +112,7 @@
                 android:id="@+id/sender_name"
                 android:inputType="text"
                 android:hint="@string/sender_name"
+                android:enabled="false"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,6 +141,7 @@
                 android:id="@+id/status"
                 android:inputType="text"
                 android:hint="@string/status"
+                android:enabled="false"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -150,6 +154,7 @@
                 android:id="@+id/shipping_status"
                 android:inputType="text"
                 android:hint="@string/shipping_state"
+                android:enabled="false"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -174,6 +179,7 @@
                 android:id="@+id/client_order_phone1_boot"
                 android:inputType="text"
                 android:hint="@string/phone_boot"
+                android:enabled="false"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -208,8 +214,10 @@
             tools:layout_height="100dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:background="@color/gray"
-            android:tag="client_name_label" />
+            android:background="@drawable/order_item_bg"
+            android:tag="client_name_label"
+            android:layout_marginTop="5dp"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -244,6 +252,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/order_total_cost"
                 android:inputType="number"
+                android:enabled="false"
                 android:hint="@string/order_total_cost"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -257,6 +266,7 @@
                 android:id="@+id/order_type"
                 android:inputType="number"
                 android:hint="@string/order_type"
+                android:enabled="false"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -270,7 +280,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/ntes"
                 android:inputType="text"
-                android:hint="@string/order_total_cost"
+                android:hint="@string/notes"
                 style="@style/oder_item_edit_text_style_editable2" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout

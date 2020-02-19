@@ -800,7 +800,7 @@ public class CurrentOrderFragment extends Fragment
         if(!NetworkUtil.isConnected(getContext())){
             Alerter.create(getActivity())
                     .enableSwipeToDismiss()
-                    .setBackgroundResource(R.color.red)
+                    .setBackgroundResource(R.color.primary)
                     .setDuration(2500)
                     .setText(getString(R.string.no_connection_message))
                     .show();
