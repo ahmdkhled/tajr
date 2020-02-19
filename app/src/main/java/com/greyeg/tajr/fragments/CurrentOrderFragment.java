@@ -39,6 +39,7 @@ import com.greyeg.tajr.R;
 import com.greyeg.tajr.activities.LoginActivity;
 import com.greyeg.tajr.adapters.OrderProductsAdapter;
 import com.greyeg.tajr.helper.CallTimeManager;
+import com.greyeg.tajr.helper.FabUtil;
 import com.greyeg.tajr.helper.NetworkUtil;
 import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
@@ -199,6 +200,7 @@ public class CurrentOrderFragment extends Fragment
     private AddProductDialog addProductDialog;
     private String token= SessionManager.getInstance(getContext()).getToken();
 
+    private FabUtil fabUtil;
     public CurrentOrderFragment() {
         // Required empty public constructor
     }
@@ -214,6 +216,12 @@ public class CurrentOrderFragment extends Fragment
 
 
         onProductAdded= this;
+        CardView[] buttons={normal_busy,normal_client_cancel,normal_client_phone_error
+                ,normal_delay,normal_no_answer,normal_order_data_confirmed};
+        CardView[] shipperButtons={return_order,shipping_no_answer,deliver};
+
+        fabUtil=new FabUtil(buttons,shipperButtons,back_drop);
+
         initLabels();
         setListeners();
         currentOrderViewModel= ViewModelProviders.of(getActivity()).get(CurrentOrderViewModel.class);
@@ -247,27 +255,28 @@ public class CurrentOrderFragment extends Fragment
             @Override
             public void onClick(View v) {
                 back_drop.setVisibility(View.GONE);
-                toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(normalUpdateButton);
             }
         });
 
         normalUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(normalUpdateButton);
+                //toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(v);
             }
         });
         normalUpdateButtonShipping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabModeShipper(normalUpdateButtonShipping);
+                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
             }
         });
 
         normal_busy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(normalUpdateButton);
                 normalUpdateOrder(OrderUpdateStatusEnums.client_busy.name());
             }
         });
@@ -275,7 +284,7 @@ public class CurrentOrderFragment extends Fragment
         normal_client_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(normalUpdateButton);
                 cancelOrderDialog=new CancelOrderDialog(onReasonSubmitted);
                 cancelOrderDialog.show(getChildFragmentManager(),"CANCEL");
                 //normalUpdateOrder(OrderUpdateStatusEnums.client_cancel.name());
@@ -285,7 +294,7 @@ public class CurrentOrderFragment extends Fragment
         normal_client_phone_error.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(normalUpdateButton);
                 normalUpdateOrder(OrderUpdateStatusEnums.client_phone_error.name());
             }
         });
@@ -293,7 +302,7 @@ public class CurrentOrderFragment extends Fragment
         normal_no_answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(normalUpdateButton);
                 normalUpdateOrder(OrderUpdateStatusEnums.client_noanswer.name());
             }
         });
@@ -301,7 +310,7 @@ public class CurrentOrderFragment extends Fragment
         normal_order_data_confirmed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(normalUpdateButton);
 
                 updateClientData();
                 //normalUpdateOrder(OrderUpdateStatusEnums.order_data_confirmed.name());
@@ -314,7 +323,7 @@ public class CurrentOrderFragment extends Fragment
         normal_delay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabMode(normalUpdateButton);
+                fabUtil.toggle(normalUpdateButton);
                 chooseDate();
             }
         });
@@ -323,7 +332,7 @@ public class CurrentOrderFragment extends Fragment
         deliver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabModeShipper(normalUpdateButtonShipping);
+                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
                 updateShippingOrder("deliver");
             }
         });
@@ -331,7 +340,7 @@ public class CurrentOrderFragment extends Fragment
         return_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabModeShipper(normalUpdateButtonShipping);
+                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
                 updateShippingOrder("return");
             }
         });
@@ -340,7 +349,7 @@ public class CurrentOrderFragment extends Fragment
         shipping_no_answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleFabModeShipper(normalUpdateButtonShipping);
+                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
                 updateShippingOrder("client_noanswer");
             }
         });
@@ -1125,41 +1134,9 @@ public class CurrentOrderFragment extends Fragment
 
     }
 
-    private void toggleFabMode(View v) {
-        rotate = ViewAnimation.rotateFab(v, !rotate);
-        if (rotate) {
-            ViewAnimation.showIn(normal_busy);
-            ViewAnimation.showIn(normal_client_cancel);
-            ViewAnimation.showIn(normal_client_phone_error);
-            ViewAnimation.showIn(normal_delay);
-            ViewAnimation.showIn(normal_no_answer);
-            ViewAnimation.showIn(normal_order_data_confirmed);
-            back_drop.setVisibility(View.VISIBLE);
-        } else {
-            ViewAnimation.showOut(normal_busy);
-            ViewAnimation.showOut(normal_client_cancel);
-            ViewAnimation.showOut(normal_client_phone_error);
-            ViewAnimation.showOut(normal_delay);
-            ViewAnimation.showOut(normal_no_answer);
-            ViewAnimation.showOut(normal_order_data_confirmed);
-            back_drop.setVisibility(View.GONE);
-        }
-    }
 
-    private void toggleFabModeShipper(View v) {
-        rotateshipper = ViewAnimation.rotateFab(v, !rotateshipper);
-        if (rotateshipper) {
-            ViewAnimation.showIn(return_order);
-            ViewAnimation.showIn(shipping_no_answer);
-            ViewAnimation.showIn(deliver);
-            back_drop.setVisibility(View.VISIBLE);
-        } else {
-            ViewAnimation.showOut(return_order);
-            ViewAnimation.showOut(shipping_no_answer);
-            ViewAnimation.showOut(deliver);
-            back_drop.setVisibility(View.GONE);
-        }
-    }
+
+
 
     private void updateProgress() {
         BaseClient.getBaseClient().create(Api.class)
