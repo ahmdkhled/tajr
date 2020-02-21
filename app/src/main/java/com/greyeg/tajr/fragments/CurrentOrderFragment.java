@@ -241,54 +241,33 @@ public class CurrentOrderFragment extends Fragment
 
 
     private void setListeners() {
-        add_product.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //addProductToMultiOrdersTv();
-                addProductDialog=new AddProductDialog(onProductAdded);
-                if (getFragmentManager() != null) {
-                    addProductDialog.show(getFragmentManager(),"");
-                }
+        add_product.setOnClickListener(v -> {
+            //addProductToMultiOrdersTv();
+            addProductDialog=new AddProductDialog(onProductAdded);
+            if (getFragmentManager() != null) {
+                addProductDialog.show(getFragmentManager(),"");
             }
         });
-        back_drop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back_drop.setVisibility(View.GONE);
-                fabUtil.toggle(normalUpdateButton);
-            }
+        back_drop.setOnClickListener(v -> {
+            back_drop.setVisibility(View.GONE);
+            fabUtil.toggle(normalUpdateButton);
         });
 
-        normalUpdateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //toggleFabMode(normalUpdateButton);
-                fabUtil.toggle(v);
-            }
+        normalUpdateButton.setOnClickListener(v -> {
+            fabUtil.toggle(v);
         });
-        normalUpdateButtonShipping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
-            }
+        normalUpdateButtonShipping.setOnClickListener(v -> fabUtil.toggleFabModeShipper(normalUpdateButtonShipping));
+
+        normal_busy.setOnClickListener(v -> {
+            fabUtil.toggle(normalUpdateButton);
+            normalUpdateOrder(OrderUpdateStatusEnums.client_busy.name());
         });
 
-        normal_busy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggle(normalUpdateButton);
-                normalUpdateOrder(OrderUpdateStatusEnums.client_busy.name());
-            }
-        });
-
-        normal_client_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggle(normalUpdateButton);
-                cancelOrderDialog=new CancelOrderDialog(onReasonSubmitted);
-                cancelOrderDialog.show(getChildFragmentManager(),"CANCEL");
-                //normalUpdateOrder(OrderUpdateStatusEnums.client_cancel.name());
-            }
+        normal_client_cancel.setOnClickListener(v -> {
+            fabUtil.toggle(normalUpdateButton);
+            cancelOrderDialog=new CancelOrderDialog(onReasonSubmitted);
+            cancelOrderDialog.show(getChildFragmentManager(),"CANCEL");
+            //normalUpdateOrder(OrderUpdateStatusEnums.client_cancel.name());
         });
 
         normal_client_phone_error.setOnClickListener(new View.OnClickListener() {
@@ -299,59 +278,36 @@ public class CurrentOrderFragment extends Fragment
             }
         });
 
-        normal_no_answer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggle(normalUpdateButton);
-                normalUpdateOrder(OrderUpdateStatusEnums.client_noanswer.name());
-            }
+        normal_no_answer.setOnClickListener(v -> {
+            fabUtil.toggle(normalUpdateButton);
+            normalUpdateOrder(OrderUpdateStatusEnums.client_noanswer.name());
         });
 
-        normal_order_data_confirmed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggle(normalUpdateButton);
-
-                updateClientData();
-                //normalUpdateOrder(OrderUpdateStatusEnums.order_data_confirmed.name());
-
-//                Map<String,Object> values =getExtraDataValues();
-//                Log.d("VALUEESSS", "onClick: "+values.toString());
-            }
+        normal_order_data_confirmed.setOnClickListener(v -> {
+            fabUtil.toggle(normalUpdateButton);
+            updateClientData();
         });
 
-        normal_delay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggle(normalUpdateButton);
-                chooseDate();
-            }
+        normal_delay.setOnClickListener(v -> {
+            fabUtil.toggle(normalUpdateButton);
+            chooseDate();
         });
 
 
-        deliver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
-                updateShippingOrder("deliver");
-            }
+        deliver.setOnClickListener(v -> {
+            fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
+            updateShippingOrder("deliver");
         });
 
-        return_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
-                updateShippingOrder("return");
-            }
+        return_order.setOnClickListener(v -> {
+            fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
+            updateShippingOrder("return");
         });
 
 
-        shipping_no_answer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
-                updateShippingOrder("client_noanswer");
-            }
+        shipping_no_answer.setOnClickListener(v -> {
+            fabUtil.toggleFabModeShipper(normalUpdateButtonShipping);
+            updateShippingOrder("client_noanswer");
         });
 
     }
@@ -359,32 +315,21 @@ public class CurrentOrderFragment extends Fragment
     private void observeAddingReasonToOrder(){
         currentOrderViewModel
                 .addReasonToOrder()
-        .observe(getActivity(), new Observer<MainResponse>() {
-            @Override
-            public void onChanged(MainResponse mainResponse) {
-                Toast.makeText(getContext(), mainResponse.getData(), Toast.LENGTH_LONG).show();
-            }
-        });
+        .observe(getActivity(), mainResponse ->
+                Toast.makeText(getContext(), mainResponse.getData(), Toast.LENGTH_LONG).show());
     }
     private void observeIsReasonAddingToOrder(){
         currentOrderViewModel
                 .getIsReasonAddingTOOrder()
-                .observe(getActivity(), new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(@Nullable Boolean aBoolean) {
-                        Log.d("REASONORDER", "onChanged: "+aBoolean);
-                    }
-                });
+                .observe(getActivity(), aBoolean ->
+                        Log.d("REASONORDER", "onChanged: "+aBoolean));
     }
     private void observeAddingReasonToOrderError(){
         currentOrderViewModel
                 .getReasonAddingToOrderError()
-                .observe(getActivity(), new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-                        Toast.makeText(getContext(), R.string.adding_reason_to_order_error, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .observe(getActivity(), s ->
+                        Toast.makeText(getContext(), R.string.adding_reason_to_order_error, Toast.LENGTH_SHORT).show()
+                );
     }
 
     private void updateShippingOrder(String action) {
@@ -516,51 +461,22 @@ public class CurrentOrderFragment extends Fragment
                         CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
                         CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
                         status)
-                .observe(getActivity(), new Observer<UpdateOrderNewResponse>() {
-                    @Override
-                    public void onChanged(UpdateOrderNewResponse updateOrderNewResponse) {
-                        if (updateOrderNewResponse!=null){
-                            Log.d("CONFIRMMMM", "onChanged: "+updateOrderNewResponse.getData());
-                            handleCallTime(updateOrderNewResponse.getOrder_id(),updateOrderNewResponse.getHistory_line());
-                            getCurrentOrder();
-                        }else {
-                            Log.d("CONFIRMMMM", "error: --------------");
+                .observe(getActivity(), updateOrderNewResponse -> {
+                    if (updateOrderNewResponse!=null){
+                        Log.d("CONFIRMMMM", "onChanged: "+updateOrderNewResponse.getData());
+                        handleCallTime(updateOrderNewResponse.getOrder_id(),updateOrderNewResponse.getHistory_line());
+                        getCurrentOrder();
+                    }else {
+                        Log.d("CONFIRMMMM", "error: --------------");
 
-                        }
                     }
                 });
         observeOrderUpdating();
         observeOrderUpdatingError();
 
-//
-//        BaseClient.getBaseClient().create(Api.class).updateOrders(
-//                token,
-//                CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getId(),
-//                CurrentOrderData.getInstance().getCurrentOrderResponse().getUserId(),
-//                status
-//        )
-//                .enqueue(new Callback<UpdateOrderNewResponse>() {
-//                    @Override
-//                    public void onResponse(Call<UpdateOrderNewResponse> call, Response<UpdateOrderNewResponse> response) {
-////                        progressDialog.dismiss();
-////
-////                        UpdateOrderNewResponse updateOrderNewResponse =response.body();
-////                        if (updateOrderNewResponse!=null)
-////                        handleCallTime(updateOrderNewResponse.getOrder_id(),updateOrderNewResponse.getHistory_line());
-////                        getCurrentOrder();
-////                        Log.d(TAG, "onResponse: " + response.toString());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<UpdateOrderNewResponse> call, Throwable t) {
-//                        progressDialog.dismiss();
-//                        Log.d(TAG, "onFailure: " + t.getMessage());
-//                        showErrorGetCurrentOrderDialog(getString(R.string.error_has_occured));
-//                    }
-//                });
     }
 
-    public void observeOrderUpdating(){
+    private void observeOrderUpdating(){
         currentOrderViewModel
                 .getIsOrderUpdating()
                 .observe(getActivity(), new Observer<Boolean>() {
@@ -577,15 +493,11 @@ public class CurrentOrderFragment extends Fragment
                 });
     }
 
-    public void observeOrderUpdatingError(){
+    private void observeOrderUpdatingError(){
         currentOrderViewModel
                 .getOrderUpdatingError()
-                .observe(getActivity(), new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-                        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .observe(getActivity(), s ->
+                        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show());
     }
 
     private void handleCallTime(String order_id,String history_line){
