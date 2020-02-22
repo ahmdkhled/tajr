@@ -1,10 +1,16 @@
 package com.greyeg.tajr.viewmodels;
 
+import android.app.Application;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.crashlytics.android.Crashlytics;
+import com.greyeg.tajr.R;
+import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.models.AddReasonResponse;
 import com.greyeg.tajr.models.CallTimePayload;
 import com.greyeg.tajr.models.CallTimeResponse;
@@ -15,6 +21,7 @@ import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.repository.CallTimeRepo;
 import com.greyeg.tajr.repository.CancellationReasonsRepository;
 import com.greyeg.tajr.repository.OrdersRepo;
+import com.greyeg.tajr.server.BaseClient;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,7 +29,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-public class CurrentOrderViewModel extends ViewModel {
+public class CurrentOrderViewModel extends AndroidViewModel {
 
     private MutableLiveData<CancellationReasonsResponse> cancellationReasonsResponse;
     private MutableLiveData<AddReasonResponse> addReason;
@@ -30,6 +37,16 @@ public class CurrentOrderViewModel extends ViewModel {
     private MutableLiveData<CurrentOrderResponse> currentOrder;
     private MutableLiveData<CallTimeResponse> callTime;
 
+    private MutableLiveData<Boolean> isDelayedOrdersUpdating=new MutableLiveData<>();
+    private MutableLiveData<String> delayedOrdersUpdatingError=new MutableLiveData<>();
+
+    private String token;
+
+    public CurrentOrderViewModel(@NonNull Application application) {
+        super(application);
+        Log.d("CurrentOrderViewModel", "CurrentOrderViewModel: ");
+        token=SessionManager.getInstance(application.getApplicationContext()).getToken();
+    }
 
 
     //--------- cancellation reasons ------------
@@ -161,7 +178,55 @@ public class CurrentOrderViewModel extends ViewModel {
         return OrdersRepo.getInstance().getOrderUpdateError();
     }
 
+    //________________________________updateDelayedOrders_________________________________
 
+    public MutableLiveData<UpdateOrderNewResponse> updateDelayedOrders(String order_id,
+                                                                       String delayed_until,
+                                                                       String user_id,
+                                                                       String status){
+        MutableLiveData<UpdateOrderNewResponse> update=new MutableLiveData<>();
+        isDelayedOrdersUpdating.setValue(true);
+        OrdersRepo.getInstance()
+                .updateDelayedOrders(token,order_id,delayed_until,user_id,status)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<UpdateOrderNewResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Response<UpdateOrderNewResponse> response) {
+                        UpdateOrderNewResponse updateOrderNewResponse=response.body();
+                        if (response.isSuccessful()&&updateOrderNewResponse!=null){
+                            update.setValue(updateOrderNewResponse);
+                        }else {
+                            delayedOrdersUpdatingError.setValue(getApplication().getApplicationContext()
+                            .getString(R.string.server_error));
+                        }
+                        isDelayedOrdersUpdating.setValue(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        delayedOrdersUpdatingError.setValue(getApplication().getApplicationContext()
+                                .getString(R.string.server_error));
+                        Crashlytics.logException(e);
+
+                        isDelayedOrdersUpdating.setValue(false);
+                    }
+                });
+        return update;
+    }
+
+    public MutableLiveData<Boolean> getIsDelayedOrdersUpdating() {
+        return isDelayedOrdersUpdating;
+    }
+
+    public MutableLiveData<String> getDelayedOrdersUpdatingError() {
+        return delayedOrdersUpdatingError;
+    }
 
     @Override
     protected void onCleared() {

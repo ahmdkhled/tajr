@@ -85,7 +85,7 @@ public class OrdersRepo {
         return currentOrderLoadingError;
     }
 
-    // --------- order update
+    // ----------------------- order update -----------------------------
 
     public MutableLiveData<UpdateOrderNewResponse> updateOrder(String token,
                                                                String order_id,
@@ -125,5 +125,18 @@ public class OrdersRepo {
 
     public MutableLiveData<String> getOrderUpdateError() {
         return orderUpdateError;
+    }
+    
+    //________________________________updateDelayedOrders_________________________________
+    
+    public Single<Response<UpdateOrderNewResponse>> updateDelayedOrders( String token,
+                                                                         String order_id,
+                                                                         String delayed_until,
+                                                                         String user_id,
+                                                                         String status)
+    {
+        return BaseClient
+                .getApiService()
+                .updateDelayedOrders2(token,order_id,delayed_until,user_id,status);
     }
 }

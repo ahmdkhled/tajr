@@ -275,6 +275,15 @@ public interface Api {
             @Field("user_id") String user_id,
             @Field("status") String status
 
+    );@FormUrlEncoded
+    @POST("send/update_order")
+    Single<Response<UpdateOrderNewResponse>> updateDelayedOrders2(
+            @Field("token") String token,
+            @Field("order_id") String order_id,
+            @Field("delayed_until") String delayed_until,
+            @Field("user_id") String user_id,
+            @Field("status") String status
+
     );
 
 
