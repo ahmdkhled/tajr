@@ -237,6 +237,7 @@
     <string name="app_update_warning">يوجد نسخه تطبيق احدث من تاجر برجاء التحديث للنسخع الجديده</string>
     <string name="later">لاحقا</string>
     <string name="dummy_category">Shoes</string>
+    <string name="error_parsing_remaining_orders">error parsing remaining orders</string>
 
 
 </resources>

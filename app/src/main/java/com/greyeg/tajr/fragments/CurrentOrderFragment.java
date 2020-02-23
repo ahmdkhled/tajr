@@ -883,47 +883,41 @@ public class CurrentOrderFragment extends Fragment
     }
 
     private void updateProgress() {
-        BaseClient.getBaseClient().create(Api.class)
-                .getRemainingOrders(token)
-                .enqueue(new Callback<RemainingOrdersResponse>() {
-                    @Override
-                    public void onResponse(Call<RemainingOrdersResponse> call, Response<RemainingOrdersResponse> response) {
-                        if (response.body() != null) {
-                            Log.d("REMAIIGNN", ""+response.body().getInfo()
-                            +" "+response.body().getCode()
-                                            +"  "+response.body().getData()
-                                            +"  "+response.body().getInfo()
-                                    +"  "+firstOrder
-                            );
-                            if (!firstOrder) {
-                                firstOrder = true;
-                                firstRemaining = response.body().getData();
-                                binding.ProgressBar.setMax(firstRemaining);
-                            }
-
-                            int b = firstRemaining - response.body().getData();
-                            binding.ProgressBar.setProgress(b);
-                            String remaining = getString(R.string.remaining) + " ( " + NumberFormat.getNumberInstance(Locale.US).format(response.body().getData()) + " ) " + getString(R.string.order);
-                            binding.present.setText(remaining);
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                            if (sharedPreferences.getBoolean("autoNotifiction", false))
-                                createNotification(String.valueOf(firstRemaining - b));
-
-                        }
+        currentOrderViewModel
+                .getRemainingOrders()
+                .observe(this, remainingOrdersResponse -> {
+                    if (!firstOrder) {
+                        firstOrder = true;
+                        firstRemaining = remainingOrdersResponse.getData();
+                        binding.ProgressBar.setMax(firstRemaining);
                     }
 
-                    @Override
-                    public void onFailure(Call<RemainingOrdersResponse> call, Throwable t) {
-                        Log.d(TAG, "onFailure: " + t.getMessage());
-                    }
+                    int b = firstRemaining - remainingOrdersResponse.getData();
+                    binding.ProgressBar.setProgress(b);
+                    String remaining = getString(R.string.remaining)
+                            + " ( " + NumberFormat.getNumberInstance(Locale.US).format(remainingOrdersResponse.getData())
+                            + " ) " + getString(R.string.order);
+                    binding.present.setText(remaining);
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    if (sharedPreferences.getBoolean("autoNotifiction", false))
+                        createNotification(String.valueOf(firstRemaining - b));
                 });
+
+        if (!currentOrderViewModel.getRemainingOrdersLoadingError().hasObservers())
+            currentOrderViewModel.getRemainingOrdersLoadingError()
+            .observe(this, error -> {
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            });
+
+
+
     }
 
     public void createNotification(String first) {
 
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = null;
+            NotificationChannel channel;
 
             channel = new NotificationChannel("5", "eslam", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("5");

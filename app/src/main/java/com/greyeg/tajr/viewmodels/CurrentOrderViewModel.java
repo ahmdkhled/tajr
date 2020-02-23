@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -16,6 +17,7 @@ import com.greyeg.tajr.models.CallTimePayload;
 import com.greyeg.tajr.models.CallTimeResponse;
 import com.greyeg.tajr.models.CancellationReasonsResponse;
 import com.greyeg.tajr.models.MainResponse;
+import com.greyeg.tajr.models.RemainingOrdersResponse;
 import com.greyeg.tajr.models.UpdateOrderNewResponse;
 import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.repository.CallTimeRepo;
@@ -39,6 +41,10 @@ public class CurrentOrderViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> isDelayedOrdersUpdating=new MutableLiveData<>();
     private MutableLiveData<String> delayedOrdersUpdatingError=new MutableLiveData<>();
+
+    //remaining orders
+    private MutableLiveData<Boolean> isRemainingOrdersLoading=new MutableLiveData<>();
+    private MutableLiveData<String> remainingOrdersLoadingError=new MutableLiveData<>();
 
     private String token;
 
@@ -226,6 +232,57 @@ public class CurrentOrderViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> getDelayedOrdersUpdatingError() {
         return delayedOrdersUpdatingError;
+    }
+
+    //______________________________update progress_____________________
+
+    public LiveData<RemainingOrdersResponse> getRemainingOrders(){
+        MutableLiveData<RemainingOrdersResponse> remainingOrders=new MutableLiveData<>();
+        isRemainingOrdersLoading.setValue(true);
+        OrdersRepo
+                .getInstance()
+                .getRemainingOrders2(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<RemainingOrdersResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Response<RemainingOrdersResponse> response) {
+                        RemainingOrdersResponse remainingOrdersResponse=response.body();
+                        if (response.isSuccessful()&&remainingOrdersResponse!=null){
+                            remainingOrders.setValue(remainingOrdersResponse);
+                        }else {
+                            remainingOrdersLoadingError.setValue(getApplication().getApplicationContext()
+                                    .getString(R.string.error_parsing_remaining_orders));
+                            Crashlytics.logException(new Throwable(getApplication().getApplicationContext()
+                                    .getString(R.string.server_error)));
+                        }
+                        isRemainingOrdersLoading.setValue(true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        remainingOrdersLoadingError.setValue(getApplication().getApplicationContext()
+                        .getString(R.string.server_error));
+                        Log.d("REMAININGGG", "onError: "+e.getMessage());
+                        isRemainingOrdersLoading.setValue(true);
+                        Crashlytics.logException(e);
+
+                    }
+                });
+        return remainingOrders;
+    }
+
+    public MutableLiveData<Boolean> getIsRemainingOrdersLoading() {
+        return isRemainingOrdersLoading;
+    }
+
+    public MutableLiveData<String> getRemainingOrdersLoadingError() {
+        return remainingOrdersLoadingError;
     }
 
     @Override

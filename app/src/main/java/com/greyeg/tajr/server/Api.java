@@ -220,6 +220,10 @@ public interface Api {
     Call<RemainingOrdersResponse> getRemainingOrders(@Field("token") String token);
 
     @FormUrlEncoded
+    @POST("send/remaining_orders")
+    Single<Response<RemainingOrdersResponse>> getRemainingOrders2(@Field("token") String token);
+
+    @FormUrlEncoded
     @POST("send/add_product_to_order")
     Call<DeleteAddProductResponse> addProduct(
             @Field("token") String token,

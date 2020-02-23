@@ -10,6 +10,7 @@ import com.greyeg.tajr.helper.App;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.models.NewOrderResponse;
 import com.greyeg.tajr.models.OrderPayload;
+import com.greyeg.tajr.models.RemainingOrdersResponse;
 import com.greyeg.tajr.models.UpdateOrderNewResponse;
 import com.greyeg.tajr.models.CurrentOrderResponse;
 import com.greyeg.tajr.server.BaseClient;
@@ -18,6 +19,7 @@ import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
 
 public class OrdersRepo {
 
@@ -139,4 +141,13 @@ public class OrdersRepo {
                 .getApiService()
                 .updateDelayedOrders2(token,order_id,delayed_until,user_id,status);
     }
+
+    //______________________________update progress_____________________
+
+    public Single<Response<RemainingOrdersResponse>> getRemainingOrders2( String token){
+        return BaseClient
+                .getApiService()
+                .getRemainingOrders2(token);
+    }
+
 }

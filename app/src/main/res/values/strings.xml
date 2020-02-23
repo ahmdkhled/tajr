@@ -290,6 +290,7 @@
     <string name="product_price"> %2$d LE</string>
     <string name="later">later</string>
     <string name="dummy_category">Shoes</string>
+    <string name="error_parsing_remaining_orders">error parsing remaining orders</string>
     <string-array name="calc_dialog_errors">
         <item>Division by zero</item>
         <item>Out of bounds</item>

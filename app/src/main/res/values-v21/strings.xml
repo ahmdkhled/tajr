@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dummy_category">Shoes</string>
+    <string name="error_parsing_remaining_orders">error parsing remaining orders</string>
 </resources>
