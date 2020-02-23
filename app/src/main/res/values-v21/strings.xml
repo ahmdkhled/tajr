@@ -2,4 +2,6 @@
 <resources>
     <string name="dummy_category">Shoes</string>
     <string name="error_parsing_remaining_orders">error parsing remaining orders</string>
+    <string name="error_updating_order_data">error updating order data</string>
+    <string name="error_updating_client_data">error updating client data</string>
 </resources>

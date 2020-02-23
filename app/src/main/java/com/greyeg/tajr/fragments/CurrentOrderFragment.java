@@ -309,7 +309,7 @@ public class CurrentOrderFragment extends Fragment
             public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Log.d(TAG, "onFailure: " + t.getMessage());
-                showErrorGetCurrentOrderDialog(t.getMessage());
+                showErrorGetCurrentOrderDialog(getString(R.string.error_updating_client_data));
             }
         });
     }
@@ -337,7 +337,7 @@ public class CurrentOrderFragment extends Fragment
             public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Log.d(TAG, "onFailure: " + t.getMessage());
-                showErrorGetCurrentOrderDialog(t.getMessage());
+                showErrorGetCurrentOrderDialog(getString(R.string.error_updating_order_data));
             }
         });
     }
@@ -361,7 +361,9 @@ public class CurrentOrderFragment extends Fragment
             public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
                 progressDialog.dismiss();
                 Log.d(TAG, "onFailure: " + t.getMessage());
-                showErrorGetCurrentOrderDialog(t.getMessage());
+                showErrorGetCurrentOrderDialog(getString(R.string.error_updating_order_data));
+
+
 
             }
         });
@@ -714,7 +716,7 @@ public class CurrentOrderFragment extends Fragment
                     @Override
                     public void onChanged(String s) {
                         Log.d("CONFIRMMMM", "error:** "+s);
-                        Toast.makeText(getContext(), R.string.server_error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
