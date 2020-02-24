@@ -1004,6 +1004,7 @@ public class CurrentOrderFragment extends Fragment
 
     @Override
     public void onProductUpdated(OrderProduct product,String productId) {
+        Log.d("EXTRAAAAAAA", "onProductUpdated: "+product.getExtras().toString());
         calculateOrderTotal();
         orderProductsAdapter.updateProduct(productId,product);
     }

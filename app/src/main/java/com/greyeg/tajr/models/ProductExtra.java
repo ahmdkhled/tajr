@@ -1,5 +1,6 @@
 package com.greyeg.tajr.models;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -66,5 +67,11 @@ public class ProductExtra {
         if ( !(obj instanceof ProductExtra) ) return false;
         ProductExtra productExtra= (ProductExtra) obj;
         return html.equals(productExtra.html);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name+" >>> "+value;
     }
 }

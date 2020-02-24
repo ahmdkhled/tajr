@@ -146,6 +146,8 @@ public class ProductDetailDialog extends DialogFragment implements ProductAdapte
             int position=product.getExtras().indexOf(new ProductExtra(value));
             product.getExtras().get(position).setValue(value);
         }
+        ProductUtil.setExtraDataValues(product,values);
+        Log.d("EXTRAAAAAAA", "updateProduct: ");
         onProductUpdated.onProductUpdated(product,oldProductId);
         dismiss();
     }
@@ -186,6 +188,8 @@ public class ProductDetailDialog extends DialogFragment implements ProductAdapte
             }
 
         }
+
+        Log.d("EXTRAAAAAAA", "getExtraDataValues: "+values.toString());
         return values;
     }
 

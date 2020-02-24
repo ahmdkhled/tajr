@@ -46,6 +46,7 @@ public class ExtraDataAdapter2 extends RecyclerView.Adapter<ExtraDataAdapter2.Ex
     @Override
     public void onBindViewHolder(@NonNull ExtraDetailViewHolder holder, int position) {
         ProductExtra extra=extraData.get(position);
+        Log.d("EXTRAAAAAAA", "onBindViewHolder: "+extra.toString());
         handleInputs(holder,extra);
     }
 
@@ -83,6 +84,7 @@ public class ExtraDataAdapter2 extends RecyclerView.Adapter<ExtraDataAdapter2.Ex
         edittext.setVisibility(View.VISIBLE);
 
         edittext.setHint(extra.getPlaceholder());
+        edittext.setText(extra.getValue());
 
         if (extra.getType().equals("number"))
                 edittext.setInputType(InputType.TYPE_CLASS_NUMBER);
