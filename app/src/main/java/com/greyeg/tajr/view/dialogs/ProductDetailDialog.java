@@ -204,6 +204,7 @@ public class ProductDetailDialog extends DialogFragment implements ProductAdapte
         else
         quantity.setText(String.valueOf(product.getItems_no()));
         productPrice.setText(String.valueOf(product.getPrice()));
+        productPrice.setText(getString(R.string.product_price,product.getPrice()));
 
         increment.setOnClickListener(view -> {
             if (TextUtils.isEmpty(quantity.getText().toString()))return;

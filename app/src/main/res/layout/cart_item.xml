@@ -30,7 +30,6 @@
         app:layout_constraintBottom_toBottomOf="@id/item_img"
         app:layout_constraintStart_toStartOf="@id/item_img"
         app:layout_constraintEnd_toEndOf="@id/item_img"
-        android:background="#370C0C0C"
         />
 
     <ImageView
@@ -48,6 +47,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/increase"
+        android:background="#0C000000"
         app:layout_constraintTop_toTopOf="@id/item_img"
         app:layout_constraintStart_toEndOf="@id/quantity"
         android:src="@drawable/fab_add"
@@ -85,6 +85,7 @@
         android:padding="1dp"
         android:maxLines="2"
         android:ellipsize="end"
+        android:lineSpacingMultiplier=".5"
         android:background="@color/txt_bg"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/item_img"
