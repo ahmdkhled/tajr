@@ -116,7 +116,6 @@ public class CurrentOrderFragment extends Fragment
 
     private boolean rotate = false;
     private boolean rotateshipper = false;
-    private boolean productExbandable = false;
     private CurrentOrderViewModel currentOrderViewModel;
     private CancelOrderDialog cancelOrderDialog;
     private CancelOrderDialog.OnReasonSubmitted onReasonSubmitted=this;
@@ -276,13 +275,7 @@ public class CurrentOrderFragment extends Fragment
         });
     }
 
-    @OnClick(R.id.bt_expand)
-    void showCurrentProductDetails() {
-        if (!productExbandable)
-            return;
-        FragmentBottomSheetDialogFull fragment = new FragmentBottomSheetDialogFull();
-        fragment.show(getChildFragmentManager(), fragment.getTag());
-    }
+
 
     private void updateClientData() {
         ProgressDialog progressDialog = showProgressDialog(getActivity(), getString(R.string.fetching_th_order));
@@ -589,13 +582,11 @@ public class CurrentOrderFragment extends Fragment
             if (CurrentOrderData.getInstance().getCurrentOrderResponse().getOrder().getCheckType().equals("normal_order")) {
                 fillFieldsWithOrderData(CurrentOrderData.getInstance().getMissedCallOrderResponse());
                 updateProgress();
-                productExbandable = true;
                 binding.normalUpdateActions.setVisibility(View.VISIBLE);
                 binding.shipperUpdateActions.setVisibility(View.GONE);
             } else {
                 fillFieldsWithOrderData(CurrentOrderData.getInstance().getMissedCallOrderResponse());
                 updateProgress();
-                productExbandable = true;
                 binding.normalUpdateActions.setVisibility(View.GONE);
                 binding.shipperUpdateActions.setVisibility(View.VISIBLE);
 
@@ -606,7 +597,6 @@ public class CurrentOrderFragment extends Fragment
             CurrentOrderData.getInstance().setCurrentOrderResponse(CurrentOrderData.getInstance().getMissedCallOrderResponse());
             fillFieldsWithOrderData(CurrentOrderData.getInstance().getMissedCallOrderResponse());
             updateProgress();
-            productExbandable = true;
             binding.normalUpdateActions.setVisibility(View.VISIBLE);
             binding.shipperUpdateActions.setVisibility(View.GONE);
         }
@@ -643,13 +633,11 @@ public class CurrentOrderFragment extends Fragment
                                             .getOrder().getCheckType().equals("normal_order")) {
                                         fillFieldsWithOrderData(currentOrderResponse);
                                         updateProgress();
-                                        productExbandable = true;
                                         binding.normalUpdateActions.setVisibility(View.VISIBLE);
                                         binding.shipperUpdateActions.setVisibility(View.GONE);
                                     } else {
                                         fillFieldsWithOrderData(currentOrderResponse);
                                         updateProgress();
-                                        productExbandable = true;
                                         binding.normalUpdateActions.setVisibility(View.GONE);
                                         binding.shipperUpdateActions.setVisibility(View.VISIBLE);
 
@@ -660,7 +648,6 @@ public class CurrentOrderFragment extends Fragment
                                     CurrentOrderData.getInstance().setCurrentOrderResponse(currentOrderResponse);
                                     fillFieldsWithOrderData(currentOrderResponse);
                                     updateProgress();
-                                    productExbandable = true;
                                     binding.normalUpdateActions.setVisibility(View.VISIBLE);
                                     binding.shipperUpdateActions.setVisibility(View.GONE);
                                 }
@@ -998,8 +985,11 @@ public class CurrentOrderFragment extends Fragment
     @Override
     public void OnProductItemClicked(OrderProduct product) {
         ProductDetailDialog productDetailDialog=new ProductDetailDialog(product,this);
-        if (getFragmentManager() != null)
-            productDetailDialog.show(getFragmentManager(),"");
+//        if (getFragmentManager() != null)
+//            productDetailDialog.show(getFragmentManager(),"");
+
+        FragmentBottomSheetDialogFull fragment = new FragmentBottomSheetDialogFull(product, this);
+        fragment.show(getChildFragmentManager(), fragment.getTag());
     }
 
     @Override

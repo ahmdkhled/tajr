@@ -30,6 +30,7 @@
         app:layout_constraintBottom_toBottomOf="@id/item_img"
         app:layout_constraintStart_toStartOf="@id/item_img"
         app:layout_constraintEnd_toEndOf="@id/item_img"
+        android:background="#2C0C0C0C"
         />
 
     <ImageView
@@ -47,7 +48,6 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/increase"
-        android:background="#0C000000"
         app:layout_constraintTop_toTopOf="@id/item_img"
         app:layout_constraintStart_toEndOf="@id/quantity"
         android:src="@drawable/fab_add"
