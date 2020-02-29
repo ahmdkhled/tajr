@@ -27,6 +27,7 @@ import com.greyeg.tajr.R;
 import com.greyeg.tajr.adapters.ExtraDataAdapter2;
 import com.greyeg.tajr.adapters.ProductAdapter;
 import com.greyeg.tajr.databinding.ProductDetailDialogBinding;
+import com.greyeg.tajr.helper.Binder;
 import com.greyeg.tajr.helper.EndlessRecyclerViewScrollListener;
 import com.greyeg.tajr.helper.ProductUtil;
 import com.greyeg.tajr.helper.SessionManager;
@@ -79,7 +80,6 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
                 ,R.layout.product_detail_dialog, container,false);
 
         productDetailDialogVM= ViewModelProviders.of(this).get(ProductDetailDialogVM.class);
-
         Log.d("DIALOOGG", "onCreateView: ");
         if (product!=null) productDetailDialogVM.setProduct(product);
         product=productDetailDialogVM.getProduct();

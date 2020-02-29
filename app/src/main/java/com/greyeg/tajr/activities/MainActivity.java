@@ -64,6 +64,7 @@ import com.greyeg.tajr.activities.SettingsActivity;
 import com.greyeg.tajr.activities.WorkHistoryActivity;
 import com.greyeg.tajr.adapters.DrawerAdapter;
 import com.greyeg.tajr.helper.AccessibilityManager;
+import com.greyeg.tajr.helper.Binder;
 import com.greyeg.tajr.helper.ScreenHelper;
 import com.greyeg.tajr.helper.SessionManager;
 import com.greyeg.tajr.helper.SharedHelper;
@@ -88,6 +89,8 @@ import java.util.Timer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.greyeg.tajr.helper.App.getContext;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -420,6 +423,8 @@ public class MainActivity extends AppCompatActivity
 
         setAnimation(SPLASH_SCREEN_OPTION_3);
         api = BaseClient.getBaseClient().create(Api.class);
+        new Binder(getContext());
+
 
 
     }
