@@ -118,6 +118,7 @@ public class OrderProduct {
     public String toString() {
         return
                 id+" "+
-                name+" ";
+                name+" "+
+                items_no+" ";
     }
 }

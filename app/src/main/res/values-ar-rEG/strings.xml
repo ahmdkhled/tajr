@@ -241,5 +241,8 @@
     <string name="error_updating_order_data">error updating order data</string>
     <string name="error_updating_client_data">error updating client data</string>
 
+    <string name="product_price">  %1$d جنيه</string>
+
+
 
 </resources>

@@ -5,17 +5,16 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.greyeg.tajr.R;
 import com.greyeg.tajr.adapters.ExtraDataAdapter2;
 import com.greyeg.tajr.adapters.ProductAdapter;
+import com.greyeg.tajr.databinding.ProductDetailDialogBinding;
 import com.greyeg.tajr.helper.EndlessRecyclerViewScrollListener;
 import com.greyeg.tajr.helper.ProductUtil;
 import com.greyeg.tajr.helper.SessionManager;
@@ -38,13 +38,10 @@ import com.greyeg.tajr.models.ProductExtra;
 import com.greyeg.tajr.repository.ProductsRepo;
 import com.greyeg.tajr.view.dialogs.ProductDetailDialog;
 import com.greyeg.tajr.viewmodels.ProductDetailDialogVM;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -54,27 +51,6 @@ import retrofit2.Response;
 public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment implements ProductAdapter.OnProductClicked {
 
     private static final String TAG = "FragmentBottomSheetDial";
-    private BottomSheetBehavior mBehavior;
-
-    @BindView(R.id.productsRecycler)
-    RecyclerView productsRecycler;
-    @BindView(R.id.extra_data_recycler)
-    RecyclerView extraDataRecycler;
-    @BindView(R.id.product_name)
-    TextView productName;
-    @BindView(R.id.product_price)
-    TextView productPrice;
-    @BindView(R.id.productImg)
-    ImageView productImage;
-    @BindView(R.id.quantity)
-    TextView quantity;
-    @BindView(R.id.increase)
-    ImageView increment;
-    @BindView(R.id.decrease)
-    ImageView decrement;
-    @BindView(R.id.products_PB)
-    ProgressBar productsPB;
-
 
     private OrderProduct product;
     private ExtraDataAdapter2 extraDataAdapter;
@@ -85,7 +61,7 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
     private ProductData currentProduct;
     private ProductDetailDialogVM productDetailDialogVM;
     private boolean isLoading=false;
-
+    private ProductDetailDialogBinding binding;
     public FragmentBottomSheetDialogFull(OrderProduct product, ProductDetailDialog.OnProductUpdated onProductUpdated) {
         Log.d("DIALOOGG", "ProductDetailDialog: ");
         this.product = product;
@@ -96,36 +72,11 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
     public FragmentBottomSheetDialogFull() {
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        final View view = View.inflate(getContext(), R.layout.product_detail_dialog, null);
-
-        dialog.setContentView(view);
-        mBehavior = BottomSheetBehavior.from((View) view.getParent());
-        mBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
-
-        mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (BottomSheetBehavior.STATE_EXPANDED == newState) {
-
-                }
-                if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
-
-                }
-
-                if (BottomSheetBehavior.STATE_HIDDEN == newState) {
-                    dismiss();
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding= DataBindingUtil.inflate(LayoutInflater.from(getContext())
+                ,R.layout.product_detail_dialog, container,false);
 
         productDetailDialogVM= ViewModelProviders.of(this).get(ProductDetailDialogVM.class);
 
@@ -135,19 +86,19 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
         if (onProductUpdated!=null)productDetailDialogVM.setOnProductUpdated(onProductUpdated);
         onProductUpdated=productDetailDialogVM.getOnProductUpdated();
 
-        ButterKnife.bind(this,dialog);
+
         product=productDetailDialogVM.getProduct();
         onProductUpdated=productDetailDialogVM.getOnProductUpdated();
         populateProductDetail(product);
         getProducts(null);
 
         productAdapter=new ProductAdapter(getContext(),null,this);
-        productsRecycler.setAdapter(productAdapter);
+        binding.productsRecycler.setAdapter(productAdapter);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-        productsRecycler.setLayoutManager(layoutManager);
-        productsRecycler.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        binding.productsRecycler.setLayoutManager(layoutManager);
+        binding.productsRecycler.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
 
-        productsRecycler.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager,2) {
+        binding.productsRecycler.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager,2) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (isLoading)return;
@@ -161,8 +112,10 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
         });
 
 
-        return dialog;
+
+        return binding.getRoot();
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -180,7 +133,7 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
 
 
 
-            View view = extraDataRecycler.getChildAt(i);
+            View view = binding.extraDataRecycler.getChildAt(i);
             if (Boolean.valueOf(extraData.get(i).Is_list())){
                 Spinner spinner=view.findViewById(R.id.spinnerValue);
 
@@ -212,47 +165,43 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
     }
 
     private void populateProductDetail(OrderProduct product){
-        productName.setText(product.getName());
-        Picasso.get()
-                .load(product.getImage())
-                .into(productImage);
 
-        if (product.getItems_no()==0)
-            quantity.setText(String.valueOf(1));
-        else
-            quantity.setText(String.valueOf(product.getItems_no()));
-        productPrice.setText(String.valueOf(product.getPrice()));
-        productPrice.setText(getString(R.string.product_price,product.getPrice()));
-
-        increment.setOnClickListener(view -> {
-            if (TextUtils.isEmpty(quantity.getText().toString()))return;
-            int q= Integer.parseInt(quantity.getText().toString());
+        Log.d(TAG, "populateProductDetail: "+product.toString());
+        binding.setProduct(product);
+        binding.increase.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(binding.quantity.getText().toString()))return;
+            int q= Integer.parseInt(binding.quantity.getText().toString());
             q++;
-            quantity.setText(String.valueOf(q));
+            binding.quantity.setText(String.valueOf(q));
             product.setItems_no(q);
         });
-        decrement.setOnClickListener(view -> {
-            if (TextUtils.isEmpty(quantity.getText().toString()))return;
+        binding.decrease.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(binding.quantity.getText().toString()))return;
 
-            int q= Integer.parseInt(quantity.getText().toString());
+            int q= Integer.parseInt(binding.quantity.getText().toString());
             if (q==1)return;
             q--;
-            quantity.setText(String.valueOf(q));
+            binding.quantity.setText(String.valueOf(q));
             product.setItems_no(q);
 
 
         });
+
+        binding.updateProduct
+                .setOnClickListener(view -> {
+                    updateProduct();
+                });
 
 
         Log.d("EXTRAA", "populateProductDetail: "+product.getExtras().size());
         extraDataAdapter=new ExtraDataAdapter2(getContext(),product.getExtras());
-        extraDataRecycler.setAdapter(extraDataAdapter);
-        extraDataRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.extraDataRecycler.setAdapter(extraDataAdapter);
+        binding.extraDataRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void getProducts(String page){
         if (page==null||page.equals("1"))
-            productsPB.setVisibility(View.VISIBLE);
+            binding.productsPB.setVisibility(View.VISIBLE);
         else
             productAdapter.setLoadingView(page);
 
@@ -271,7 +220,7 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
 
                     @Override
                     public void onSuccess(Response<AllProducts> response) {
-                        productsPB.setVisibility(View.GONE);
+                        binding.productsPB.setVisibility(View.GONE);
                         AllProducts products=response.body();
                         if (response.isSuccessful()&&products!=null){
 //                            Log.d("PAGINATIONN", products.getPages().getCurrent()
@@ -292,7 +241,7 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
                     @Override
                     public void onError(Throwable e) {
                         isLoading=false;
-                        productsPB.setVisibility(View.GONE);
+                        binding.productsPB.setVisibility(View.GONE);
                         Toast.makeText(getContext(), R.string.error_getting_products, Toast.LENGTH_SHORT).show();
 
                     }
@@ -300,12 +249,27 @@ public class FragmentBottomSheetDialogFull extends BottomSheetDialogFragment imp
     }
 
 
+    public void updateProduct(){
+        HashMap<String,Object> values =getExtraDataValues();
+        if (values==null)return;
+        if (currentProduct!=null)
+            product=ProductUtil.toOrderProduct(currentProduct, product);
+        for (String value:values.keySet()) {
+            int position=product.getExtras().indexOf(new ProductExtra(value));
+            product.getExtras().get(position).setValue(value);
+        }
+        ProductUtil.setExtraDataValues(product,values);
+        Log.d("EXTRAAAAAAA", "updateProduct: ");
+        onProductUpdated.onProductUpdated(product,oldProductId);
+        dismiss();
+    }
+
 
 
     @Override
     public void onStart() {
         super.onStart();
-        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        //mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     private void hideView(View view) {
