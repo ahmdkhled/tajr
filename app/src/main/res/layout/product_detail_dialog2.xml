@@ -6,7 +6,7 @@
     <data>
         <variable
             name="product"
-            type="com.greyeg.tajr.models.OrderProduct" />
+            type="com.tajr.tajr.models.OrderProduct" />
 
 
     </data>

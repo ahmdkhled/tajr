@@ -501,7 +501,7 @@
 
             </Space>
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/edit_order"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:layout_gravity="center"

@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_warning_black_24dp" />
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/dialog_universal_warning_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:gravity="right" >
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/ok_warning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

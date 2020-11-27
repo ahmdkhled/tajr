@@ -25,7 +25,7 @@
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <com.greyeg.tajr.helper.font.RobotoTextView
+        <com.tajr.tajr.helper.font.RobotoTextView
             android:id="@+id/welcome_text"
             style="@style/TextViewAppearance.Headline2"
             android:layout_width="match_parent"

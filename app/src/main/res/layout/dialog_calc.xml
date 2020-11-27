@@ -45,7 +45,7 @@
             android:layout_weight="1"
             tools:text="-1,211.52" />
 
-        <com.greyeg.tajr.calc.CalcEraseButton
+        <com.tajr.tajr.calc.CalcEraseButton
             android:id="@+id/calc_btn_erase"
             style="?attr/calcEraseBtnStyle"
             android:layout_width="wrap_content"

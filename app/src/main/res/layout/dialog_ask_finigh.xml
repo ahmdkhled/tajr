@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_warning_black_24dp"/>
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/dialog_universal_warning_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:textColor="@color/main_color_600"
                 android:textSize="14sp"
                 app:typeface="robotoMedium" />
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

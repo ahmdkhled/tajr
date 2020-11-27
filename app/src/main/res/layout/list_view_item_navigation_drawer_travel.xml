@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.greyeg.tajr.view.utils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tajr.tajr.view.utils.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/RippleStyle"
     android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:paddingBottom="4dp"
             android:paddingTop="4dp" >
 
-            <com.greyeg.tajr.helper.font.MaterialDesignIconsTextView
+            <com.tajr.tajr.helper.font.MaterialDesignIconsTextView
                 android:id="@+id/icon"
                 android:visibility="gone"
                 style="@style/TextViewAppearance.Title1"
@@ -38,7 +38,7 @@
                 android:textSize="22dp"
                 android:textColor="@color/material_light_yellow_600" />
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/title"
                 android:gravity="center"
                 android:layout_gravity="center"
@@ -63,4 +63,4 @@
             android:background="@color/material_light_yellow_600" />
     </LinearLayout>
 
-</com.greyeg.tajr.view.utils.MaterialRippleLayout>
+</com.tajr.tajr.view.utils.MaterialRippleLayout>

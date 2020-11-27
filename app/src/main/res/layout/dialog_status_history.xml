@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_history_black_24dp" />
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/edit_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.greyeg.tajr.helper.font.RobotoTextView
+        <com.tajr.tajr.helper.font.RobotoTextView
             android:id="@+id/ok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

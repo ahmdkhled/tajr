@@ -36,7 +36,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_bags2" />
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/dialog_universal_warning_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
             android:layout_gravity="center"
             android:gravity="center">
 
-            <com.greyeg.tajr.helper.font.RobotoTextView
+            <com.tajr.tajr.helper.font.RobotoTextView
                 android:id="@+id/add_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

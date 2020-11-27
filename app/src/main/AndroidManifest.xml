@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.greyeg.tajr">
+    package="com.tajr.tajr">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission
@@ -23,7 +23,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:name=".helper.App"
+        android:name="com.tajr.tajr.helper.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
@@ -34,33 +34,33 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".activities.NewOrderActivity"
+            android:name="com.tajr.tajr.activities.NewOrderActivity"
             android:exported="true"
             android:label=""
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activities.AdminRecordsActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name="com.tajr.tajr.activities.AdminRecordsActivity"
+            android:parentActivityName="com.tajr.tajr.activities.MainActivity" />
         <activity
-            android:name=".activities.AdminLoginActivity"
-            android:parentActivityName=".activities.LoginActivity" />
-        <activity android:name=".activities.BalanceCalculationActivity" />
+            android:name="com.tajr.tajr.activities.AdminLoginActivity"
+            android:parentActivityName="com.tajr.tajr.activities.LoginActivity" />
+        <activity android:name="com.tajr.tajr.activities.BalanceCalculationActivity" />
         <activity
-            android:name=".activities.CartsActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name="com.tajr.tajr.activities.CartsActivity"
+            android:parentActivityName="com.tajr.tajr.activities.MainActivity" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.tajr.tajr.activities.MainActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.tajr.tajr.activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.tajr.tajr.activities.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -69,38 +69,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.EmptyCallActivity"
+            android:name="com.tajr.tajr.activities.EmptyCallActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SettingsActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name="com.tajr.tajr.activities.SettingsActivity"
+            android:parentActivityName="com.tajr.tajr.activities.MainActivity" />
         <activity
-            android:name=".activities.WorkHistoryActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name="com.tajr.tajr.activities.WorkHistoryActivity"
+            android:parentActivityName="com.tajr.tajr.activities.MainActivity" />
         <activity
-            android:name=".activities.NewsActivity"
+            android:name="com.tajr.tajr.activities.NewsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.NoInternetActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name="com.tajr.tajr.activities.NoInternetActivity"
+            android:parentActivityName="com.tajr.tajr.activities.MainActivity" />
         <activity
-            android:name=".activities.BalanceActivity"
+            android:name="com.tajr.tajr.activities.BalanceActivity"
             android:label="@string/Balance"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.CalcActivity" />
+            android:parentActivityName="com.tajr.tajr.activities.MainActivity" />
+        <activity android:name="com.tajr.tajr.activities.CalcActivity" />
         <activity
-            android:name=".activities.TestActivity"
+            android:name="com.tajr.tajr.activities.TestActivity"
             android:label="Test"></activity>
         <activity
-            android:name=".activities.ChatActivity"
+            android:name="com.tajr.tajr.activities.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/UCrop" />
         <activity
-            android:name=".records.RecordsActivity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:name="com.tajr.tajr.records.RecordsActivity"
+            android:parentActivityName="com.tajr.tajr.activities.MainActivity" />
 
         <meta-data
             android:name="com.onesignal.NotificationOpened.DEFAULT"
@@ -108,7 +108,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.greyeg.tajr"
+            android:authorities="com.tajr.tajr"
             android:exported="false"
             android:grantUriPermissions="true"
             tools:replace="android:authorities">
@@ -117,7 +117,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <receiver android:name=".records.CallsReceiver">
+        <receiver android:name="com.tajr.tajr.records.CallsReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
@@ -126,22 +126,22 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".records.RecorderService" /> <!-- <receiver -->
+        <service android:name="com.tajr.tajr.records.RecorderService" /> <!-- <receiver -->
         <service
-            android:name=".jobs.OrderReminderJobService"
+            android:name="com.tajr.tajr.jobs.OrderReminderJobService"
             android:permission="android.permission.BIND_JOB_SERVICE">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
         <service
-            android:name=".view.over.FloatLayout"
+            android:name="com.tajr.tajr.view.over.FloatLayout"
             android:enabled="true"
             android:exported="false" />
-        <service android:name=".view.over.MissedCallNoOrderService" />
-        <service android:name=".view.over.MissedCallOrderService" />
+        <service android:name="com.tajr.tajr.view.over.MissedCallNoOrderService" />
+        <service android:name="com.tajr.tajr.view.over.MissedCallOrderService" />
         <service
-            android:name=".services.AccessibilityService"
+            android:name="com.tajr.tajr.services.AccessibilityService"
             android:enabled="true"
             android:exported="true"
             android:label="tajr accessibility service"
@@ -155,7 +155,7 @@
                 android:resource="@xml/serviceconfig" />
         </service>
         <service
-            android:name=".services.BubbleService"
+            android:name="com.tajr.tajr.services.BubbleService"
             android:enabled="true"
             android:exported="false" />
     </application>

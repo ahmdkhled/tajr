@@ -16,7 +16,7 @@
 
         android:src="@drawable/ic_view_headline_black_24dp"/>
 
-    <com.greyeg.tajr.helper.font.RobotoTextView
+    <com.tajr.tajr.helper.font.RobotoTextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/bot_block_name"

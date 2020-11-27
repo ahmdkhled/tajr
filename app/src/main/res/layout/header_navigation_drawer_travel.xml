@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop" />
 
-    <com.greyeg.tajr.helper.font.RobotoTextView
+    <com.tajr.tajr.helper.font.RobotoTextView
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

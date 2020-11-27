@@ -25,7 +25,7 @@
 
     </androidx.cardview.widget.CardView>
 
-    <com.greyeg.tajr.helper.font.RobotoTextView
+    <com.tajr.tajr.helper.font.RobotoTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/product_details_label"
@@ -53,7 +53,7 @@
             >
 
 
-        <com.greyeg.tajr.helper.font.RobotoTextView
+        <com.tajr.tajr.helper.font.RobotoTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dummy_product"

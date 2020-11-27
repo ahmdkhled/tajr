@@ -6,7 +6,7 @@
     <data>
         <variable
             name="order"
-            type="com.greyeg.tajr.models.Order" />
+            type="com.tajr.tajr.models.Order" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

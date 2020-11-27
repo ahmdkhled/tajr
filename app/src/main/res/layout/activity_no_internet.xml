@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.NoInternetActivity">
-    <com.greyeg.tajr.view.kbv.KenBurnsView
+    <com.tajr.tajr.view.kbv.KenBurnsView
         android:id="@+id/ken_burns_images"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
