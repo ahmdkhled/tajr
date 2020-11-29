@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -57,11 +56,11 @@ public class RemoteConfigRepo {
                                 error.setValue(context.getString(R.string.server_error));
 
                                 Log.d("REMOTEECONFIGG","exception "+ e.getMessage());
-                                Crashlytics.logException(e);
+                                //Crashlytics.logException(e);
 
                             }
                         }else {
-                            Crashlytics.logException(new Exception("Remoteconfig task was not successfull"));
+                            //Crashlytics.logException(new Exception("Remoteconfig task was not successfull"));
                             error.setValue(context.getString(R.string.server_error));
                         }
 

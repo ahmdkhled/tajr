@@ -50,13 +50,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.crashlytics.android.Crashlytics;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
 import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.tajr.tajr.R;
 import com.tajr.tajr.adapters.DrawerAdapter;
+import com.tajr.tajr.fragments.GoogleSignInFrag;
 import com.tajr.tajr.helper.AccessibilityManager;
 import com.tajr.tajr.helper.Binder;
 import com.tajr.tajr.helper.ScreenHelper;
@@ -64,11 +70,13 @@ import com.tajr.tajr.helper.SessionManager;
 import com.tajr.tajr.helper.SharedHelper;
 import com.tajr.tajr.helper.font.RobotoTextView;
 import com.tajr.tajr.records.RecordsActivity;
+import com.tajr.tajr.repository.TokenTask;
 import com.tajr.tajr.server.Api;
 import com.tajr.tajr.server.BaseClient;
 import com.tajr.tajr.view.dialogs.UpdateVersionDialog;
 import com.tajr.tajr.viewmodels.MainActivityVm;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -81,6 +89,10 @@ import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+import kotlinx.coroutines.GlobalScope;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.tajr.tajr.helper.App.getContext;
@@ -99,14 +111,12 @@ public class MainActivity extends AppCompatActivity
     public static Timer timer = new Timer();
     public static long startTime = 0;
     public static android.app.Activity mainActivity;
-    @BindView(R.id.ken_burns_images)
     KenBurnsView mKenBurns;
-    @BindView(R.id.logo)
     ImageView mLogo;
     @BindView(R.id.welcome_text)
     RobotoTextView welcomeText;
     Api api;
-    Crashlytics crashlytics;
+    //Crashlytics crashlytics;
 
     //    @BindView(R.id.timer_text)
 //    TextView timer_text;
@@ -135,10 +145,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        crashlytics=Crashlytics.getInstance();
+        //crashlytics=Crashlytics.getInstance();
         mainActivityVm= ViewModelProviders.of(this).get(MainActivityVm.class);
         mainActivity = this;
         toolbar =  findViewById(R.id.toolbar);
+        mKenBurns=findViewById(R.id.ken_burns_images);
+        mLogo=findViewById(R.id.logo);
         setSupportActionBar(toolbar);
         checkAppVersion();
         initDrawer();
@@ -592,21 +604,43 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-//            Log.d("OVERLAYYYY", "onActivityResult: result code "+resultCode);
-//
-//            if (resultCode == RESULT_OK) {
-//                Toast.makeText(mainActivity, "thanks :)", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Log.d("OVERLAYYY", "onActivityResult: permission denies");
-//                Toast.makeText(MainActivity.this,
-//                        "you must give permission foe drawing on screen",
-//                        Toast.LENGTH_SHORT).show();
-//
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
+
+
+
+        Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
+        Log.d(TAG, "onActivityResult: "+task.isSuccessful());
+        task.addOnCompleteListener(onCompleteListener->{
+            if (onCompleteListener.isSuccessful()){
+                GoogleSignInAccount account=onCompleteListener.getResult();
+                String scopes="oauth2:profile email https://www.googleapis.com/auth/spreadsheets";
+                try {
+                    Single<String> tokenSingle=TokenTask.getToken(getApplicationContext(),account,scopes);
+                    tokenSingle.subscribe(new SingleObserver<String>() {
+                        @Override
+                        public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(@io.reactivex.annotations.NonNull String token) {
+                            Log.d(TAG, "token: "+token);
+
+                        }
+
+                        @Override
+                        public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                            Log.d(TAG, "onError: "+e.getMessage());
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "onActivityResult: "+e.getMessage());
+                }
+
+            }
+        });
+
+
 
     }
 
@@ -979,6 +1013,14 @@ public class MainActivity extends AppCompatActivity
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
+            }
+
+            else if(position==8){
+                GoogleSignInFrag frag=new GoogleSignInFrag();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.container,frag)
+                        .commit();
             }
             mDrawerLayout.closeDrawer(mDrawerList);
         }

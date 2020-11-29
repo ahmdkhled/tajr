@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.crashlytics.android.Crashlytics;
 import com.tajr.tajr.helper.App;
 import com.tajr.tajr.R;
 import com.tajr.tajr.models.NewOrderResponse;
@@ -68,7 +67,7 @@ public class OrdersRepo {
 
                     @Override
                     public void onFailure(Call<CurrentOrderResponse> call, Throwable t) {
-                        Crashlytics.logException(t);
+                        //Crashlytics.logException(t);
                         Log.d("CONFIRMMMM", "onFailure: "+t.getMessage());
                         isCurrentOrderLoading.setValue(false);
                         //currentOrderLoadingError.setValue(Resources.getSystem().getString(R.string.server_error));
@@ -110,7 +109,7 @@ public class OrdersRepo {
 
                     @Override
                     public void onFailure(Call<UpdateOrderNewResponse> call, Throwable t) {
-                        Crashlytics.logException(t);
+                        //Crashlytics.logException(t);
                         orderUpdateError.setValue(App.getContext().getString(R.string.server_error));
 
                     }

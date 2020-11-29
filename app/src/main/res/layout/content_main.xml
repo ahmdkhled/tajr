@@ -9,6 +9,8 @@
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+
+
     <com.flaviofaria.kenburnsview.KenBurnsView
         android:id="@+id/ken_burns_images"
         android:layout_width="match_parent"
@@ -62,6 +64,7 @@
             app:inner_text_top_padding="18dp" />
 
     </LinearLayout>
+
 
 
 </RelativeLayout>

@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.crashlytics.android.Crashlytics;
 import com.tajr.tajr.models.AddReasonResponse;
 import com.tajr.tajr.models.CancellationReasonsResponse;
 import com.tajr.tajr.models.MainResponse;
@@ -64,7 +63,7 @@ public class CancellationReasonsRepository {
                     public void onFailure(Call<CancellationReasonsResponse> call, Throwable t) {
                         isCancellationReasonsLoading.setValue(false);
                         cancellationReasonsLoadingError.setValue(t.getMessage());
-                        Crashlytics.logException(t);
+                        //Crashlytics.logException(t);
 
                     }
                 });
@@ -109,7 +108,7 @@ public class CancellationReasonsRepository {
                     public void onFailure(Call<AddReasonResponse> call, Throwable t) {
                         isSubmittingReason.setValue(false);
                         reasonSubmittingError.setValue(t.getMessage());
-                        Crashlytics.logException(t);
+                        //Crashlytics.logException(t);
 
                     }
                 });
@@ -149,7 +148,7 @@ public class CancellationReasonsRepository {
                     public void onFailure(Call<MainResponse> call, Throwable t) {
                         isReasonAddingToOrder.setValue(false);
                         reasonAddingToOrderError.setValue(t.getMessage());
-                        Crashlytics.logException(t);
+                        //Crashlytics.logException(t);
 
                         Log.d("REASONORDER", "onFailure: "+t.getMessage());
 

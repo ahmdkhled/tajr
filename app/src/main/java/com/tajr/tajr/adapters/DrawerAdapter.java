@@ -40,6 +40,9 @@ public class DrawerAdapter extends BaseAdapter {
 		if (SessionManager.getInstance(context).getLogInFrom().equals("admin")){
 			list.add(new DummyModel(7, "", context.getString(R.string.amin_records), R.string.material_icon_settings));
 		}
+		list.add(new DummyModel(8, "", context.getString(R.string.signIn), R.string.material_icon_settings));
+
+
 
 
 

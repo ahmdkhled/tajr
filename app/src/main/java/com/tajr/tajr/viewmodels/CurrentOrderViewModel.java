@@ -8,7 +8,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.crashlytics.android.Crashlytics;
 import com.tajr.tajr.R;
 import com.tajr.tajr.helper.SessionManager;
 import com.tajr.tajr.models.AddReasonResponse;
@@ -149,13 +148,13 @@ public class CurrentOrderViewModel extends AndroidViewModel {
                         if (response.isSuccessful()&&callTimeResponse!=null){
                             callTime.setValue(callTimeResponse);
                         }else {
-                            Crashlytics.logException(new Throwable("Error parsing Call Time Response"));
+                            //Crashlytics.logException(new Throwable("Error parsing Call Time Response"));
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Crashlytics.logException(e);
+                        //Crashlytics.logException(e);
                     }
                 });
         return callTime;
@@ -216,7 +215,7 @@ public class CurrentOrderViewModel extends AndroidViewModel {
                     public void onError(Throwable e) {
                         delayedOrdersUpdatingError.setValue(getApplication().getApplicationContext()
                                 .getString(R.string.server_error));
-                        Crashlytics.logException(e);
+                        //Crashlytics.logException(e);
 
                         isDelayedOrdersUpdating.setValue(false);
                     }
@@ -256,8 +255,8 @@ public class CurrentOrderViewModel extends AndroidViewModel {
                         }else {
                             remainingOrdersLoadingError.setValue(getApplication().getApplicationContext()
                                     .getString(R.string.error_parsing_remaining_orders));
-                            Crashlytics.logException(new Throwable(getApplication().getApplicationContext()
-                                    .getString(R.string.server_error)));
+//                            Crashlytics.logException(new Throwable(getApplication().getApplicationContext()
+//                                    .getString(R.string.server_error)));
                         }
                         isRemainingOrdersLoading.setValue(true);
                     }
@@ -268,7 +267,7 @@ public class CurrentOrderViewModel extends AndroidViewModel {
                         .getString(R.string.server_error));
                         Log.d("REMAININGGG", "onError: "+e.getMessage());
                         isRemainingOrdersLoading.setValue(true);
-                        Crashlytics.logException(e);
+                        //Crashlytics.logException(e);
 
                     }
                 });

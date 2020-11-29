@@ -62,19 +62,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     final List<String> ids = new ArrayList<>();
-    @BindView(R.id.loginbtn)
     RobotoTextView loginBtn;
-    @BindView(R.id.email)
     FloatLabeledEditText email;
-    @BindView(R.id.password)
     FloatLabeledEditText pass;
-    @BindView(R.id.ken_burns_images)
     KenBurnsView mKenBurns;
-    @BindView(R.id.logo)
     ImageView mLogo;
-    @BindView(R.id.progress_log_in)
     ProgressWheel progressLogin;
-    @BindView(R.id.remember_pass)
     CheckBox rememberPass;
     ProgressDialog progressDialog;
     Api api;
@@ -94,7 +87,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         Log.d("sssssssssssssss", "onCreate: ");
-
+        mKenBurns=findViewById(R.id.ken_burns_images);
+        mLogo=findViewById(R.id.logo);
+        progressLogin=findViewById(R.id.progress_log_in);
+        loginBtn=findViewById(R.id.loginbtn);
+        email=findViewById(R.id.email);
+        pass=findViewById(R.id.password);
+        rememberPass=findViewById(R.id.remember_pass);
         Log.d("OVERLAYYY", "login activity: ");
         sessionManager=SessionManager.getInstance(this);
         progressDialog = new ProgressDialog(this);
