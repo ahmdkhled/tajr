@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.auth.AuthResult;
+import com.tajr.tajr.repository.GsignInRepo;
 import com.tajr.tajr.repository.RemoteConfigRepo;
 
 public class MainActivityVm extends AndroidViewModel {
@@ -25,5 +27,12 @@ public class MainActivityVm extends AndroidViewModel {
 
     public MutableLiveData<String> getError() {
         return RemoteConfigRepo.getInstance().getError();
+    }
+
+
+    //----------------------
+
+    public MutableLiveData<AuthResult> signIn(String idToken){
+        return new GsignInRepo().signIn(idToken);
     }
 }

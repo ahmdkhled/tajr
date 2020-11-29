@@ -60,8 +60,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.tajr.tajr.R;
 import com.tajr.tajr.adapters.DrawerAdapter;
+import com.tajr.tajr.fragments.AllSheetsFrag;
 import com.tajr.tajr.fragments.GoogleSignInFrag;
 import com.tajr.tajr.helper.AccessibilityManager;
 import com.tajr.tajr.helper.Binder;
@@ -612,6 +616,13 @@ public class MainActivity extends AppCompatActivity
         task.addOnCompleteListener(onCompleteListener->{
             if (onCompleteListener.isSuccessful()){
                 GoogleSignInAccount account=onCompleteListener.getResult();
+                mainActivityVm.signIn(onCompleteListener.getResult().getIdToken())
+                .observe(this, new Observer<AuthResult>() {
+                    @Override
+                    public void onChanged(AuthResult authResult) {
+                        Toast.makeText(MainActivity.this, "successfully signed", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 String scopes="oauth2:profile email https://www.googleapis.com/auth/spreadsheets";
                 try {
                     Single<String> tokenSingle=TokenTask.getToken(getApplicationContext(),account,scopes);
@@ -641,6 +652,21 @@ public class MainActivity extends AppCompatActivity
         });
 
 
+
+    }
+
+    private boolean checkSigned(){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser!=null){
+            AllSheetsFrag allSheetsFrag =new AllSheetsFrag();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container,allSheetsFrag)
+                    .addToBackStack(null)
+                    .commit();
+            Log.d(TAG, "checkSigned: "+currentUser);
+            return true;
+        }
+        return false;
 
     }
 
@@ -1016,11 +1042,16 @@ public class MainActivity extends AppCompatActivity
             }
 
             else if(position==8){
-                GoogleSignInFrag frag=new GoogleSignInFrag();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.container,frag)
-                        .commit();
+                if(!checkSigned()){
+                    GoogleSignInFrag frag=new GoogleSignInFrag();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .addToBackStack(null)
+                            .add(R.id.container,frag)
+                            .commit();
+                }
+
+
             }
             mDrawerLayout.closeDrawer(mDrawerList);
         }
