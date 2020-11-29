@@ -623,7 +623,7 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(MainActivity.this, "successfully signed", Toast.LENGTH_SHORT).show();
                     }
                 });
-                String scopes="oauth2:profile email https://www.googleapis.com/auth/spreadsheets";
+                String scopes="oauth2:profile email https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive";
                 try {
                     Single<String> tokenSingle=TokenTask.getToken(getApplicationContext(),account,scopes);
                     tokenSingle.subscribe(new SingleObserver<String>() {

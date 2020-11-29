@@ -37,6 +37,7 @@ class GoogleSignInFrag : Fragment() {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .requestScopes(Scope("https://www.googleapis.com/auth/spreadsheets"))
+                .requestScopes(Scope("https://www.googleapis.com/auth/drive"))
                 .build()
 
         val gsc= GoogleSignIn.getClient(context!!,gso)
