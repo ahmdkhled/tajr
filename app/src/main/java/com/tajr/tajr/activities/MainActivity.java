@@ -57,6 +57,8 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -615,7 +617,24 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onActivityResult: "+task.isSuccessful());
         task.addOnCompleteListener(onCompleteListener->{
             if (onCompleteListener.isSuccessful()){
+
+
                 GoogleSignInAccount account=onCompleteListener.getResult();
+                mainActivityVm.getRefreshToken(account.getServerAuthCode()
+                        ,getString(R.string.client_id),getString(R.string.client_server))
+                        .observe(this,refreshTokenResResponse -> {
+
+                                    Log.d(TAG, "refresh token result: "+refreshTokenResResponse.getError());
+
+                                if (refreshTokenResResponse.getModel()!=null){
+                                    Log.d(TAG, "onActivityResult: "+refreshTokenResResponse.getModel().getRefresh_token());
+                                    SharedHelper.putKey(getApplicationContext(),"refresh_token",refreshTokenResResponse
+                                            .getModel()
+                                    .getRefresh_token());
+                                }
+                                }
+                                );
+
                 mainActivityVm.signIn(onCompleteListener.getResult().getIdToken())
                 .observe(this, new Observer<AuthResult>() {
                     @Override
@@ -635,6 +654,7 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onSuccess(@io.reactivex.annotations.NonNull String token) {
                             Log.d(TAG, "token: "+token);
+                            Log.d(TAG, "auth code: "+account.getServerAuthCode());
 
                         }
 
@@ -656,6 +676,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private boolean checkSigned(){
+
+
+        Log.d(TAG, "checkSigned: "+SharedHelper.getKey(getApplicationContext(),"refresh_token"));
+
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser!=null){
             AllSheetsFrag allSheetsFrag =new AllSheetsFrag();

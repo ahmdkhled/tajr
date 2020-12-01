@@ -36,6 +36,7 @@ class GoogleSignInFrag : Fragment() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestServerAuthCode(getString(R.string.default_web_client_id))
                 .requestScopes(Scope("https://www.googleapis.com/auth/spreadsheets"))
                 .requestScopes(Scope("https://www.googleapis.com/auth/drive"))
                 .build()

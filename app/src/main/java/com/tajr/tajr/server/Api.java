@@ -14,12 +14,14 @@ import com.tajr.tajr.models.CartResponse;
 import com.tajr.tajr.models.CashRequestHistory;
 import com.tajr.tajr.models.Cities;
 import com.tajr.tajr.models.DeleteAddProductResponse;
+import com.tajr.tajr.models.DriveRes;
 import com.tajr.tajr.models.MoneyHistory;
 import com.tajr.tajr.models.MoneyRequestResponse;
 import com.tajr.tajr.models.NewOrderResponse;
 import com.tajr.tajr.models.OrderPayload;
 import com.tajr.tajr.models.OrderStatusHistoryResponse;
 import com.tajr.tajr.models.PointsHistory;
+import com.tajr.tajr.models.RefreshTokenRes;
 import com.tajr.tajr.models.RemainingOrdersResponse;
 import com.tajr.tajr.models.MainResponse;
 import com.tajr.tajr.models.SimpleOrderResponse;
@@ -37,6 +39,9 @@ import com.tajr.tajr.models.UserWorkTimeResponse;
 import com.tajr.tajr.models.CurrentOrderResponse;
 import com.tajr.tajr.models.SingleOrderProductsResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -44,13 +49,17 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface Api {
 
@@ -483,5 +492,13 @@ public interface Api {
 
     @POST("send/set_call_time")
     Single<Response<CallTimeResponse>> setCallTime(@Body CallTimePayload callTImePayload);
+
+    ///-------------------
+     @GET
+    Call<DriveRes> getSpreadSheets(@Url String url, @HeaderMap HashMap<String,String> headers );
+
+     @FormUrlEncoded
+     @POST
+    Call<RefreshTokenRes> getRefreshToken(@Url String url, @FieldMap HashMap<String,String> fields);
 
 }
