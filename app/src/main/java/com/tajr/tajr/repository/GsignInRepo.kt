@@ -45,7 +45,7 @@ object GsignInRepo {
 
         val fields=HashMap<String,String>()
         fields["grant_type"]=grant_type
-        fields["access_type"]="offline"
+        //fields["access_type"]="offline"
         fields["code"]=code
         fields["client_id"]=client_id
         fields["client_secret"]=client_secret

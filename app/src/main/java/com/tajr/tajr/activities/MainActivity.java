@@ -614,6 +614,8 @@ public class MainActivity extends AppCompatActivity
 
 
                 GoogleSignInAccount account=onCompleteListener.getResult();
+                String refresh_token=SharedHelper.getKey(getApplicationContext(),"refresh_token");
+                if (refresh_token.equals(""))
                 mainActivityVm.getRefreshToken(account.getServerAuthCode()
                         ,getString(R.string.client_id),getString(R.string.client_server))
                         .observe(this,refreshTokenResResponse -> {
@@ -622,6 +624,7 @@ public class MainActivity extends AppCompatActivity
 
                                 if (refreshTokenResResponse.getModel()!=null){
                                     Log.d(TAG, "onActivityResult: "+refreshTokenResResponse.getModel().getRefresh_token());
+                                    if (refreshTokenResResponse.getModel().getRefresh_token()!=null)
                                     SharedHelper.putKey(getApplicationContext(),"refresh_token",refreshTokenResResponse
                                             .getModel()
                                     .getRefresh_token());
