@@ -47,19 +47,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
 import com.flaviofaria.kenburnsview.KenBurnsView;
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
@@ -82,7 +78,6 @@ import com.tajr.tajr.server.BaseClient;
 import com.tajr.tajr.view.dialogs.UpdateVersionDialog;
 import com.tajr.tajr.viewmodels.MainActivityVm;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -98,7 +93,6 @@ import butterknife.ButterKnife;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import kotlinx.coroutines.GlobalScope;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.tajr.tajr.helper.App.getContext;
@@ -640,6 +634,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onChanged(AuthResult authResult) {
                         Toast.makeText(MainActivity.this, "successfully signed", Toast.LENGTH_SHORT).show();
+                        replaceFrag(new AllSheetsFrag());
                     }
                 });
                 String scopes="oauth2:profile email https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive";
@@ -692,6 +687,13 @@ public class MainActivity extends AppCompatActivity
         }
         return false;
 
+    }
+
+    public void replaceFrag(Fragment frag){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container,frag)
+                .commit();
     }
 
     @SuppressLint("NewApi")
