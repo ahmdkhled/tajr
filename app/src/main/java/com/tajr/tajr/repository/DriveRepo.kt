@@ -28,6 +28,10 @@ class DriveRepo  {
                         val driveRes=response.body();
                         if (response.isSuccessful&&driveRes!=null){
                             spreadSheets.value=driveRes.files
+                        }else{
+                            val error =response.errorBody()?.string()
+                            Log.d(TAG, "onResponse: "+error)
+
                         }
                     }
                     override fun onFailure(call: Call<DriveRes>, t: Throwable) {

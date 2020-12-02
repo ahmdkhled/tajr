@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.tajr.tajr.models.AccessTokenRes
 import com.tajr.tajr.models.RefreshTokenRes
 import com.tajr.tajr.models.Response
 import com.tajr.tajr.server.BaseClient
@@ -16,6 +17,7 @@ object GsignInRepo {
 
     lateinit var result:MutableLiveData<AuthResult>
     lateinit var refreshTokenResponse: MutableLiveData<Response<RefreshTokenRes>>
+    lateinit var accessTokenResponse: MutableLiveData<Response<AccessTokenRes>>
 
     private val REFRESH_TOKEN_URL="https://accounts.google.com/o/oauth2/token"
     private val grant_type="authorization_code"
@@ -78,6 +80,35 @@ object GsignInRepo {
         return refreshTokenResponse
     }
 
+
+    fun getAccessToken(refresh_token :String,client_id:String,client_secret:String){
+        accessTokenResponse= MutableLiveData()
+
+        val fields=HashMap<String,String>()
+        fields["grant_type"]="refresh_token"
+        fields["refresh_token"]=refresh_token
+        fields["client_id"]=client_id
+        fields["client_secret"]=client_secret
+        BaseClient
+                .getApiService()
+                .getAccessToken(REFRESH_TOKEN_URL,fields)
+                .enqueue(object :Callback<AccessTokenRes>{
+                    override fun onResponse(call: Call<AccessTokenRes>, response: retrofit2.Response<AccessTokenRes>) {
+                        val accessToken=response.body()
+                        if (response.isSuccessful&&accessToken!=null){
+                            accessTokenResponse.value= Response(accessToken,false,null)
+                        }else
+                            accessTokenResponse.value=Response(null,false,"error loading access token")
+
+                    }
+
+                    override fun onFailure(call: Call<AccessTokenRes>, t: Throwable) {
+                        accessTokenResponse.value=Response(null,false,t.message)
+
+                    }
+
+                })
+    }
 
 
 }

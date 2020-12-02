@@ -1,5 +1,6 @@
 package com.tajr.tajr.server;
 
+import com.tajr.tajr.models.AccessTokenRes;
 import com.tajr.tajr.models.ActivityHistory;
 import com.tajr.tajr.models.AddReasonResponse;
 import com.tajr.tajr.models.AdminRecordsResponse;
@@ -500,5 +501,9 @@ public interface Api {
      @FormUrlEncoded
      @POST
     Call<RefreshTokenRes> getRefreshToken(@Url String url, @FieldMap HashMap<String,String> fields);
+
+    @FormUrlEncoded
+    @POST
+    Call<AccessTokenRes> getAccessToken(@Url String url, @FieldMap HashMap<String,String> fields);
 
 }
