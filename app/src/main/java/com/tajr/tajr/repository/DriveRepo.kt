@@ -2,6 +2,8 @@ package com.tajr.tajr.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.tajr.tajr.helper.App
+import com.tajr.tajr.helper.SharedHelper
 import com.tajr.tajr.models.DriveRes
 import com.tajr.tajr.models.File
 import com.tajr.tajr.server.BaseClient
@@ -17,8 +19,9 @@ class DriveRepo  {
     lateinit var  spreadSheets:MutableLiveData<ArrayList<File>>
 
     fun getAllSpreadSheets(): MutableLiveData<ArrayList<File>> {
+        val accessToken=SharedHelper.getKey(App.getContext(),"access_token")
         spreadSheets= MutableLiveData()
-        headers.put("Authorization","Bearer ya29.a0AfH6SMBG2sqVIjxAJO1F_YPAwtaRvO5e-8ExmamabpjjdbxR_gis81b3XKIeSFD-zUW6NiJYmqyf3TpAp9xE26zxW381Ha0KcjrMdMajMgehPnNkVHzUejiMyIIPXyIiB3PBb73jT1s9eifML-QAkXd2RV_eXQG3LAjnCX9Gz-k")
+        headers.put("Authorization","Bearer "+accessToken)
         BaseClient.
                 getApiService()
                 .getSpreadSheets(driveUrl,headers)

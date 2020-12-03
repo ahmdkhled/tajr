@@ -22,6 +22,7 @@ public class BaseClient {
         return new OkHttpClient
                 .Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .authenticator(new TokenAuthenticator())
                 .build();
     }
 

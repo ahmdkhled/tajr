@@ -617,7 +617,7 @@ public class MainActivity extends AppCompatActivity
                 String refresh_token=SharedHelper.getKey(getApplicationContext(),"refresh_token");
                 if (refresh_token.equals(""))
                 mainActivityVm.getRefreshToken(account.getServerAuthCode()
-                        ,getString(R.string.client_id),getString(R.string.client_server))
+                        ,getString(R.string.client_id),getString(R.string.client_secret))
                         .observe(this,refreshTokenResResponse -> {
 
                                     Log.d(TAG, "refresh token result: "+refreshTokenResResponse.getError());
@@ -653,6 +653,8 @@ public class MainActivity extends AppCompatActivity
                         public void onSuccess(@io.reactivex.annotations.NonNull String token) {
                             Log.d(TAG, "token: "+token);
                             Log.d(TAG, "auth code: "+account.getServerAuthCode());
+                            if (token!=null)
+                                SharedHelper.putKey(getContext(),"access_token",token);
 
                         }
 

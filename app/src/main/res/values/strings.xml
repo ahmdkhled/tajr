@@ -295,7 +295,7 @@
     <string name="error_updating_client_data">error updating client data</string>
     <string name="signIn">signIn</string>
     <string name="client_id">807393199399-tc1cr554gg6cp751q5dohcakf80aejrm.apps.googleusercontent.com</string>
-    <string name="client_server">JN5IIdcuPubfQ92zPwxkGF-t</string>
+    <string name="client_secret">JN5IIdcuPubfQ92zPwxkGF-t</string>
     <string-array name="calc_dialog_errors">
         <item>Division by zero</item>
         <item>Out of bounds</item>
