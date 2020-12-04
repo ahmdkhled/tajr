@@ -27,6 +27,7 @@ import com.tajr.tajr.models.RemainingOrdersResponse;
 import com.tajr.tajr.models.MainResponse;
 import com.tajr.tajr.models.SimpleOrderResponse;
 import com.tajr.tajr.models.SimpleResponse;
+import com.tajr.tajr.models.SpreadSheetRes;
 import com.tajr.tajr.models.SubscriberInfo;
 import com.tajr.tajr.models.ToalAvailableBalance;
 import com.tajr.tajr.models.UpdateOrderNewResponse;
@@ -59,6 +60,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -496,7 +498,7 @@ public interface Api {
 
     ///-------------------
      @GET
-    Call<DriveRes> getSpreadSheets(@Url String url, @HeaderMap HashMap<String,String> headers );
+    Call<DriveRes> getSpreadSheets(@Url String url );
 
      @FormUrlEncoded
      @POST
@@ -505,5 +507,8 @@ public interface Api {
     @FormUrlEncoded
     @POST
     Call<AccessTokenRes> getAccessToken(@Url String url, @FieldMap HashMap<String,String> fields);
+
+    @GET
+    Call<SpreadSheetRes> getSpreadSheet(@Url String url,@Query("includeGridData") boolean includeGridData );
 
 }

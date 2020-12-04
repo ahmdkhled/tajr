@@ -700,6 +700,13 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.container,frag)
                 .commit();
     }
+    public void addFrag(Fragment frag){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container,frag)
+                .addToBackStack(null)
+                .commit();
+    }
 
     @SuppressLint("NewApi")
     private String getMyPhoneNumber() {

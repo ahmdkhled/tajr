@@ -15,16 +15,13 @@ class DriveRepo  {
 
     private  val TAG = "DriveRepo"
     val driveUrl="https://www.googleapis.com/drive/v3/files?q=mimeType='application/vnd.google-apps.spreadsheet'"
-    val headers=HashMap<String,String>()
     lateinit var  spreadSheets:MutableLiveData<ArrayList<File>>
 
     fun getAllSpreadSheets(): MutableLiveData<ArrayList<File>> {
-        val accessToken=SharedHelper.getKey(App.getContext(),"access_token")
         spreadSheets= MutableLiveData()
-        headers.put("Authorization","Bearer "+accessToken)
         BaseClient.
                 getApiService()
-                .getSpreadSheets(driveUrl,headers)
+                .getSpreadSheets(driveUrl)
                 .enqueue(object :Callback<DriveRes>{
                     override fun onResponse(call: Call<DriveRes>, response: Response<DriveRes>) {
                         Log.d(TAG, "onResponse: ")

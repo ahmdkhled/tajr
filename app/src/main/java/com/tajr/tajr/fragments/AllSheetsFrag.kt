@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tajr.tajr.R
+import com.tajr.tajr.activities.MainActivity
 import com.tajr.tajr.adapters.SpreadSheetsAdapter
 import com.tajr.tajr.databinding.FragAllSheetsBinding
 import com.tajr.tajr.repository.DriveRepo
 
-class AllSheetsFrag :Fragment() {
+class AllSheetsFrag :Fragment(),SpreadSheetsAdapter.OnSpreadSheetClickListener {
 
     lateinit var binding: FragAllSheetsBinding
     lateinit var spreadSheetsAdapter: SpreadSheetsAdapter
@@ -22,11 +23,19 @@ class AllSheetsFrag :Fragment() {
         binding.spreadsheetsRecycler.layoutManager=GridLayoutManager(context,2)
         DriveRepo().getAllSpreadSheets()
                 .observe(this, Observer {
-                    spreadSheetsAdapter=SpreadSheetsAdapter(it)
+                    spreadSheetsAdapter=SpreadSheetsAdapter(it,this)
                     binding.spreadsheetsRecycler.adapter=spreadSheetsAdapter
 
                 })
 
         return binding.root
+    }
+
+    override fun onSpreadSheetClickListener(spreadSheetId: String) {
+        val spreadSheetFrag=SpreadSheetFrag()
+        val b=Bundle()
+        b.putString(spreadSheetFrag.SPREADSHEET_ID_KEY,spreadSheetId)
+        spreadSheetFrag.arguments=b
+        (activity as MainActivity).addFrag(spreadSheetFrag)
     }
 }
