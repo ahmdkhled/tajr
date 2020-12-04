@@ -22,6 +22,7 @@ public class BaseClient {
         return new OkHttpClient
                 .Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(new HeaderInterceptor())
                 .authenticator(new TokenAuthenticator())
                 .build();
     }
@@ -34,6 +35,7 @@ public class BaseClient {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .client(buildClient())
+
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .baseUrl("https://tajr.xyz/")
