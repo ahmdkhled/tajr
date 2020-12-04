@@ -7,10 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tajr.tajr.R
+import com.tajr.tajr.adapters.SheetTabsAdapter
 import com.tajr.tajr.databinding.FragSpreadsheetBinding
 import com.tajr.tajr.models.SpreadSheetRes
 import com.tajr.tajr.server.BaseClient
+import com.tajr.tajr.viewmodels.SpreadSheetFragVM
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,15 +25,37 @@ import retrofit2.Response
 class SpreadSheetFrag :Fragment() {
 
     lateinit var binding: FragSpreadsheetBinding
+    lateinit var spreadSheetFragVM: SpreadSheetFragVM
+    lateinit var tabsAdapter:SheetTabsAdapter
     val SPREADSHEET_ID_KEY="sheet_id"
     private val TAG = "SpreadSheetFrag"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding=DataBindingUtil.inflate(inflater, R.layout.frag_spreadsheet,container,false)
-
+        spreadSheetFragVM= ViewModelProvider(this).get(SpreadSheetFragVM::class.java)
         val b=arguments
         val spreadsheetId=b?.getString(SPREADSHEET_ID_KEY)
+
+        tabsAdapter= SheetTabsAdapter(ArrayList())
+        val layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        binding.tabsRecycler.adapter=tabsAdapter
+        binding.tabsRecycler.layoutManager=layoutManager
+
+        getSpreadSheetData(spreadsheetId)
         return binding.root
+    }
+
+    fun getSpreadSheetData(spreadsheetId:String?){
+        spreadSheetFragVM
+                .getSpreadSheetData(spreadsheetId)
+                .observe(viewLifecycleOwner, Observer {res->
+                    if (res.error==null){
+                        val sheets=res.model?.sheets
+                        if (sheets!=null)
+                        tabsAdapter.setSheet(sheets)
+                    }
+                })
+
     }
     
 
