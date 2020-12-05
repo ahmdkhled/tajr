@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tajr.tajr.R
+import com.tajr.tajr.adapters.SheetRowAdapter
 import com.tajr.tajr.adapters.SheetTabsAdapter
 import com.tajr.tajr.databinding.FragSpreadsheetBinding
 import com.tajr.tajr.models.SpreadSheetRes
@@ -27,6 +28,7 @@ class SpreadSheetFrag :Fragment() {
     lateinit var binding: FragSpreadsheetBinding
     lateinit var spreadSheetFragVM: SpreadSheetFragVM
     lateinit var tabsAdapter:SheetTabsAdapter
+    lateinit var rowsAdapter:SheetRowAdapter
     val SPREADSHEET_ID_KEY="sheet_id"
     private val TAG = "SpreadSheetFrag"
 
@@ -37,9 +39,13 @@ class SpreadSheetFrag :Fragment() {
         val spreadsheetId=b?.getString(SPREADSHEET_ID_KEY)
 
         tabsAdapter= SheetTabsAdapter(ArrayList())
+        rowsAdapter= SheetRowAdapter(ArrayList())
         val layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        val rowsLayoutManager=LinearLayoutManager(context)
         binding.tabsRecycler.adapter=tabsAdapter
         binding.tabsRecycler.layoutManager=layoutManager
+        binding.sheetRecycler.adapter=rowsAdapter
+        binding.sheetRecycler.layoutManager=rowsLayoutManager
 
         getSpreadSheetData(spreadsheetId)
         return binding.root
@@ -51,8 +57,11 @@ class SpreadSheetFrag :Fragment() {
                 .observe(viewLifecycleOwner, Observer {res->
                     if (res.error==null){
                         val sheets=res.model?.sheets
-                        if (sheets!=null)
-                        tabsAdapter.setSheet(sheets)
+                        if (sheets!=null){
+                            tabsAdapter.setSheet(sheets)
+                            rowsAdapter.setSheetRows(sheets.get(0).data.get(0).rowData)
+
+                        }
                     }
                 })
 
