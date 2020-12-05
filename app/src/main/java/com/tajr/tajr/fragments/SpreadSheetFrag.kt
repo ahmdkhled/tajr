@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tajr.tajr.R
 import com.tajr.tajr.adapters.SheetRowAdapter
@@ -46,6 +47,9 @@ class SpreadSheetFrag :Fragment() {
         binding.tabsRecycler.layoutManager=layoutManager
         binding.sheetRecycler.adapter=rowsAdapter
         binding.sheetRecycler.layoutManager=rowsLayoutManager
+
+        val divider=DividerItemDecoration(context,DividerItemDecoration.VERTICAL)
+        binding.sheetRecycler.addItemDecoration(divider)
 
         getSpreadSheetData(spreadsheetId)
         return binding.root
