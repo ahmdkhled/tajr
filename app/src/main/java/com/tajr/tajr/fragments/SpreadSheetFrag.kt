@@ -56,6 +56,7 @@ class SpreadSheetFrag :Fragment() {
     }
 
     fun getSpreadSheetData(spreadsheetId:String?){
+        binding.progress.visibility=View.VISIBLE
         spreadSheetFragVM
                 .getSpreadSheetData(spreadsheetId)
                 .observe(viewLifecycleOwner, Observer {res->
@@ -64,6 +65,7 @@ class SpreadSheetFrag :Fragment() {
                         if (sheets!=null){
                             tabsAdapter.setSheet(sheets)
                             rowsAdapter.setSheetRows(sheets.get(0).data.get(0).rowData)
+                            binding.progress.visibility=View.GONE
 
                         }
                     }
