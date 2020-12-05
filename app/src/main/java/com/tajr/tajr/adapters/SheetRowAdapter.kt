@@ -34,7 +34,8 @@ class SheetRowAdapter(var rows:ArrayList<RowData>)  :RecyclerView.Adapter<SheetR
     }
 
     override fun onBindViewHolder(holder: SheetRowVH, position: Int) {
-        val values=rows.get(position).values
+
+        val values= rows.get(position).values ?: return
         val cellAdapter=SheetCellAdapter(values)
         val layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
 

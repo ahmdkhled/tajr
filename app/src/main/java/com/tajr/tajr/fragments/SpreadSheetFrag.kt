@@ -16,6 +16,7 @@ import com.tajr.tajr.R
 import com.tajr.tajr.adapters.SheetRowAdapter
 import com.tajr.tajr.adapters.SheetTabsAdapter
 import com.tajr.tajr.databinding.FragSpreadsheetBinding
+import com.tajr.tajr.models.Sheet
 import com.tajr.tajr.models.SpreadSheetRes
 import com.tajr.tajr.server.BaseClient
 import com.tajr.tajr.viewmodels.SpreadSheetFragVM
@@ -24,12 +25,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class SpreadSheetFrag :Fragment() {
+class SpreadSheetFrag :Fragment(),SheetTabsAdapter.OnTabClickListener {
 
     lateinit var binding: FragSpreadsheetBinding
     lateinit var spreadSheetFragVM: SpreadSheetFragVM
     lateinit var tabsAdapter:SheetTabsAdapter
     lateinit var rowsAdapter:SheetRowAdapter
+     var sheets=ArrayList<Sheet>()
     val SPREADSHEET_ID_KEY="sheet_id"
     private val TAG = "SpreadSheetFrag"
 
@@ -39,7 +41,7 @@ class SpreadSheetFrag :Fragment() {
         val b=arguments
         val spreadsheetId=b?.getString(SPREADSHEET_ID_KEY)
 
-        tabsAdapter= SheetTabsAdapter(ArrayList())
+        tabsAdapter= SheetTabsAdapter(ArrayList(),this)
         rowsAdapter= SheetRowAdapter(ArrayList())
         val layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
         val rowsLayoutManager=LinearLayoutManager(context)
@@ -63,6 +65,7 @@ class SpreadSheetFrag :Fragment() {
                     if (res.error==null){
                         val sheets=res.model?.sheets
                         if (sheets!=null){
+                            this.sheets=sheets
                             tabsAdapter.setSheet(sheets)
                             rowsAdapter.setSheetRows(sheets.get(0).data.get(0).rowData)
                             binding.progress.visibility=View.GONE
@@ -72,6 +75,10 @@ class SpreadSheetFrag :Fragment() {
                 })
 
     }
-    
+
+    override fun onTabClicked(tabIndex: Int) {
+       rowsAdapter.setSheetRows(sheets.get(tabIndex).data.get(0).rowData)
+    }
+
 
 }

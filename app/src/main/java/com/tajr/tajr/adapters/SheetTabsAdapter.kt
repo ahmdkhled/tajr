@@ -11,6 +11,11 @@ import com.tajr.tajr.models.Sheet
 
 class SheetTabsAdapter(var sheets:ArrayList<Sheet>) :RecyclerView.Adapter<SheetTabsAdapter.SheetTabVH>(){
 
+    lateinit var onTabClickListener: OnTabClickListener
+    constructor(sheets:ArrayList<Sheet>,onTabClickListener: OnTabClickListener):this(sheets){
+        this.onTabClickListener=onTabClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SheetTabVH {
         val binding=DataBindingUtil.inflate<LayoutSheetTabBinding>(LayoutInflater.from(parent.context),
         R.layout.layout_sheet_tab,parent,false)
@@ -25,11 +30,20 @@ class SheetTabsAdapter(var sheets:ArrayList<Sheet>) :RecyclerView.Adapter<SheetT
         holder.binding.name.text=sheets.get(position)
                 .properties
                 .title
+
+        holder.binding.root
+                .setOnClickListener {
+                    onTabClickListener.onTabClicked(position)
+                }
     }
 
     fun setSheet(sheets:ArrayList<Sheet>){
         this.sheets=sheets
         notifyDataSetChanged()
+    }
+
+    interface OnTabClickListener{
+        fun onTabClicked(tabIndex:Int)
     }
 
     class SheetTabVH(var binding: LayoutSheetTabBinding) :RecyclerView.ViewHolder(binding.root){
