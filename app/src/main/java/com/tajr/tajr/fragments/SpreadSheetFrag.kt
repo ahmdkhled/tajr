@@ -19,6 +19,7 @@ import com.tajr.tajr.databinding.FragSpreadsheetBinding
 import com.tajr.tajr.models.Sheet
 import com.tajr.tajr.models.SpreadSheetRes
 import com.tajr.tajr.server.BaseClient
+import com.tajr.tajr.view.dialogs.SheetSettingDialog
 import com.tajr.tajr.viewmodels.SpreadSheetFragVM
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,6 +55,12 @@ class SpreadSheetFrag :Fragment(),SheetTabsAdapter.OnTabClickListener {
         binding.sheetRecycler.addItemDecoration(divider)
 
         getSpreadSheetData(spreadsheetId)
+
+
+        binding.settings.setOnClickListener {
+            val sheetSettingDialog=SheetSettingDialog(sheets,spreadsheetId!!)
+            sheetSettingDialog.show(childFragmentManager,"")
+        }
         return binding.root
     }
 
@@ -69,6 +76,7 @@ class SpreadSheetFrag :Fragment(),SheetTabsAdapter.OnTabClickListener {
                             tabsAdapter.setSheet(sheets)
                             rowsAdapter.setSheetRows(sheets.get(0).data.get(0).rowData)
                             binding.progress.visibility=View.GONE
+                            binding.settings.visibility=View.VISIBLE
 
                         }
                     }

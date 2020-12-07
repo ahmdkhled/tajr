@@ -1,5 +1,6 @@
 package com.tajr.tajr.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class SheetTabsAdapter(var sheets:ArrayList<Sheet>) :RecyclerView.Adapter<SheetT
         holder.binding.root
                 .setOnClickListener {
                     onTabClickListener.onTabClicked(position)
+
                 }
     }
 

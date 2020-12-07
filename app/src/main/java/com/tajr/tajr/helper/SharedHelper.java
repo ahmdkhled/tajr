@@ -33,6 +33,12 @@ public class SharedHelper {
         editor.apply();
 
     }
+    public static void putKey(Context context, String Key, int Value) {
+        init(context);
+        editor.putInt(Key, Value);
+        editor.apply();
+
+    }
 
     public static String getKey(Context contextGetKey, String Key) {
         sharedPreferences = contextGetKey.getSharedPreferences("Cache", Context.MODE_PRIVATE);
@@ -49,6 +55,11 @@ public class SharedHelper {
     public static boolean getBooleanValue(Context context, String Key) {
         init(context);
         return sharedPreferences.getBoolean(Key, true);
+
+    }
+    public static int getIntegerValue(Context context, String Key) {
+        init(context);
+        return sharedPreferences.getInt(Key, -1);
 
     }
 
