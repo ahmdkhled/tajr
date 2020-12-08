@@ -30,6 +30,9 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
 
 
         populateSpinner(0)
+        if (columnes.indexOf("order_status")!=-1){
+            binding.orderStatusSpinner.setSelection(columnes.indexOf("order_status"))
+        }
 
         val tabsAdapter=SheetTabsAdapter(sheets,this)
         val layoutManager=LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
@@ -48,10 +51,14 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
                 Toasty.error(context!!,"complete all fields",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+
+
             binding.save.startAnimation()
 
             Log.d(TAG, "onCreateView: $tabIndex $mobileIndex  $nameIndex")
             saveData(tabIndex,mobileIndex-1,nameIndex-1,addressIndex,orderStatusIndex)
+
+
             if (orderStatusIndex==0){
                 val tabId=sheets.get(tabIndex).properties.title
                 (parentFragment as SpreadSheetFrag).spreadSheetFragVM.addOrderStatusColumn(sheetId,tabId,
@@ -117,4 +124,5 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
 
 
     }
+
 }
