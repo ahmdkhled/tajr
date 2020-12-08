@@ -5,13 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tajr.tajr.R
+import com.tajr.tajr.adapters.ColumnSpinnerAdapter
 import com.tajr.tajr.adapters.SheetTabsAdapter
 import com.tajr.tajr.databinding.DialogSheetSettingBinding
 import com.tajr.tajr.fragments.SpreadSheetFrag
@@ -45,7 +45,7 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
             val addressIndex=binding.addressSpinner.selectedItemPosition
             val orderStatusIndex=binding.orderStatusSpinner.selectedItemPosition
             if (mobileIndex==0||nameIndex==0){
-                Toast.makeText(context,"complete all fields",Toast.LENGTH_LONG).show()
+                Toasty.error(context!!,"complete all fields",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             binding.save.startAnimation()
@@ -97,11 +97,11 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
             }
         }
 
-        val mobileSpinnerAdapter=ArrayAdapter<String>(context!!,android.R.layout.simple_spinner_dropdown_item,columnes)
-        binding.mobileSpinner.adapter=mobileSpinnerAdapter
-        binding.nameSpinner.adapter=mobileSpinnerAdapter
-        binding.addressSpinner.adapter=mobileSpinnerAdapter
-        binding.orderStatusSpinner.adapter=mobileSpinnerAdapter
+        val nameAdapter=ColumnSpinnerAdapter(columnes)
+        binding.mobileSpinner.adapter=nameAdapter
+        binding.nameSpinner.adapter=nameAdapter
+        binding.addressSpinner.adapter=nameAdapter
+        binding.orderStatusSpinner.adapter=nameAdapter
     }
 
     fun saveData(tabIndex: Int, mobileIndex: Int, nameIndex: Int, addressIndex: Int, orderStatusIndex: Int){
