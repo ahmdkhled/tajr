@@ -25,6 +25,8 @@ import com.tajr.tajr.models.PointsHistory;
 import com.tajr.tajr.models.RefreshTokenRes;
 import com.tajr.tajr.models.RemainingOrdersResponse;
 import com.tajr.tajr.models.MainResponse;
+import com.tajr.tajr.models.SheetValuePayload;
+import com.tajr.tajr.models.SheetValueRes;
 import com.tajr.tajr.models.SimpleOrderResponse;
 import com.tajr.tajr.models.SimpleResponse;
 import com.tajr.tajr.models.SpreadSheetRes;
@@ -59,6 +61,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -510,5 +513,9 @@ public interface Api {
 
     @GET
     Call<SpreadSheetRes> getSpreadSheet(@Url String url,@Query("includeGridData") boolean includeGridData );
+
+    @PUT
+    Call<SheetValueRes> addOrderStatusColumn(@Url String url,@Body SheetValuePayload sheetValuePayload
+            , @Query("valueInputOption") String valueInputOption );
 
 }
