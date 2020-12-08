@@ -9,12 +9,15 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tajr.tajr.R
 import com.tajr.tajr.adapters.SheetTabsAdapter
 import com.tajr.tajr.databinding.DialogSheetSettingBinding
+import com.tajr.tajr.fragments.SpreadSheetFrag
 import com.tajr.tajr.helper.SharedHelper
 import com.tajr.tajr.models.Sheet
+import es.dmoral.toasty.Toasty
 
 class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):DialogFragment() ,SheetTabsAdapter.OnTabClickListener{
 
@@ -45,9 +48,23 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
                 Toast.makeText(context,"complete all fields",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
+            binding.save.startAnimation()
 
             Log.d(TAG, "onCreateView: $tabIndex $mobileIndex  $nameIndex")
             saveData(tabIndex,mobileIndex-1,nameIndex-1,addressIndex,orderStatusIndex)
+            if (orderStatusIndex==0){
+                val tabId=sheets.get(tabIndex).properties.title
+                (parentFragment as SpreadSheetFrag).spreadSheetFragVM.addOrderStatusColumn(sheetId,tabId,
+                        sheets[tabIndex].data[0].rowData.size)
+                        .observe(viewLifecycleOwner, Observer {res->
+                            binding.save.revertAnimation()
+
+                            if (res.error!=null){
+                                Toasty.error(context!!,"error adding column",Toasty.LENGTH_LONG).show()
+                            }else
+                                dismiss()
+                        })
+            }
         }
 
 
