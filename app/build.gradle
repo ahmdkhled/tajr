@@ -155,6 +155,8 @@ dependencies {
     implementation 'br.com.simplepass:loading-button-android:2.2.0'
     implementation 'com.github.GrenderG:Toasty:1.5.0'
 
+    implementation 'com.nambimobile.widgets:expandable-fab:1.0.0'
+
 
 
 
