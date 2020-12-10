@@ -33,6 +33,7 @@
                 android:textSize="20sp"
                 android:padding="16dp"
                 tools:text="65656565"
+                android:text="_"
                 android:gravity="center" />
 
         </com.google.android.material.textfield.TextInputLayout>

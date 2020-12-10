@@ -13,12 +13,14 @@ import com.tajr.tajr.R
 import com.tajr.tajr.databinding.FragmentNextOrderBinding
 import com.tajr.tajr.helper.SharedHelper
 import com.tajr.tajr.models.Value
+import com.tajr.tajr.view.dialogs.ProgressDialog
 import com.tajr.tajr.viewmodels.NextOrderFragVM
 
 class NextOrderFrag :Fragment() {
 
     lateinit var binding:FragmentNextOrderBinding
     lateinit var nextOrderFragVM:NextOrderFragVM
+    val progressDialog = ProgressDialog()
     private  val TAG = "NextOrderFrag"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,6 +35,8 @@ class NextOrderFrag :Fragment() {
     }
 
     private fun getNextOrder(){
+        progressDialog.show(childFragmentManager,"")
+
         val sheet_id=SharedHelper.getKey(context,"sheet_id")
         val order_status_index=SharedHelper.getIntegerValue(context,"order_status_index")
         val tab_index=SharedHelper.getIntegerValue(context,"tab_index")
@@ -76,11 +80,12 @@ class NextOrderFrag :Fragment() {
 
 
 
+
         if (nameIndex>-1) binding.clientName.setText(rows[nameIndex].formattedValue.toString())
         if (mobileIndex>-1) binding.mobileNum.setText(rows[mobileIndex].formattedValue.toString())
         if (addressIndex>-1) binding.clientAddress.setText(rows[addressIndex].formattedValue.toString())
         if (order_status_index>-1) binding.orderStatus.setText(rows[order_status_index].formattedValue.toString())
-
+        progressDialog.dismiss()
 
 
     }
