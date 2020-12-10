@@ -9,7 +9,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#F3F2F2"
+        >
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -30,7 +32,7 @@
                 android:background="@drawable/ic_background_gray"
                 android:textSize="20sp"
                 android:padding="16dp"
-                android:text="65656565"
+                tools:text="65656565"
                 android:gravity="center" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -73,7 +75,7 @@
                 android:background="@drawable/ic_background_gray"
                 android:textSize="20sp"
                 android:padding="16dp"
-                android:text="01122558899"
+                tools:text="01122558899"
                 android:gravity="center" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -94,7 +96,7 @@
                 android:background="@drawable/ic_background_gray"
                 android:textSize="20sp"
                 android:padding="16dp"
-                android:text="cairo 5 settlement 90's street "
+                tools:text="cairo 5 settlement 90's street "
                 android:gravity="center" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,7 +118,7 @@
                 android:textSize="20sp"
                 android:padding="16dp"
                 android:enabled="false"
-                android:text="waiting confirmation"
+                tools:text="waiting confirmation"
                 android:gravity="center" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -135,7 +137,7 @@
             <com.nambimobile.widgets.efab.ExpandableFab
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
+                android:layout_gravity="bottom|end"
                 app:efab_orientation="portrait"
                 app:efab_color="@color/primary"
                 />

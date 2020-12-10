@@ -56,7 +56,7 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
             binding.save.startAnimation()
 
             Log.d(TAG, "onCreateView: $tabIndex $mobileIndex  $nameIndex")
-            saveData(tabIndex,mobileIndex-1,nameIndex-1,addressIndex,orderStatusIndex)
+            saveData(tabIndex,mobileIndex-1,nameIndex-1,addressIndex-1,orderStatusIndex-1)
 
 
             if (orderStatusIndex==0){
@@ -65,12 +65,14 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
                         sheets[tabIndex].data[0].rowData.size)
                         .observe(viewLifecycleOwner, Observer {res->
                             binding.save.revertAnimation()
-
                             if (res.error!=null){
                                 Toasty.error(context!!,"error adding column",Toasty.LENGTH_LONG).show()
                             }else
                                 dismiss()
                         })
+            }else{
+                binding.save.revertAnimation()
+                dismiss()
             }
         }
 
@@ -117,9 +119,11 @@ class SheetSettingDialog (var sheets :ArrayList<Sheet>,val sheetId:String):Dialo
         SharedHelper.putKey(context,"mobile_index",mobileIndex)
         SharedHelper.putKey(context,"name_index",nameIndex)
         if (addressIndex>0)
-            SharedHelper.putKey(context,"address_index",nameIndex)
+            SharedHelper.putKey(context,"address_index",addressIndex)
         if (orderStatusIndex>0)
             SharedHelper.putKey(context,"order_status_index",orderStatusIndex)
+
+        Log.d(TAG, "saveData: $nameIndex $mobileIndex  $orderStatusIndex " )
 
 
 

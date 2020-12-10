@@ -65,6 +65,7 @@ import com.tajr.tajr.R;
 import com.tajr.tajr.adapters.DrawerAdapter;
 import com.tajr.tajr.fragments.AllSheetsFrag;
 import com.tajr.tajr.fragments.GoogleSignInFrag;
+import com.tajr.tajr.fragments.NextOrderFrag;
 import com.tajr.tajr.helper.AccessibilityManager;
 import com.tajr.tajr.helper.Binder;
 import com.tajr.tajr.helper.ScreenHelper;
@@ -682,6 +683,18 @@ public class MainActivity extends AppCompatActivity
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser!=null){
+
+            String sheet_id=SharedHelper.getKey(this,"sheet_id");
+            if (!sheet_id.equals("")){
+                NextOrderFrag nextOrderFrag=new NextOrderFrag();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container,nextOrderFrag)
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+            }
+
+
             AllSheetsFrag allSheetsFrag =new AllSheetsFrag();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container,allSheetsFrag)

@@ -30,13 +30,14 @@ public class TokenAuthenticator implements Authenticator {
     public Request authenticate(@Nullable Route route, @NotNull Response response) {
         Log.d(TAG, "authenticate: "+response.code());
         Log.d(TAG, "authenticate: "+response.request().url().toString());
-        if (!"www.googleapis.com".equals(route.address().url().host()))
+        if (!(route.address().url().host()).contains("googleapis"))
             return response.request();
+
         AccessTokenRes accessTokenRes=getUpdateToken();
         if (accessTokenRes!=null&&accessTokenRes.getAccess_token()!=null){
             SharedHelper.putKey(App.getContext(),"access_token",accessTokenRes.getAccess_token());
         }
-        Log.d(TAG, "authenticate: "+accessTokenRes.toString());
+        Log.d(TAG, "access token : "+accessTokenRes.toString());
         return response.request().newBuilder()
                 .header("Authorization", "Bearer "+accessTokenRes.getAccess_token())
                 .build();
