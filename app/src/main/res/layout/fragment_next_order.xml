@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/order_status_IL"
-            android:hint="mobile number"
+            android:hint="Order Status"
             android:layout_margin="@dimen/_4sdp"
             app:layout_constraintTop_toBottomOf="@id/client_address_IL">
 
@@ -120,6 +120,7 @@
                 android:padding="16dp"
                 android:enabled="false"
                 tools:text="waiting confirmation"
+                android:text="_"
                 android:gravity="center" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -158,6 +159,8 @@
             <com.nambimobile.widgets.efab.FabOption
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/confirm"
+                android:src="@drawable/ef_ic_done_white"
                 app:fab_orientation="portrait"
                 app:fab_color="@color/primary"
                 app:label_text="confirm"
@@ -199,63 +202,7 @@
                 app:label_text="cancel order"
                 />
 
-            <!-- The next 3 Views will only display in landscape orientation -->
-            <com.nambimobile.widgets.efab.Overlay
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:overlay_orientation="landscape" />
 
-            <com.nambimobile.widgets.efab.ExpandableFab
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-
-                app:efab_orientation="landscape" />
-
-
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_orientation="landscape"
-                app:fab_color="@color/primary"
-                app:label_text="confirm"
-                />
-
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_orientation="landscape"
-                app:fab_color="@color/primary"
-                app:label_text="client busy"
-                />
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_orientation="landscape"
-                app:fab_color="@color/primary"
-                app:label_text="number error"
-                />
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_orientation="landscape"
-                app:fab_color="@color/primary"
-                app:label_text="no answer"
-                />
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_orientation="landscape"
-                app:fab_color="@color/primary"
-                app:label_text="delay order"
-                />
-            <com.nambimobile.widgets.efab.FabOption
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_orientation="landscape"
-                app:fab_color="@color/primary"
-                app:label_text="cancel order"
-                />
 
 
         </com.nambimobile.widgets.efab.ExpandableFabLayout>

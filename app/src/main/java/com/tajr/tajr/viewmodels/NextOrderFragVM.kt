@@ -12,4 +12,9 @@ class NextOrderFragVM(application: Application) :AndroidViewModel(application) {
     fun getSpreadSheetData(spreadsheetId :String?): MutableLiveData<Response<SpreadSheetRes>> {
         return SpreadSheetsRepo.getSpreadSheetData(spreadsheetId)
     }
+
+    fun updateOrderStatus(sheetId:String,tabId :String?,columnIndex :Int,rowIndex:Int,newValue :String){
+        return SpreadSheetsRepo.updateOrderStatus(sheetId,tabId,columnIndex,rowIndex,newValue)
+    }
+
     }

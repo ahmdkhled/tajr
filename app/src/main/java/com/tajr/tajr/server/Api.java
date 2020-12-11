@@ -515,7 +515,7 @@ public interface Api {
     Call<SpreadSheetRes> getSpreadSheet(@Url String url,@Query("includeGridData") boolean includeGridData );
 
     @PUT
-    Call<SheetValueRes> addOrderStatusColumn(@Url String url,@Body SheetValuePayload sheetValuePayload
+    Call<SheetValueRes> addColumn(@Url String url, @Body SheetValuePayload sheetValuePayload
             , @Query("valueInputOption") String valueInputOption );
 
 }

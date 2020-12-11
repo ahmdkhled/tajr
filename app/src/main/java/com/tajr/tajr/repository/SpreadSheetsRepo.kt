@@ -62,9 +62,34 @@ object SpreadSheetsRepo {
         list.add("order_status")
         column.add(list)
         val paylaod=SheetValuePayload(range,"ROWS",column)
+        addColumn(url,paylaod, valueInputOption)
+
+
+        return sheetValueRes
+
+    }
+
+    fun updateOrderStatus(sheetId:String, tabId: String?, columnIndex:Int, rowIndex:Int, newValue:String){
+        sheetValueRes= MutableLiveData()
+
+        val range=tabId+"!"+A1_NOTATION.toCharArray()[columnIndex]+rowIndex
+        Log.d(TAG, "updateOrderStatus: $range")
+        val url= SPREDADsHEET_URL+sheetId+"/values/"+ range
+        val column=ArrayList<ArrayList<String>>()
+        val list=ArrayList<String>()
+        list.add(newValue)
+        column.add(list)
+        val paylaod=SheetValuePayload(range,"ROWS",column)
+
+        addColumn(url,paylaod, valueInputOption)
+
+    }
+
+
+    fun addColumn(url: String, paylaod: SheetValuePayload, valueInputOption: String) {
         BaseClient
                 .getApiService()
-                .addOrderStatusColumn(url,paylaod, valueInputOption)
+                .addColumn(url,paylaod, SpreadSheetsRepo.valueInputOption)
                 .enqueue(object:Callback<SheetValueRes>{
                     override fun onResponse(call: Call<SheetValueRes>, response: Response<SheetValueRes>) {
                         val res=response.body()
@@ -81,8 +106,6 @@ object SpreadSheetsRepo {
                     }
 
                 })
-        return sheetValueRes
-
-
     }
+
 }
