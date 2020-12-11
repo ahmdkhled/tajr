@@ -45,13 +45,25 @@ class NextOrderFrag :Fragment() {
 
         binding.confirm.setOnClickListener {
             progressDialog.show(childFragmentManager,"")
-            Log.d(TAG, "confirm: $i")
-            nextOrderFragVM.updateOrderStatus(getSheetId(),tabId,getOrderStatusIndex(),i+1,"confirmed")
-                    .observe(viewLifecycleOwner, Observer {
-                        getNextOrder()
-                    })
-
+            updateOrderStatus("confirmed")
         }
+        binding.clientBusy
+                .setOnClickListener {
+                    updateOrderStatus("client_busy")
+                }
+        binding.numberError
+                .setOnClickListener {
+                    updateOrderStatus("number_error")
+
+                }
+        binding.noAnswer.setOnClickListener {
+            updateOrderStatus("no_answer")
+        }
+        binding.cancelOrder
+                .setOnClickListener {
+                    updateOrderStatus("cancel_order")
+
+                }
 
 
 
@@ -138,6 +150,13 @@ class NextOrderFrag :Fragment() {
         progressDialog.dismiss()
 
 
+    }
+
+    fun updateOrderStatus(order_status :String){
+        nextOrderFragVM.updateOrderStatus(getSheetId(),tabId,getOrderStatusIndex(),i+1,order_status)
+                .observe(viewLifecycleOwner, Observer {
+                    getNextOrder()
+                })
     }
 
     fun getSheetId(): String {

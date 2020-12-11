@@ -169,6 +169,7 @@
             <com.nambimobile.widgets.efab.FabOption
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/client_busy"
                 app:fab_orientation="portrait"
                 app:fab_color="@color/primary"
                 app:label_text="client busy"
@@ -176,6 +177,7 @@
             <com.nambimobile.widgets.efab.FabOption
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/number_error"
                 app:fab_orientation="portrait"
                 app:fab_color="@color/primary"
                 app:label_text="number error"
@@ -183,6 +185,7 @@
             <com.nambimobile.widgets.efab.FabOption
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/no_answer"
                 app:fab_orientation="portrait"
                 app:fab_color="@color/primary"
                 app:label_text="no answer"
@@ -190,6 +193,8 @@
             <com.nambimobile.widgets.efab.FabOption
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/delay"
+                android:visibility="gone"
                 app:fab_orientation="portrait"
                 app:fab_color="@color/primary"
                 app:label_text="delay order"
@@ -197,6 +202,7 @@
             <com.nambimobile.widgets.efab.FabOption
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/cancel_order"
                 app:fab_orientation="portrait"
                 app:fab_color="@color/primary"
                 app:label_text="cancel order"
