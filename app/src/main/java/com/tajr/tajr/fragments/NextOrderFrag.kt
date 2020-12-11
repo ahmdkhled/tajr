@@ -16,6 +16,7 @@ import com.tajr.tajr.helper.SharedHelper
 import com.tajr.tajr.models.Value
 import com.tajr.tajr.view.dialogs.ProgressDialog
 import com.tajr.tajr.viewmodels.NextOrderFragVM
+import es.dmoral.toasty.Toasty
 
 class NextOrderFrag :Fragment() {
 
@@ -43,8 +44,13 @@ class NextOrderFrag :Fragment() {
         }
 
         binding.confirm.setOnClickListener {
+            progressDialog.show(childFragmentManager,"")
             Log.d(TAG, "confirm: $i")
             nextOrderFragVM.updateOrderStatus(getSheetId(),tabId,getOrderStatusIndex(),i+1,"confirmed")
+                    .observe(viewLifecycleOwner, Observer {
+                        getNextOrder()
+                    })
+
         }
 
 
@@ -53,27 +59,33 @@ class NextOrderFrag :Fragment() {
     }
 
     private fun getNextOrder(){
+        if (!progressDialog.isAdded)
         progressDialog.show(childFragmentManager,"")
         binding.call.isEnabled=false
         var sheet_id=SharedHelper.getKey(context,"sheet_id")
         val order_status_index=SharedHelper.getIntegerValue(context,"order_status_index")
         val tab_index=SharedHelper.getIntegerValue(context,"tab_index")
 
-        Log.d(TAG, "getNextOrder: $order_status_index")
         nextOrderFragVM.getSpreadSheetData(sheet_id)
                 .observe(viewLifecycleOwner, Observer {res->
                     val rows = res.model?.sheets?.get(tab_index)?.data?.get(0)?.rowData
-                    Log.d(TAG, "getNextOrder: $rows")
                     tabId= res.model?.sheets?.get(tab_index)?.properties?.title
                     if (rows != null) {
+                        if (rows.isEmpty()){
+                            progressDialog.dismiss()
+                            Toasty.error(context!!,"no orders ",Toasty.LENGTH_LONG).show()
+                            return@Observer
+                        }
+
                         i=0;
                         for (row in rows){
                             val columns=row.values
-                            Log.d(TAG, "getNextOrder: $columns")
+                            Log.d(TAG, "columns: $columns")
                             if (columns!=null&&columns.size<=order_status_index){
                                 populateOrder(row.values)
                                 return@Observer
                             }else{
+                                Log.d(TAG, "getNextOrder: ==============")
                                 val order_status= columns?.get(order_status_index)?.formattedValue
                                 if (order_status.equals("waiting_confirmtion") ||order_status==null){
                                     populateOrder(row.values)
@@ -84,6 +96,13 @@ class NextOrderFrag :Fragment() {
                             i++
 
                         }
+                        Log.d(TAG, "end for: ")
+                        progressDialog.dismiss()
+                        Toasty.error(context!!,"no orders ",Toasty.LENGTH_LONG).show()
+
+                    }else{
+                        progressDialog.dismiss()
+                        Toasty.error(context!!,"no orders ",Toasty.LENGTH_LONG).show()
                     }
 
 
@@ -91,6 +110,7 @@ class NextOrderFrag :Fragment() {
     }
 
     private fun populateOrder(rows: ArrayList<Value>?) {
+        progressDialog.dismiss()
         Log.d(TAG, "populateOrder: $rows")
         if (rows==null){
             return

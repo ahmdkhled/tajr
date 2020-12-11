@@ -69,7 +69,7 @@ object SpreadSheetsRepo {
 
     }
 
-    fun updateOrderStatus(sheetId:String, tabId: String?, columnIndex:Int, rowIndex:Int, newValue:String){
+    fun updateOrderStatus(sheetId:String, tabId: String?, columnIndex:Int, rowIndex:Int, newValue:String): MutableLiveData<com.tajr.tajr.models.Response<SheetValueRes>> {
         sheetValueRes= MutableLiveData()
 
         val range=tabId+"!"+A1_NOTATION.toCharArray()[columnIndex]+rowIndex
@@ -82,6 +82,8 @@ object SpreadSheetsRepo {
         val paylaod=SheetValuePayload(range,"ROWS",column)
 
         addColumn(url,paylaod, valueInputOption)
+
+        return sheetValueRes
 
     }
 
