@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tajr.tajr.R
 import com.tajr.tajr.databinding.FragmentNextOrderBinding
+import com.tajr.tajr.helper.CallHelper
 import com.tajr.tajr.helper.SharedHelper
 import com.tajr.tajr.models.Value
 import com.tajr.tajr.view.dialogs.ProgressDialog
@@ -20,6 +21,7 @@ class NextOrderFrag :Fragment() {
 
     lateinit var binding:FragmentNextOrderBinding
     lateinit var nextOrderFragVM:NextOrderFragVM
+     var mobileNumber:String?=null
     val progressDialog = ProgressDialog()
     private  val TAG = "NextOrderFrag"
 
@@ -30,13 +32,20 @@ class NextOrderFrag :Fragment() {
 
         getNextOrder()
 
+        binding.call.setOnClickListener {
+            if (mobileNumber==null){
+                return@setOnClickListener
+            }
+            CallHelper().call(context!!, mobileNumber!!.toInt())
+        }
+
 
         return binding.root
     }
 
     private fun getNextOrder(){
         progressDialog.show(childFragmentManager,"")
-
+        binding.call.isEnabled=false
         val sheet_id=SharedHelper.getKey(context,"sheet_id")
         val order_status_index=SharedHelper.getIntegerValue(context,"order_status_index")
         val tab_index=SharedHelper.getIntegerValue(context,"tab_index")
@@ -79,6 +88,10 @@ class NextOrderFrag :Fragment() {
         Log.d(TAG, "populateOrder: $mobileIndex")
 
 
+
+        mobileNumber=rows[mobileIndex].formattedValue
+        if (mobileNumber==null)binding.call.isEnabled=false
+        else binding.call.isEnabled=true
 
 
         if (nameIndex>-1) binding.clientName.setText(rows[nameIndex].formattedValue.toString())

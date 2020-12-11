@@ -124,6 +124,17 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/call"
+            android:src="@drawable/ic_call_white"
+            android:backgroundTint="@color/primary_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="@dimen/_8sdp"
+            />
+
         <com.nambimobile.widgets.efab.ExpandableFabLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -141,6 +152,7 @@
                 android:layout_gravity="bottom|end"
                 app:efab_orientation="portrait"
                 app:efab_color="@color/primary_dark"
+                android:layout_margin="@dimen/_8sdp"
                 />
 
             <com.nambimobile.widgets.efab.FabOption
