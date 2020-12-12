@@ -125,6 +125,7 @@ class NextOrderFrag :Fragment() {
         progressDialog.dismiss()
         Log.d(TAG, "populateOrder: $rows")
         if (rows==null){
+            Toasty.error(context!!,"no remaining orders",Toasty.LENGTH_LONG).show()
             return
         }
 
