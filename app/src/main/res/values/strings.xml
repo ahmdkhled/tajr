@@ -296,6 +296,8 @@
     <string name="signIn">signIn</string>
     <string name="client_id">807393199399-tc1cr554gg6cp751q5dohcakf80aejrm.apps.googleusercontent.com</string>
     <string name="client_secret">JN5IIdcuPubfQ92zPwxkGF-t</string>
+    <string name="sheet_settings">sheet settings</string>
+    <string name="start_work_sheets">start work with sheets</string>
     <string-array name="calc_dialog_errors">
         <item>Division by zero</item>
         <item>Out of bounds</item>

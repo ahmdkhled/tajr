@@ -91,6 +91,7 @@ import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
@@ -164,6 +165,21 @@ public class MainActivity extends AppCompatActivity
         api = BaseClient.getBaseClient().create(Api.class);
 
         enableButton =findViewById(R.id.swipe_btn);
+        SwipeButton startSheets=findViewById(R.id.start_sheets);
+        startSheets.setOnStateChangeListener(active -> {
+            if (active) {
+                if (SharedHelper.getKey(this,"sheet_id").isEmpty()){
+                    Toasty.error(this,"please configure sheet settings first",Toasty.LENGTH_LONG).show();
+                }else {
+                    addFrag(new NextOrderFrag());
+                }
+                startSheets.setActivated(false);
+
+
+            }
+
+        });
+
         enableButton.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
             public void onStateChange(boolean active) {
@@ -684,17 +700,6 @@ public class MainActivity extends AppCompatActivity
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser!=null){
 
-            String sheet_id=SharedHelper.getKey(this,"sheet_id");
-            if (!sheet_id.equals("")){
-                NextOrderFrag nextOrderFrag=new NextOrderFrag();
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container,nextOrderFrag)
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-            }
-
-
             AllSheetsFrag allSheetsFrag =new AllSheetsFrag();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container,allSheetsFrag)
@@ -1084,7 +1089,7 @@ public class MainActivity extends AppCompatActivity
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
-            if (position == 7) {
+            if (position == 8) {
                 SessionManager.getInstance(getApplicationContext()).setIsLogin("no");
                 intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1092,7 +1097,7 @@ public class MainActivity extends AppCompatActivity
                 finish();
             }
 
-            else if(position==8){
+            else if(position==7){
                 if(!checkSigned()){
                     GoogleSignInFrag frag=new GoogleSignInFrag();
                     getSupportFragmentManager()
